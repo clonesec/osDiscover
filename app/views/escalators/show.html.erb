@@ -1,0 +1,30 @@
+<% title "Escalator details" %>
+<p>
+	<b>Name: <%= @escalator.name %></b><br />
+	<br />
+	Comment: <%= @escalator.comment %><br />
+	<br />
+	Condition: <%= @escalator.escalator_condition %><br />
+	<br />
+	Event: <%= @escalator.escalator_event %> (to <%= @escalator.event_data %>)<br />
+	<br />
+	Method: <%= @escalator.escalator_method %><br />
+	<blockquote>
+  <% @escalator.method_datas.each do |datum| %>
+			<%
+			# next if (datum.name == 'notice' && datum.data == '0') || datum.name == 'submodule' || datum.name == 'from_address'
+			next if (datum.name == 'notice' && datum.data == '0') || datum.name == 'submodule'
+			next if datum.data.blank?
+			%>
+			<%= datum.name.humanize %>: <%= datum.data %><br />
+  <% end %>
+	</blockquote>
+</p>
+<h3>Tasks using this Escalator: <%= 'None' if @escalator.tasks.blank? %></h3>
+<% unless @escalator.tasks.blank? %>
+		<ol>
+		<% @escalator.tasks.each do |task| %>
+				<li><%= task.name %></li>
+		<% end %>
+		</ol>
+<% end %>

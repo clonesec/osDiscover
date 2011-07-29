@@ -1,0 +1,7 @@
+<% title "edit Note" %>
+
+<% if session[:go_back] %>
+	<div><%= arrowleft_pill_button_link_to "back", session[:go_back] %></div>
+<% end %>
+
+<%= render 'form' %>

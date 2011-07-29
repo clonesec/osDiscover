@@ -1,0 +1,19 @@
+development:
+  debug: true
+  domain: localhost:3000
+  omp_version_expected: '2.0'
+  openvas_omp_host: 'localhost'
+  openvas_omp_port: '9390'
+  oap_version_expected: '1.0'
+  openvas_oap_host: 'localhost'
+  openvas_oap_port: '9393'
+
+production:
+  debug: false
+  domain: ???.???.com
+  omp_version_expected: '2.0'
+  openvas_omp_host: '???'
+  openvas_omp_port: '9390'
+  oap_version_expected: '1.0'
+  openvas_oap_host: '???'
+  openvas_oap_port: '9393'

@@ -1,0 +1,22 @@
+<% title "Overrides" %>
+<table cellspacing="2" cellpadding="4">
+  <tr class="table_header">
+    <th>NVT</th>
+    <th>From</th>
+    <th>To</th>
+    <th>Text</th>
+    <th colspan="3">Actions</th>
+  </tr>
+  <% for override in @overrides %>
+    <tr>
+      <td><%= override.nvt_name %></td>
+      <td><%= override.threat %></td>
+      <td><%= override.new_threat %></td>
+      <td><%= override.override_text %></td>
+      <td><%= pill_button_link_to "details", override_path(override.id) %></td>
+      <td><%= pill_button_link_to "edit", edit_override_path(override.id) %></td>
+  		<td><%= danger_remove_pill_button_link_to "delete", override_path(override.id), :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+		<tr><td colspan="7"><hr /></td></tr>
+  <% end %>
+</table>

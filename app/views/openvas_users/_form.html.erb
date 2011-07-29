@@ -1,0 +1,54 @@
+<%= form_for @openvas_user do |f| %>
+	<% if @openvas_user.errors.any? %>
+	  <div id="error_explanation">
+	    <h2><%= pluralize(@openvas_user.errors.count, "error") %> prohibited this user from being saved:</h2>
+	    <ul>
+	      <% @openvas_user.errors.full_messages.each do |msg| %>
+	        <li><%= raw(msg) %></li>
+	      <% end %>
+	    </ul>
+	  </div>
+	<% end %>
+	<div class="field">
+	  <div class="left">Name</div>
+	  <div class="right"><%= f.text_field :name, :maxlength => 80, :autocomplete => 'off' %></div>
+	</div>
+	<br /><br />
+	<div class="field">
+	  <div class="left">Password</div>
+	  <div class="right"><%= f.password_field :password, :maxlength => 40, :autocomplete => 'off' %></div>
+	</div>
+	<br /><br />
+	<div class="field">
+	  <div class="left">Role</div>
+	  <div class="right"><%= collection_select(:openvas_user, :role, OpenvasUser.role_selections, :id, :name) %></div>
+	</div>
+	<br /><br />
+	<div class="field">
+	  <div class="left">Host Access</div>
+	  <div class="right">
+			<%= collection_select(:openvas_user, :hosts_allow, OpenvasUser.access_selections, :id, :name) %>
+		</div>
+	</div>
+	<br /><br />
+	<div class="field">
+	  <div class="left">&nbsp;</div>
+	  <div class="right">
+			&nbsp;&nbsp;if Host Access selected above is <em>Allow</em> or <em>Deny</em>:
+			<br />
+			&nbsp;&nbsp;Hosts: <%= f.text_field :hosts, :size => 68, :maxlength => 500 %>
+		</div>
+	</div>
+	<br /><br /><br />
+  <div class="actions">
+    <div class="left">&nbsp;</div>
+		<div class="right">
+			<% if @openvas_user.new_record? %>
+	    		<%= big_button_submit_tag 'Create User' %>
+			<% else %>
+	    		<%= big_button_submit_tag 'Save User' %>
+			<% end %>
+  	</div>
+  </div>
+	<br /><br />
+<% end %>

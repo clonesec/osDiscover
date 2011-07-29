@@ -1,0 +1,31 @@
+<% title "Slaves" %>
+<%# note: rails sees the singular of 'slaves' as 'slafe': %>
+<div><%= add_button_link_to "new Slave", new_slafe_path %></div>
+<table cellspacing="2" cellpadding="4">
+  <tr class="table_header">
+    <th>Name</th>
+    <th>Comment</th>
+    <th>Host</th>
+    <th>Port</th>
+    <th>Login</th>
+    <th>In Use</th>
+    <th>Actions</th>
+  </tr>
+  <% for slave in @slaves %>
+    <tr>
+      <td><%= slave.name %></td>
+      <td><%= slave.comment %></td>
+      <td><%= slave.host %></td>
+      <td><%= slave.port %></td>
+      <td><%= slave.login %></td>
+      <td><%= slave.in_use == 0 ? 'no' : 'yes' %></td>
+			<% if slave.in_use > 0 %>
+  				<td><%= disable_danger_remove_pill_button_link_to "delete", slafe_path(slave.id), :title=>'slave is in use' %></td>
+  		<% else %>
+					<%# note: rails sees the singular of 'slaves' as 'slafe': %>
+      		<td><%= danger_remove_pill_button_link_to "delete", slafe_path(slave.id), :confirm => 'Are you sure?', :method => :delete %></td>
+		  <% end %>
+    </tr>
+		<tr><td colspan="7"><hr /></td></tr>
+  <% end %>
+</table>

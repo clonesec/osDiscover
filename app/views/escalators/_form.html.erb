@@ -1,0 +1,73 @@
+<%= form_for @escalator do |f| %>
+	<% if @escalator.errors.any? %>
+	  <div id="error_explanation">
+	    <h2><%= pluralize(@escalator.errors.count, "error") %> prohibited this escalator from being saved:</h2>
+	    <ul>
+	      <% @escalator.errors.full_messages.each do |msg| %>
+	        <li><%= raw(msg) %></li>
+	      <% end %>
+	    </ul>
+	  </div>
+	<% end %>
+	<div class="field">
+	  <div class="left"><%= f.label :name %></div>
+	  <div class="right"><%= f.text_field :name, :maxlength => 80 %></div>
+	</div>
+  <div class="field">
+    <div class="left"><%= f.label :comment %></div>
+    <div class="right"><%= f.text_area :comment, :rows => 5, :cols => 80 %></div>
+  </div>
+	<br /><br />
+  <div class="field">
+    <div class="left">Event</div>
+		<div class="right">
+			Task run status changed to
+			<%= collection_select(:escalator, :escalator_event, Escalator.event_selections, :id, :name) %>
+		</div>
+  </div>
+	<br /><br />
+  <div class="field">
+    <div class="left">Condition</div>
+		<div class="right">
+			<%= collection_select(:escalator, :escalator_condition, Escalator.condition_selections, :id, :name) %>
+		</div>
+  </div>
+	<br /><br />
+  <div class="field">
+    <div class="left">Method</div>
+		<div class="right">
+			<%= collection_select(:escalator, :escalator_method, Escalator.method_selections, :id, :name) %>
+			<br /><br />
+			<fieldset>
+				<legend>if selected method is <em>Email</em>:</legend>
+				To Address
+				<%= f.text_field :email_to_address, :size=>30, :maxlength=>301 %>
+				<br />
+				From Address
+				<%= f.text_field :email_from_address, :size=>30, :maxlength=>301 %>
+				<br />
+			  Report format to include with email
+				<%= collection_select(:escalator, :email_report_format, ReportFormat.selections(current_user), :id, :name) %>
+			</fieldset>
+			<br />
+			<fieldset>
+				<legend>if selected method is <em>HTTP Get</em>:</legend>
+				URL
+				<%= f.text_field :http_get_url, :size=>30, :maxlength=>301 %>
+			</fieldset>
+			<br />
+		</div>
+  </div>
+	<br /><br />
+  <div class="actions">
+    <div class="left">&nbsp;</div>
+		<div class="right">
+			<% if @escalator.new_record? %>
+	    		<%= big_button_submit_tag 'Create Escalator' %>
+			<% else %>
+	    		<%= big_button_submit_tag 'Save Escalator' %>
+			<% end %>
+  	</div>
+  </div>
+	<br /><br />
+<% end %>

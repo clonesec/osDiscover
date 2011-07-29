@@ -1,0 +1,32 @@
+<% title "Scan Configs" %>
+<div><%= add_button_link_to 'create / import Scan config', new_scan_config_path %></div>
+<table cellspacing="2" cellpadding="4">
+  <tr class="table_header">
+    <th>Name</th>
+    <th>Family count</th>
+    <th>Families grow</th>
+    <th>NVTs count</th>
+    <th>NVTs grow</th>
+    <th>In use</th>
+    <th colspan="2">Actions</th>
+  </tr>
+	<% @scan_configs.each do |scan_config| %>
+	  <tr>
+	    <td>
+				<%= link_to scan_config.name, scan_config_path(scan_config.id), :title => 'details of Scan Config' %>
+				<br />
+	    	<span style="font-size:10px"><%= scan_config.comment %></span>
+			</td>
+	    <td><%= scan_config.family_count %></td>
+	    <td><%= scan_config.families_grow %></td>
+	    <td><%= scan_config.nvts_count %></td>
+	    <td><%= scan_config.nvts_grow %></td>
+	    <td><%= scan_config.in_use %></td>
+			<td><%= pill_button_link_to 'export', export_config_path(scan_config.id) %></td>
+			<% unless scan_config.in_use > 0 %>
+		    <td><%= danger_remove_pill_button_link_to 'delete', scan_config_path(scan_config.id), :title => 'delete scan config', :confirm => 'Are you sure?', :method => :delete %></td>
+			<% end %>
+	  </tr>
+		<tr><td colspan="9"><hr /></td></tr>
+	<% end %>
+</table>

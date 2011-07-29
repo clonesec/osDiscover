@@ -1,0 +1,27 @@
+<h4>Host summary</h4>
+<table cellspacing="2" cellpadding="4">
+  <tr class="table_header">
+    <th>Host</th>
+    <th>Start</th>
+    <th>End</th>
+    <th>High</th>
+    <th>Medium</th>
+    <th>Low</th>
+    <th>Log</th>
+    <!-- <th>Debug</th> -->
+    <th>False Positive</th>
+    <th>Total</th>
+  </tr>
+	<%= render :partial => 'each_host_summary', :collection => report.hosts %>
+	<tr>
+		<td colspan="9"><hr /></td>
+	</tr>
+	<tr>
+		<td>Total: <%= report.hosts.count %></td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<% report.hosts_threat_totals.each do |t| %>
+				<td><%= t %></td>
+		<% end %>
+	</tr>
+</table>

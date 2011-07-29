@@ -1,0 +1,48 @@
+<%= form_for @slave do |f| %>
+	<% if @slave.errors.any? %>
+	  <div id="error_explanation">
+	    <h2><%= pluralize(@slave.errors.count, "error") %> prohibited this slave from being saved:</h2>
+	    <ul>
+	      <% @slave.errors.full_messages.each do |msg| %>
+	        <li><%= raw(msg) %></li>
+	      <% end %>
+	    </ul>
+	  </div>
+	<% end %>
+	<div class="field">
+	  <div class="left"><%= f.label :name %></div>
+	  <div class="right"><%= f.text_field :name, :maxlength => 80 %></div>
+	</div>
+	<div class="field">
+	  <div class="left"><%= f.label :comment %></div>
+	  <div class="right"><%= f.text_area :comment, :rows => 5, :cols => 80 %></div>
+	</div>
+	<div class="field">
+	  <div class="left"><%= f.label :host %></div>
+	  <div class="right"><%= f.text_field :host, :maxlength => 80 %></div>
+	</div>
+	<div class="field">
+	  <div class="left"><%= f.label :port %></div>
+	  <div class="right"><%= f.text_field :port, :maxlength => 80 %></div>
+	</div>
+	<div class="field">
+	  <div class="left"><%= f.label :login %></div>
+	  <div class="right"><%= f.text_field :login, :maxlength => 80 %></div>
+	</div>
+	<div class="field">
+	  <div class="left"><%= f.label :password %></div>
+	  <div class="right"><%= f.password_field :password, :maxlength => 40 %></div>
+	</div>
+	<br /><br />
+  <div class="actions">
+    <div class="left">&nbsp;</div>
+		<div class="right">
+			<% if @slave.new_record? %>
+	    		<%= big_button_submit_tag 'Create Slave' %>
+			<% else %>
+	    		<%= big_button_submit_tag 'Save Slave' %>
+			<% end %>
+  	</div>
+  </div>
+	<br /><br />
+<% end %>

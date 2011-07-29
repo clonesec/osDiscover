@@ -1,0 +1,57 @@
+<b>Result of Task: <%= @report.task_name %></b><br />
+Order of results:	by host<br /> <%# yes, this was hard coded in GSA %>
+<b>Started at: <%= @report.started_at %></b><br />
+Ended at: <%= @report.ended_at %><br />
+Status: <%= @report.status %>
+<table cellspacing="2" cellpadding="4">
+  <tr class="table_header">
+    <th>&nbsp;</th>
+    <th>High</th>
+    <th>Medium</th>
+    <th>Low</th>
+    <th>Log</th>
+    <!-- <th>Debug</th> -->
+    <th>FalsePos</th>
+    <th>Total</th>
+    <th style="text-align:center">Download Report in these Formats</th>
+  </tr>
+  <tr>
+		<td>Full report:</td>
+		<td align="right"><%= @report.result_count_total[:high] %></td>
+		<td align="right"><%= @report.result_count_total[:medium] %></td>
+		<td align="right"><%= @report.result_count_total[:low] %></td>
+		<td align="right"><%= @report.result_count_total[:log] %></td>
+		<!-- <td align="right"><%#= @report.result_count_total[:debug] %></td> -->
+		<td align="right"><%= @report.result_count_total[:false_positive] %></td>
+		<td align="right"><%= @report.result_count_total[:total] %></td>
+		<% if @report.status.downcase == 'done' %>
+				<td>
+					<%= button_group do %>
+							<% @formats.each do |f| %>
+									<%= pill_button_link_to f.name, view_report_path(@report.id, :format_name => f.name.downcase), :target=>'_blank', :title=>"view Full Report in #{f.name} format" %>
+							<% end %>
+					<% end %>
+				</td>
+		<% end %>
+	</tr>
+	<!-- <tr><td colspan="8"><hr /><td></tr> -->
+  <tr>
+		<td>Filtered results:</td>
+		<td align="right"><%= @report.result_count_filtered[:high] %></td>
+		<td align="right"><%= @report.result_count_filtered[:medium] %></td>
+		<td align="right"><%= @report.result_count_filtered[:low] %></td>
+		<td align="right"><%= @report.result_count_filtered[:log] %></td>
+		<!-- <td align="right"><%#= @report.result_count_filtered[:debug] %></td> -->
+		<td align="right"><%= @report.result_count_filtered[:false_positive] %></td>
+		<td align="right"><%= @report.result_count_filtered[:total] %></td>
+		<% if @report.status.downcase == 'done' && @report.result_count_filtered[:total] > 0 %>
+				<td>
+					<%= button_group do %>
+							<% @formats.each do |f| %>
+									<%= pill_button_link_to f.name, view_report_path(@report.id, :format_name => f.name.downcase, :search['search'] => params[:search]), :target=>'_blank', :title=>"view Filtered Report in #{f.name} format" %>
+							<% end %>
+					<% end %>
+				</td>
+		<% end %>
+	</tr>
+</table>

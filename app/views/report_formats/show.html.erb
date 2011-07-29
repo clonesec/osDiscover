@@ -1,0 +1,33 @@
+<% title "Report Format" %>
+<p>
+  <strong>Name:</strong>
+  <%= @report_format.name %>
+</p>
+<p>
+  <strong>Extension:</strong>
+  <%= @report_format.extension %>
+</p>
+<p>
+  <strong>Content Type:</strong>
+  <%= @report_format.content_type %>
+</p>
+<p>
+  <strong>Trust:</strong>
+  <%= @report_format.trust %>
+</p>
+<p>
+  <strong>Active:</strong>
+  <%= @report_format.active ? 'yes' : 'no' %>
+</p>
+<p>
+  <strong>Summary:</strong>
+  <%= @report_format.summary %>
+</p>
+<p>
+  <strong>Description:</strong>
+  <pre><%= @report_format.description %></pre>
+</p>
+<p>
+  <strong>Parameters:</strong>
+  <%= @report_format.parameters %>
+</p>

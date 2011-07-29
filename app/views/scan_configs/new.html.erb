@@ -1,0 +1,51 @@
+<% title "new Scan Config" %>
+<%= form_for(@scan_config, :html => { :multipart => true }) do |f| %>
+  <% if @scan_config.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@scan_config.errors.count, "error") %> prohibited this Scan Config from being saved:</h2>
+      <ul>
+	      <% @scan_config.errors.full_messages.each do |msg| %>
+	        <li><%= raw(msg) %></li>
+	      <% end %>
+      </ul>
+    </div>
+  <% end %>
+	<div class="field">
+	  <div class="left"><%= f.label :name %></div>
+	  <div class="right"><%= f.text_field :name, :maxlength => 80 %></div>
+	</div>
+  <div class="field">
+    <div class="left"><%= f.label :comment %></div>
+    <div class="right"><%= f.text_area :comment, :rows => 5, :cols => 80 %></div>
+  </div>
+	<br /><br />
+  <div class="field">
+    <div class="left">Base</div>
+		<div class="right">
+			<%= collection_select(:scan_config, :copy_id, ScanConfig.base_selections, :id, :name) %>
+		</div>
+  </div>
+	<br /><br />
+	<hr style="clear:both" />
+  <div class="left">&nbsp;</div>
+	<div class="right">- OR -</div>
+	<hr style="clear:both" />
+	<br />
+	<div class="field">
+    <div class="left">&nbsp;</div>
+	  <div class="right">
+		  Import a previously exported Scan Config XML file:
+			<br /><br />
+			<%= file_field_tag "scan_config[xml_file]" %>
+		</div>
+	</div>
+	<br /><br />
+	<br /><br />
+  <div class="actions">
+    <div class="left">&nbsp;</div>
+		<div class="right">
+	    <%= big_button_submit_tag 'create / import Scan Config' %>
+  	</div>
+  </div>
+	<br /><br />
+<% end %>

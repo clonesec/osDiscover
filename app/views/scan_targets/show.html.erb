@@ -1,0 +1,29 @@
+<% title "Scan Target details" %>
+
+<% if session[:go_back] %>
+	<div><%= arrowleft_pill_button_link_to "back", session[:go_back] %></div>
+<% end %>
+
+<p>
+	<b>Name: <%= @scan_target.name %></b><br />
+	<br />
+	Comment: <%= @scan_target.comment %><br />
+	<br />
+	Hosts: <%= @scan_target.hosts %><br />
+	<br />
+	Maximum number of hosts: <%= @scan_target.max_hosts %><br />
+	<br />
+	Port Range: <%= @scan_target.port_range %><br />
+	<br />
+	SSH Credential: <%= @scan_target.ssh_lsc_credential %><br />
+	<br />
+	SMB Credential: <%= @scan_target.smb_lsc_credential %><br />
+</p>
+<h3>Tasks using this Scan Target: <%= 'None' if @scan_target.tasks.blank? %></h3>
+<% unless @scan_target.tasks.blank? %>
+		<ol>
+		<% @scan_target.tasks.each do |task| %>
+				<li><%= task.name %></li>
+		<% end %>
+		</ol>
+<% end %>

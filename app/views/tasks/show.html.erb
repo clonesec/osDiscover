@@ -1,0 +1,111 @@
+<% title "Task Summary" %>
+<div>
+	<%= button_group do %>
+		<%= arrowleft_pill_button_link_to "back", tasks_path %>
+			<% if params[:apply_overrides] == '1' || params[:apply_overrides].blank? %>
+					<% params.merge!({:apply_overrides=>'1'}) if params[:apply_overrides].blank? %>
+					<%= disable_danger_lock_pill_button_link_to 'overrides are On', task_path(@task.id), :title=>"overrides are On and applied" %>
+					<%= pill_button_link_to 'set Off', task_path(:id=>@task.id, :apply_overrides=>'0'), :title=>"turn overrides off" %>
+			<% else %>
+					<%= disable_unlock_pill_button_link_to 'overrides are Off', task_path(@task.id), :title=>"overrides are Off" %>
+					<%= pill_button_link_to 'set On', task_path(:id=>@task.id, :apply_overrides=>'1'), :title=>"turn overrides on" %>
+			<% end %>
+	<% end %>
+</div>
+
+<p>
+	<b>Name: <%= @task.name %></b><br />
+	Comment: <%= @task.comment %><br />
+	Config:	<%= link_to "#{@task.config_name}", scan_config_path(@task.config_id) %><br />
+	Escalator: <%= @task.escalator_name %><br />
+	Schedule: <%= @task.schedule_name %><br />
+	Target: <%= link_to "#{@task.target_name}", scan_target_path(@task.target_id) %><br />
+	Slave: <%= @task.slave_name %><br />
+	Status: <%= @task.status %> <%= "at #{@task.overall_progress}%" if ['Stopped', 'Paused', 'Running'].include?(@task.status) && @task.overall_progress != '-1' %><br />
+	Reports: <%= @task.reports_count %> (Finished: <%= @task.finished_reports_count %>)
+</p>
+
+<div style="font-size:18px; margin-top:20px; padding:2px; text-align:center; background:#636363; color:#fff">Reports</div>
+<table cellspacing="2" cellpadding="4">
+  <tr class="table_header">
+    <th rowspan="2">Report</th>
+    <th rowspan="2">Threat</th>
+    <th colspan="5">Scan Results</th>
+    <th colspan="2" rowspan="2">Actions</th>
+  </tr>
+  <tr class="table_header">
+    <th>High</th>
+    <th>Medium</th>
+    <th>Low</th>
+    <th>Log</th>
+    <!-- <th>Debug</th> -->
+    <th>FalsePos</th>
+	</tr>
+  <% @task.reports.each do |report| %>
+    <tr>
+      <td>
+				<%= report.timestamp %><br />
+				<%= report.scan_run_status %>
+			</td>
+      <td><%= report.threat_level %></td>
+	    <td><%= report.result_count_total[:high] %></td>
+	    <td><%= report.result_count_total[:medium] %></td>
+	    <td><%= report.result_count_total[:low] %></td>
+	    <td><%= report.result_count_total[:log] %></td>
+	    <!-- <td><%= report.result_count_total[:debug] %></td> -->
+	    <td><%= report.result_count_total[:false_positive] %></td>
+      <td><%= pill_button_link_to "details", report_path(report.id) %></td>
+  		<td>
+			<% if report.can_delete %>
+					<%= danger_remove_pill_button_link_to "delete", report_path(report.id), :confirm => 'Are you sure?', :method => :delete %>
+			<% else %>
+					<%= disable_danger_remove_pill_button_link_to "delete", root_path, :title => 'unable to delete Report' %>
+			<% end %>
+			</td>
+    </tr>
+		<!-- <tr><td colspan="10"><%#=debug report%></td></tr> -->
+		<!-- <tr><td colspan="10"><hr /></td></tr> -->
+  <% end %>
+</table>
+
+<div style="font-size:18px; margin-top:20px; padding:2px; text-align:center; background:#636363; color:#fff">Notes</div>
+<table cellspacing="2" cellpadding="4">
+  <tr class="table_header">
+    <th>NVT</th>
+    <th>Text</th>
+    <th colspan="3">Actions</th>
+  </tr>
+  <% @notes.each do |note| %>
+    <tr>
+      <td><%= note.nvt_name %></td>
+      <td><%= note.note_text %></td>
+      <td><%= pill_button_link_to "details", note_path(note.id) %></td>
+      <td><%= pill_button_link_to "edit", edit_note_path(note.id) %></td>
+  		<td><%= danger_remove_pill_button_link_to "delete", note_path(note.id), :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+		<!-- <tr><td colspan="5"><hr /></td></tr> -->
+  <% end %>
+</table>
+
+<div style="font-size:18px; margin-top:20px; padding:2px; text-align:center; background:#636363; color:#fff">Overrides</div>
+<table cellspacing="2" cellpadding="4">
+  <tr class="table_header">
+    <th>NVT</th>
+    <th>From</th>
+    <th>To</th>
+    <th>Text</th>
+    <th colspan="3">Actions</th>
+  </tr>
+  <% @overrides.each do |override| %>
+    <tr>
+      <td><%= override.nvt_name %></td>
+      <td><%= override.threat %></td>
+      <td><%= override.new_threat %></td>
+      <td><%= override.override_text %></td>
+      <td><%= pill_button_link_to "details", override_path(override.id) %></td>
+      <td><%= pill_button_link_to "edit", edit_override_path(override.id) %></td>
+  		<td><%= danger_remove_pill_button_link_to "delete", override_path(override.id), :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+		<!-- <tr><td colspan="7"><hr /></td></tr> -->
+  <% end %>
+</table>

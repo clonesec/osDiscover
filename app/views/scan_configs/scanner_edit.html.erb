@@ -1,0 +1,35 @@
+<% title "edit Scan Config" %>
+<h3>Scanner Preferences</h3>
+<%= form_for(@scan_config, :html => { :multipart => true }) do |f| %>
+  <% if @scan_config.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@scan_config.errors.count, "error") %> prohibited this Scan Config from being saved:</h2>
+      <ul>
+	      <% @scan_config.errors.full_messages.each do |msg| %>
+	        <li><%= msg %></li>
+	      <% end %>
+      </ul>
+    </div>
+  <% end %>
+	<%= hidden_field_tag :update_type, 'scanner' %>
+	<% @scan_config.scanner_preferences.each do |pref| %>
+			<div class="field">
+			  <div class="wide_left">
+					<% fieldname = "scanner_values[scanner~scanner^:#{pref.name}]" %>
+					<% if ['yes', 'no'].include? pref.value.downcase %>
+							<% options = ['yes'].include?(pref.value.downcase) ? "<option selected='selected'>yes</option>" : "<option>yes</option>" %>
+							<% options += ['no'].include?(pref.value.downcase) ? "<option selected='selected'>no</option>" : "<option>no</option>" %>
+							<%= select_tag fieldname, raw("#{options}") %>
+					<% else %>
+							<%= text_field_tag fieldname, pref.value, :maxlength=>400 %>
+					<% end %>
+				</div>
+			  <div class="right"><%= pref.name %></div>
+			</div>
+  <% end %>
+	<br /><br />
+  <div class="actions">
+		<div class="left"><%= big_button_submit_tag 'Save Scan Config' %></div>
+  </div>
+	<br /><br />
+<% end %>

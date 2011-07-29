@@ -1,0 +1,56 @@
+<% title "edit Scan Config" %>
+<h3>NVT Preference: <%= @nvt.name %></h3>
+<%= form_for(@scan_config, :html => { :multipart => true }) do |f| %>
+  <% if @scan_config.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@scan_config.errors.count, "error") %> prohibited this Scan Config from being saved:</h2>
+      <ul>
+	      <% @scan_config.errors.full_messages.each do |msg| %>
+	        <li><%= msg %></li>
+	      <% end %>
+      </ul>
+    </div>
+  <% end %>
+	<% unless @nvt.blank? %>
+  		<%= hidden_field_tag :update_type, 'nvt' %>
+		  <%= hidden_field_tag :nvt_id, @nvt.id %>
+			<% @nvt.preferences.each do |pref| %>
+					<div class="field">
+					  <div class="wide_left">
+							<% fieldname = "nvt_values[#{@nvt.name}~#{pref.val_type_desc}^:#{pref.name}]" %>
+							<% if ['checkbox'].include? pref.val_type_desc.downcase %>
+									<%= select_tag fieldname, options_from_collection_for_select(pref.preference_values, :id, :name) %>
+							<% elsif ['radio'].include? pref.val_type_desc.downcase %>
+									<%= select_tag fieldname, options_from_collection_for_select(pref.preference_values, :id, :name) %>
+							<% elsif ['password'].include? pref.val_type_desc.downcase %>
+									<%= password_field_tag fieldname, pref.value %>
+							<% elsif ['file'].include? pref.val_type_desc.downcase %>
+									<%= file_field_tag fieldname %>
+							<% elsif ['entry', 'sshlogin'].include? pref.val_type_desc.downcase %>
+									<%= text_field_tag fieldname, pref.value %>
+							<% else %>
+									<%= raw("<b>") + "Type: '#{pref.val_type_desc}' is an unknown form field type!" + raw("</b>") %>
+							<% end %>
+						</div>
+					  <div class="right">
+							<%= pref.name %>
+							&nbsp;&nbsp;&nbsp;
+							<% if ['file'].include?(pref.val_type_desc.downcase) && !pref.value.blank? %>
+									<%= pill_button_link_to 'download', export_preference_file_path(:id=>@scan_config.id, :nvt_id=>@nvt.id, :pref_name=>pref.name) %>
+							<% end %>
+						</div>
+					</div>
+		  <% end %>
+  <% end %>
+	<br /><br />
+  <div class="actions">
+		<div class="left">
+			<% if @scan_config.new_record? %>
+	    		<%= big_button_submit_tag 'Create Scan Config' %>
+			<% else %>
+	    		<%= big_button_submit_tag 'Save Scan Config' %>
+			<% end %>
+  	</div>
+  </div>
+	<br /><br />
+<% end %>

@@ -1,0 +1,28 @@
+<% title "Openvas User" %>
+
+<p>
+  <strong>Name:</strong>
+  <%= @openvas_user.name %>
+</p>
+<p>
+  <strong>Password:</strong>
+  <%= @openvas_user.password %>
+</p>
+<p>
+  <strong>Role:</strong>
+  <%= @openvas_user.role %>
+</p>
+<p>
+  <strong>Hosts Allow:</strong>
+  <%= @openvas_user.hosts_allow %>
+</p>
+<p>
+  <strong>Hosts:</strong>
+  <%= @openvas_user.hosts %>
+</p>
+
+<p>
+  <%= link_to "Edit", edit_openvas_user_path(@openvas_user) %> |
+  <%= link_to "Destroy", @openvas_user, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", openvas_users_path %>
+</p>

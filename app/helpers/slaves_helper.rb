@@ -1,0 +1,2 @@
+module SlavesHelper
+end

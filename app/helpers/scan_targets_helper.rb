@@ -1,0 +1,2 @@
+module ScanTargetsHelper
+end

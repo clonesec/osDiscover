@@ -1,0 +1,26 @@
+<% title "Note details" %>
+
+<% if session[:go_back] %>
+	<div><%= arrowleft_pill_button_link_to "back", session[:go_back] %></div>
+<% end %>
+
+<p>
+	NVT Name: <%= @note.nvt_name %><br />
+	NVT OID: <%= @note.nvt_oid %><br />
+	Created: <%= @note.creation_time %><br />
+	Last modified: <%= @note.modification_time %>
+</p>
+
+<p>
+	Hosts: <%= @note.hosts %><br />
+	Port: <%= @note.port %><br />
+	Threat: <%= @note.threat %><br />
+	Task: <%= @note.task_name %><br />
+	Result: <%= @note.result_description %>
+</p>
+
+<div style="padding:4px; margin:3px; margin-bottom:0px; margin-top:0px; border: 1px solid #CCCCCC; border-top: 0px; background-color: #ffff90;">
+<b>Note</b>
+<pre><%= @note.note_text %></pre>
+Last modified: <%= @note.modification_time %>.
+</div>

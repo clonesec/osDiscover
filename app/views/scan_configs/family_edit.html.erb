@@ -1,0 +1,46 @@
+<% title "edit Scan Config" %>
+<h3>Scan Config Family Details</h3>
+<%= form_for(@scan_config, :html => { :multipart => true }) do |f| %>
+  <% if @scan_config.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@scan_config.errors.count, "error") %> prohibited this Scan Config from being saved:</h2>
+      <ul>
+	      <% @scan_config.errors.full_messages.each do |msg| %>
+	        <li><%= msg %></li>
+	      <% end %>
+      </ul>
+    </div>
+  <% end %>
+	<%= hidden_field_tag :update_type, 'family' %>
+	<table cellspacing="5" cellpadding="4">
+	  <tr class="table_header">
+	    <th>Family</th>
+	    <th>NVT's selected</th>
+	    <th>Select all NVT's</th>
+	    <th>Trend</th>
+	  </tr>
+		<% @scan_config.families.each do |key, family| %>
+		  <tr>
+		    <td>
+					<%= pill_button_link_to family.name, edit_scan_config_path(:id=>@scan_config.id, :family=>family.name, :update_type=>'family_nvts'), :title => "edit NVT's in Family" %>
+				</td>
+		    <td><%= family.nvt_count %> of <%= family.max_nvt_count %></td>
+		    <td>
+					<%= hidden_field_tag "selects[#{family.name}]", '0' %>
+					<% selected = family.nvt_count == family.max_nvt_count ? true : false %>
+					<%= check_box_tag "selects[#{family.name}]", '1', selected %>
+				</td>
+		    <td>
+					<% options  = [1].include?(family.growing) ? "<option selected=\"selected\" value=\"1\">dynamic</option>" : "<option value=\"1\">dynamic</option>" %>
+					<% options += [0].include?(family.growing) ? "<option selected=\"selected\" value=\"0\">static</option>" : "<option value=\"0\">static</option>" %>
+					<%= select_tag "trends[#{family.name}]", raw("#{options}") %>
+				</td>
+		  </tr>
+			<tr><td colspan="4"><hr /></td></tr>
+		<% end %>
+	</table>
+  <div class="actions">
+		<div class="left"><%= big_button_submit_tag 'Save Scan Config' %></div>
+  </div>
+	<br /><br />
+<% end %>

@@ -1,0 +1,44 @@
+<%= form_for(@scan_target) do |f| %>
+  <% if @scan_target.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@scan_target.errors.count, "error") %> prohibited this Scan Target from being saved:</h2>
+      <ul>
+      <% @scan_target.errors.full_messages.each do |msg| %>
+        <li><%= raw(msg) %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+	<div class="field">
+	  <div class="left">Name</div>
+	  <div class="right"><%= f.text_field :name, :maxlength => 80, :autocomplete => 'off' %></div>
+	</div>
+  <div class="field">
+    <div class="left">Hosts</div>
+    <div class="right"><%= f.text_area :hosts, :rows => 2, :cols => 80 %></div>
+  </div>
+  <div class="field">
+    <div class="left">Comment</div>
+    <div class="right"><%= f.text_area :comment, :rows => 3, :cols => 80 %></div>
+  </div>
+  <div class="field">
+    <div class="left">Port range</div>
+    <div class="right"><%= f.text_area :port_range, :rows => 2, :cols => 80 %></div>
+  </div>
+	<br /><br />
+	<div class="field">
+	  <div class="left">SSH Credential</div>
+	  <div class="right"><%= collection_select(:scan_target, :ssh_lsc_credential, Credential.selections(current_user), :id, :name) %></div>
+	</div>
+	<br /><br />
+	<div class="field">
+	  <div class="left">SMB Credential</div>
+	  <div class="right"><%= collection_select(:scan_target, :smb_lsc_credential, Credential.selections(current_user), :id, :name) %></div>
+	</div>
+	<br /><br />
+  <div class="actions">
+    <div class="left">&nbsp;</div>
+		<div class="right"><%= big_button_submit_tag 'Save Scan Target' %></div>
+  </div>
+	<br /><br />
+<% end %>

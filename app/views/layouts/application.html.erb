@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+  <title><%= content_for?(:title) ? yield(:title) : "osDiscover" %></title>
+	<%= css3buttons_stylesheets :include_reset => false %>
+  <%= stylesheet_link_tag "application" %>
+  <%= javascript_include_tag 'jquery', 'jquery.min', 'jquery_ujs' %>
+  <%= csrf_meta_tag %>
+  <%= yield(:head) %>
+</head>
+<body>
+<div id="container">
+	<div id="nav_wrapper">
+		<% if user_signed_in? %>
+			<div class="logo">
+				<h1>osDiscover</h1>
+				<span style="text-align:center"><%= content_tag :h2, yield(:title) if show_title? %></span>
+			</div>
+			<div class="nav">
+				<%= button_group do %>
+					<%= disable_nav_pill_user_button_link_to current_user.username, root_path %>
+					<%= home_pill_button_link_to 'Home', root_path %>
+					<%= negative_pill_button_link_to 'Sign Out', destroy_user_session_path %>
+				<% end %>
+				<br />
+				<%= button_group do %>
+					<%= disable_nav_pill_clock_button_link_to 'scan management', root_path %>
+					<%= pill_button_link_to 'Tasks', tasks_path %>
+					<%= pill_button_link_to 'Notes', notes_path %>
+					<%= pill_button_link_to 'Overrides', overrides_path %>
+					<%= pill_button_link_to 'System', system_reports_path %>
+				<% end %>
+				<br />
+				<%= button_group do %>
+					<%= disable_nav_pill_settings_button_link_to 'configuration', root_path %>
+					<%= pill_button_link_to 'Configs', scan_configs_path %>
+					<%= pill_button_link_to 'Targets', scan_targets_path %>
+					<%= pill_button_link_to 'Credentials', credentials_path %>
+					<%= pill_button_link_to 'Agents', agents_path %>
+					<%= pill_button_link_to 'Escalators', escalators_path %>
+					<%= pill_button_link_to 'Schedules', schedules_path %>
+					<%= pill_button_link_to 'Formats', report_formats_path %>
+					<%= pill_button_link_to 'Slaves', slaves_path %>
+				<% end %>
+				<br />
+				<%# if current_user.openvas_admin? %>
+				<%= button_group do %>
+					<%= disable_nav_settings_key_pill_button_link_to 'administration', root_path %>
+					<% if session[:oap_down] %>
+							<%= negative_pill_button_link_to 'OAP server is down', root_path %>
+					<% elsif session[:admin] %>
+							<%= pill_button_link_to 'Users', openvas_users_path %>
+							<%= rss_pill_button_link_to 'NVT', feeds_path %>
+							<%= pill_button_link_to 'Settings', settings_path %>
+					<% else %>
+							<%= negative_pill_button_link_to 'requires admin role', root_path %>
+					<% end %>
+				<% end %>
+			</div>
+		<% end %>
+	</div>
+	<div class="clear"></div>
+	<div>
+		<% flash.each do |name, msg| %>
+		  <%= content_tag :div, msg, :id => "flash_#{name}" unless msg.blank? %>
+		<% end %>
+		<%= yield %>
+	</div>
+	<footer id="page_footer"> 
+		2011 &nbsp;&nbsp;&nbsp;
+		<%= Time.now.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z") %>
+		<% if user_signed_in? %>
+				<span class="footer_text">timeout in <%=time_ago_in_words(session_timeout_in)%>:</span> <%= session_timeout_in %>
+		<% end %>
+		&nbsp;&nbsp;
+		<small>
+			OMP Version: <%=APP_CONFIG[:omp_version_expected]%>
+			and
+			OAP Version: <%=APP_CONFIG[:oap_version_expected]%>
+		</small>
+	</footer>
+</div>
+
+<script>
+jQuery(document).ready(function(){
+
+	$("input:text:visible:first").focus();
+
+	$("a.disable").click(function(e) {
+		e.preventDefault();
+		return false;
+	});
+
+	// help stop double clicking
+	function do_nothing() { 
+	  return false;
+	}
+
+	// prevent a second click for 5 seconds:
+	$('a.button').live('click', function(e) { 
+	  $(e.target).click(do_nothing); 
+	  setTimeout(function(){
+	    $(e.target).unbind('click', do_nothing);
+	  }, 5000); 
+	});
+
+	// prevent a second click for 5 seconds:
+	$("input[type='submit']").live('click', function(e) { 
+	  $(e.target).click(do_nothing); 
+	  setTimeout(function(){
+	    $(e.target).unbind('click', do_nothing);
+	  }, 5000); 
+	});
+
+});
+</script>
+</body>
+</html>

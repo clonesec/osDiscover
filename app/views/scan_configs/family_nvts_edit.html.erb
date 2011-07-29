@@ -1,0 +1,60 @@
+<% title "edit Scan Config" %>
+<h3>Family: <em><%= params[:family] %></em> (<%= @family_nvts.nvts_in_family_and_config_count %> of <%= @family_nvts.nvts_in_family_count %> NVT's selected)</h3>
+<%= form_for(@scan_config, :html => { :multipart => true }) do |f| %>
+  <% if @scan_config.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@scan_config.errors.count, "error") %> prohibited this Scan Config from being saved:</h2>
+      <ul>
+	      <% @scan_config.errors.full_messages.each do |msg| %>
+	        <li><%= msg %></li>
+	      <% end %>
+      </ul>
+    </div>
+  <% end %>
+	<%= hidden_field_tag :update_type, 'family_nvts' %>
+	<%= hidden_field_tag :family, params[:family] %>
+	<table cellspacing="5" cellpadding="4">
+	  <tr class="table_header">
+	    <th>Name</th>
+	    <th>Risk</th>
+	    <th>CVSS</th>
+	    <th>Timeout</th>
+	    <th>Pref's</th>
+	    <th>Selected</th>
+	  </tr>
+		<% @family_nvts.nvts.each do |n| %>
+				<tr>
+				  <td>
+						<% nvt_name = Nvt.extract_value_from("name", n) %>
+						<% nvt_id = Nvt.extract_value_from("@oid", n) %>
+						<% link = "<b>#{nvt_name}</b><br />oid: #{nvt_id}"%>
+						<%= pill_button_link_to raw(link), edit_scan_config_path(:id=>@scan_config.id, :nvt_id=>nvt_id, :update_type=>'nvt'), :title => 'edit NVT Preference' %>
+					</td>
+				  <td>
+						<%= raw("#{Nvt.extract_value_from("risk_factor", n)}") %>
+					</td>
+				  <td>
+						<%= raw("#{Nvt.extract_value_from("cvss_base", n)}") %>
+					</td>
+				  <td>
+						<%= raw("#{Nvt.extract_value_from("timeout", n)}") %>
+					</td>
+				  <td>
+						<% pc = Nvt.extract_value_from("preference_count", n) %>
+						<% pc = pc == "0" ? '' : pc %>
+						<%= raw(pc) %>
+					</td>
+				  <td>
+						<%= hidden_field_tag "selects[#{Nvt.extract_value_from("@oid", n)}]", '0' %>
+						<% selected = Nvt.extract_value_from("selected", n) == 'true' ? true : false %>
+						<%= check_box_tag "selects[#{Nvt.extract_value_from("@oid", n)}]", '1', selected %>
+					</td>
+				</tr>
+				<tr><td colspan="6"><hr /></td></tr>
+		<% end %>
+	</table>
+  <div class="actions">
+		<div class="left"><%= big_button_submit_tag 'Save Scan Config' %></div>
+  </div>
+	<br /><br />
+<% end %>

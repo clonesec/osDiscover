@@ -1,0 +1,43 @@
+<ul style="list-style-type:circle;">
+	<li><b>Name: <%= @report_format.name %></b></li>
+	<li>Summary: <%= @report_format.summary %></li>
+	<li>Active: <%= @report_format.active == '1' ? 'yes' : 'no' %></li>
+	<li>Extension: <%= @report_format.extension %></li>
+	<li>Content Type: <%= @report_format.content_type %></li>
+	<li>Trust: <%= @report_format.trust %></li>
+	<li>Parameters: <%= @report_format.parameters %></li>
+	<li>Description: <pre style="background:#e0e0e0; width:70%"><%= @report_format.description %></pre></li>
+</ul>
+<hr />
+<%= form_for(@report_format) do |f| %>
+  <% if @report_format.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@report_format.errors.count, "error") %> prohibited this Report Format from being saved:</h2>
+      <ul>
+	      <% @report_format.errors.full_messages.each do |msg| %>
+	        <li><%= msg %></li>
+	      <% end %>
+      </ul>
+    </div>
+  <% end %>
+	<div class="field">
+	  <div class="left">Name</div>
+		<div class="right"><%= f.text_field :name %></div>
+	</div>
+	<div class="field">
+	  <div class="left">Summary</div>
+		<div class="right"><%= f.text_area :summary, :rows => 3, :cols => 80 %></div>
+	</div>
+	<div class="field">
+	  <div class="left">Active</div>
+		<div class="right"><%= f.check_box :active %></div>
+	</div>
+	<br /><br />
+  <div class="actions">
+    <div class="left">&nbsp;</div>
+		<div class="right">
+	    <%= big_button_submit_tag 'Save Report Format' %>
+  	</div>
+  </div>
+	<br /><br />
+<% end %>

@@ -1,0 +1,14 @@
+<% title "Scanner Settings" %>
+<table cellspacing="2" cellpadding="4">
+  <tr class="table_header">
+    <th>Setting</th>
+    <th>Value</th>
+  </tr>
+  <% for setting in @settings %>
+    <tr>
+      <td><%= setting.name %></td>
+      <td><%= setting.value %></td>
+    </tr>
+  <% end %>
+</table>
+

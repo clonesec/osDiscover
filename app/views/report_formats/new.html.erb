@@ -1,0 +1,27 @@
+<% title "Report Formats Import" %>
+<%= form_for(@report_format, :html => { :multipart => true }) do |f| %>
+  <% if @report_format.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@report_format.errors.count, "error") %> prohibited this Report Format from being saved:</h2>
+      <ul>
+	      <% @report_format.errors.full_messages.each do |msg| %>
+	        <li><%= raw(msg) %></li>
+	      <% end %>
+      </ul>
+    </div>
+  <% end %>
+	<div class="field">
+    <div class="left">&nbsp;</div>
+	  <div class="right">
+			<%= file_field_tag "report_format[xml_file]" %>
+		</div>
+	</div>
+	<br /><br />
+  <div class="actions">
+    <div class="left">&nbsp;</div>
+		<div class="right">
+	    <%= big_button_submit_tag 'import XML Report Format' %>
+  	</div>
+  </div>
+	<br /><br />
+<% end %>

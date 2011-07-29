@@ -1,0 +1,59 @@
+<%# FIXME screaming for a presenter %>
+<% current_host = '' %>
+<% @report.results.each do |r| %>
+		<% unless current_host == r.host %>
+				<%# FIXME maybe, coz this is based on a big assumption that the results are always returned in order by host %>
+				<% current_host = r.host %>
+				<h3 style="padding:2px; text-align:center; background:#636363; color:#fff">Security Issues reported for <%=current_host%></h3>
+		<% end %>
+		<%
+		c = 'd5d5d5' # Log and False Positive
+		c = '539dcb' if r.threat.downcase == 'low'
+		c = 'f99f31' if r.threat.downcase == 'medium'
+		c = 'cb1d17' if r.threat.downcase == 'high'
+		%>
+		<div style="background:#<%=c%>; padding:4px; margin:3px; margin-bottom:0px; color: #FFFFFF; border: 1px solid #<%=c%>; border-bottom: 0px;">
+			<div style="float:right; text-align:right"><%=r.port%></div>
+			<b><%=r.threat%></b>
+			<%= "(Overridden from #{r.original_threat})" unless r.original_threat.blank? || r.original_threat == r.threat %>
+			<div style="width: 100%">NVT: <%=r.name%> (OID: <%=r.nvt_id%>)</div>
+		</div>
+		<div style="padding:4px; margin:3px; margin-bottom:0px; margin-top:0px; border: 1px solid #<%=c%>; border-top: 0px;">
+			<div style="float:right; text-align:right">
+				<% threat = r.original_threat || r.threat %>
+	      <%= add_button_link_to 	"Note", 
+																new_note_path({:report_id=>@report.id, :task_id=>@report.task_id, :task_name=>@report.task_name, :result_id=>r.id, :result_description=>r.description, :nvt_oid=>r.nvt_id, :hosts=>r.host, :result_port=>r.port, :threat=>threat}), 
+																:title => 'add new Note' %>
+	      <%= add_button_link_to 	"Override", 
+																new_override_path({:report_id=>@report.id, :task_id=>@report.task_id, :task_name=>@report.task_name, :result_id=>r.id, :result_description=>r.description, :nvt_oid=>r.nvt_id, :hosts=>r.host, :result_port=>r.port, :threat=>threat}), 
+																:title => 'add new Override' %>
+			</div>
+			<pre><%=r.description%></pre>
+			<br />
+		</div>
+		<% r.notes.each do |n| %>
+				<div style="padding:4px; margin:3px; margin-bottom:0px; margin-top:0px; border: 1px solid #<%=c%>; border-top: 0px; background-color: #ffff90;">
+					<div style="float:right; text-align:right">
+						<%= pill_button_link_to "details", note_path(n.id), :title => 'show Note details' %>
+						<%= pill_button_link_to "edit", edit_note_path({:id=>n.id, :report_id=>@report.id, :task_id=>@report.task_id, :task_name=>@report.task_name, :result_id=>r.id, :result_description=>r.description, :nvt_oid=>r.nvt_id, :hosts=>r.host, :result_port=>r.port, :threat=>threat}), :title => 'edit Note' %>
+						<%= danger_remove_pill_button_link_to "delete", note_path(n.id), :confirm => 'Are you sure?', :method => :delete %>
+					</div>
+				<b>Note</b><pre><%=n.note_text%></pre>
+				Last modified: <%=n.modification_time%>
+				</div>
+		<% end %>
+		<% r.overrides.each do |o| %>
+				<div style="padding:4px; margin:3px; margin-bottom:0px; margin-top:0px; border: 1px solid #<%=c%>; border-top: 0px; background-color: #ffff90;">
+					<div style="float:right; text-align:right">
+						<%= pill_button_link_to "details", override_path(o.id), :title => 'show Override details' %>
+						<%= pill_button_link_to "edit", edit_override_path({:id=>o.id, :report_id=>@report.id, :task_id=>@report.task_id, :task_name=>@report.task_name, :result_id=>r.id, :result_description=>r.description, :nvt_oid=>r.nvt_id, :hosts=>r.host, :result_port=>r.port, :threat=>threat, :new_threat=>o.new_threat}), :title => 'edit Override' %>
+						<%= danger_remove_pill_button_link_to "delete", override_path(o.id), :confirm => 'Are you sure?', :method => :delete %>
+					</div>
+				<b>Override from <%=o.threat%> to <%=o.new_threat%></b>
+				<br />
+				<pre><%=o.override_text%></pre>
+				Last modified: <%=o.modification_time%>
+				</div>
+		<% end %>
+		<br />
+<% end %>

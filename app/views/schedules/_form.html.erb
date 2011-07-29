@@ -1,0 +1,47 @@
+<%= form_for @schedule do |f| %>
+  <% if @schedule.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@schedule.errors.count, "error") %> prohibited this task from being saved:</h2>
+      <ul>
+	      <% @schedule.errors.full_messages.each do |msg| %>
+	        <li><%= raw(msg) %></li>
+	      <% end %>
+      </ul>
+    </div>
+  <% end %>
+	<div class="field">
+	  <div class="left"><%= f.label :name %></div>
+	  <div class="right"><%= f.text_field :name, :maxlength => 80 %></div>
+	</div>
+  <div class="field">
+    <div class="left"><%= f.label :comment %></div>
+    <div class="right"><%= f.text_area :comment, :rows => 5, :cols => 80 %></div>
+  </div>
+  <div class="field">
+    <div class="left"><%= f.label :first_time %></div>
+    <div class="right"><%= f.datetime_select :first_time %> (UTC)</div>
+  </div>
+	<br />
+  <div class="field">
+    <div class="left">Period</div>
+    <div class="right">
+			<%= f.text_field :period_amount %>
+			<%= f.select :period_unit, "<option value=\"hour\" selected=\"selected\">hour(s)</option><option value=\"day\">day(s)</option><option value=\"week\">week(s)</option><option value=\"month\">month(s)</option>".html_safe %>
+		</div>
+  </div>
+  <div class="field">
+    <div class="left">Duration</div>
+    <div class="right">
+    	<%= f.text_field :duration_amount %> 
+			<%= f.select :duration_unit, "<option value=\"hour\" selected=\"selected\">hour(s)</option><option value=\"day\">day(s)</option><option value=\"week\">week(s)</option>".html_safe %>
+		</div>
+  </div>
+	<br /><br />
+  <div class="actions">
+    <div class="left">&nbsp;</div>
+		<div class="right">
+	    <%= big_button_submit_tag 'Create Schedule' %>
+  	</div>
+  </div>
+	<br /><br />
+<% end %>

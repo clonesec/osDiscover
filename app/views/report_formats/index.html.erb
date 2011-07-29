@@ -1,0 +1,38 @@
+<% title "Report Formats" %>
+<div><%= add_button_link_to 'import Report Format', new_report_format_path %></div>
+<table cellspacing="2" cellpadding="4">
+  <tr class="table_header">
+    <th>Name</th>
+    <th>Extension</th>
+    <th>Content Type</th>
+    <th>Trust</th>
+    <th>Active</th>
+    <th>Summary</th>
+    <th colspan="3">Actions</th>
+  </tr>
+  <% for report_format in @report_formats %>
+    <tr>
+      <td><%= pill_button_link_to report_format.name, edit_report_format_path(report_format.id), :title => 'edit Report Format' %></td>
+      <td><%= report_format.extension %></td>
+      <td><%= report_format.content_type %></td>
+      <td>
+				<%= report_format.trust %>
+				<br />
+				<% rftt = Time.parse(report_format.trust_time) unless report_format.trust_time.blank? %>
+				(<%= rftt.strftime("%b %d %Y") unless report_format.trust_time.blank? %>)
+			</td>
+      <td><%= report_format.active == '1' ? 'yes' : 'no' %></td>
+      <td><%= report_format.summary %></td>
+      <td><%= arrowdown_pill_button_link_to 'download', export_report_format_path(report_format.id), :title => 'download report format' %></td>
+      <td><%= pill_button_link_to "verify report format", verify_report_format_path(report_format.id), :title => 'verify report format' %></td>
+      <td>
+				<% if report_format.global == '0' %>
+						<%= danger_remove_pill_button_link_to "delete", report_format_path(report_format.id), :confirm => 'Are you sure?', :method => :delete %>
+			  <% else %>
+						<%= disable_danger_remove_pill_button_link_to "delete", report_formats_path, :title=>'report format is in use' %>
+			  <% end %>
+			</td>
+    </tr>
+		<tr><td colspan="9"><hr /></td></tr>
+  <% end %>
+</table>

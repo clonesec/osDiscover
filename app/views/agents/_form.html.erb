@@ -1,0 +1,42 @@
+<%= form_for @agent, :html => { :multipart => true } do |f| %>
+	<% if @agent.errors.any? %>
+	  <div id="error_explanation">
+	    <h2><%= pluralize(@agent.errors.count, "error") %> prohibited this agent from being saved:</h2>
+	    <ul>
+	      <% @agent.errors.full_messages.each do |msg| %>
+	        <li><%= raw(msg) %></li>
+	      <% end %>
+	    </ul>
+	  </div>
+	<% end %>
+	<div class="field">
+	  <div class="left"><%= f.label :name %></div>
+	  <div class="right"><%= f.text_field :name, :maxlength => 80 %></div>
+	</div>
+  <div class="field">
+    <div class="left"><%= f.label :comment %></div>
+    <div class="right"><%= f.text_area :comment, :rows => 5, :cols => 80 %></div>
+  </div>
+	<br /><br />
+	<div class="field">
+	  <div class="left"><%= f.label :installer %></div>
+	  <div class="right"><%= f.file_field :installer %></div>
+	</div>
+	<br /><br />
+	<div class="field">
+	  <div class="left">Signature</div>
+	  <div class="right"><%= f.file_field :installer_signature %></div>
+	</div>
+	<br /><br />
+  <div class="actions">
+    <div class="left">&nbsp;</div>
+		<div class="right">
+			<% if @agent.new_record? %>
+	    		<%= big_button_submit_tag 'Create Agent' %>
+			<% else %>
+	    		<%= big_button_submit_tag 'Save Agent' %>
+			<% end %>
+  	</div>
+  </div>
+	<br /><br />
+<% end %>

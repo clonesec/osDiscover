@@ -1,0 +1,91 @@
+<% title "Scan Config Details" %>
+
+<% if session[:go_back] %>
+	<div><%= arrowleft_pill_button_link_to "back", session[:go_back] %></div>
+<% end %>
+
+<b>Name: <%= @scan_config.name %></b><br />
+Comment: <%= @scan_config.comment %><br />
+Families count: <%= @scan_config.family_count %> (<%= @scan_config.families.count %>)<br />
+Families grow: <%= @scan_config.families_grow %><br />
+NVTs count: <%= @scan_config.nvts_count %><br />
+NVTs grow: <%= @scan_config.nvts_grow %><br />
+In use: <%= @scan_config.in_use %><br />
+<h2>Network Vulnerability Test Families</h2>
+<% if @scan_config.in_use < 1 %>
+		<%= pill_button_link_to 'edit NVT Families', edit_scan_config_path(:id=>@scan_config.id, :update_type=>'family'), :title => 'edit NVT Families' %>
+<% end %>
+<table cellspacing="5" cellpadding="4">
+  <tr class="table_header">
+    <th>Family</th>
+    <th>NVT's selected</th>
+    <th>Trend</th>
+  </tr>
+	<% @scan_config.families.each do |key, family| %>
+	  <tr>
+	    <td><%= family.name %></td>
+	    <td><%= family.nvt_count %> of <%= family.max_nvt_count %></td>
+	    <td>
+				<%= [1].include?(family.growing) ? "dynamic" : "static" %>
+			</td>
+	  </tr>
+		<tr><td colspan="4"><hr /></td></tr>
+	<% end %>
+</table>
+<br />
+<h2>Scanner Preferences</h2>
+<% if @scan_config.in_use < 1 %>
+		<%= pill_button_link_to 'edit Scanner Preferences', edit_scan_config_path(:id=>@scan_config.id, :update_type=>'scanner'), :title => 'edit Scanner Preference' %>
+<% end %>
+<table cellspacing="2" cellpadding="4">
+  <tr class="table_header">
+    <th>Name</th>
+    <th>Value</th>
+  </tr>
+	<% @scan_config.scanner_preferences.each do |pref| %>
+	  <tr>
+	    <td><%= pref.name %></td>
+	    <td><%= pref.value %></td>
+	  </tr>
+	<% end %>
+</table>
+<br />
+<h2>Network Vulnerability Test Preferences</h2>
+<table cellspacing="2" cellpadding="4">
+  <tr class="table_header">
+    <th>NVT</th>
+    <th>Name</th>
+    <th>Value</th>
+  </tr>
+	<% @scan_config.nvt_preferences.each do |pref| %>
+	  <tr>
+	    <td>
+				<% if @scan_config.in_use > 0 %>
+						<%= pref.nvt_name %>
+				<% else %>
+						<%= pill_button_link_to pref.nvt_name, edit_scan_config_path(:id=>pref.config_id, :nvt_id=>pref.nvt_id, :update_type=>'nvt'), :title => 'edit NVT Preference' %>
+				<% end %>
+			</td>
+	    <td><%= pref.name %></td>
+	    <td>
+				<%= pref.value unless pref.val_type_desc.downcase == 'file' %>
+				<% if ['file'].include?(pref.val_type_desc.downcase) && !pref.value.blank? %>
+						<%= pill_button_link_to 'download', export_preference_file_path(:id=>pref.config_id, :nvt_id=>pref.nvt_id, :pref_name=>pref.name) %>
+				<% end %>
+			</td>
+	  </tr>
+		<!-- <tr><td colspan="4"><%#=debug pref%></td></tr> -->
+	<% end %>
+</table>
+<br />
+<h2>Tasks using this Config</h2>
+<table cellspacing="2" cellpadding="4">
+  <tr class="table_header">
+    <th>Name</th>
+  </tr>
+	<% @scan_config.tasks.each do |task| %>
+	  <tr>
+	    <td><%= task.name %></td>
+	  </tr>
+	<% end %>
+</table>

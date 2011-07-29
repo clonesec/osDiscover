@@ -1,0 +1,16 @@
+<h4>Port summary</h4>
+<table cellspacing="2" cellpadding="4">
+  <tr class="table_header">
+    <th>Host</th>
+    <th>Service (Port)</th>
+    <th>Threat</th>
+  </tr>
+	<% report.ports.each do |p| %>
+			<tr>
+				<td><%= p.host %></td>
+				<td><%= p.port %></td>
+				<td><%= p.threat %></td>
+			</tr>
+	<% end %>
+	</tr>
+</table>

@@ -1,0 +1,25 @@
+<% title "Task Report Summary" %>
+
+<% if session[:go_back] %>
+	<div><%= arrowleft_pill_button_link_to "back", tasks_path %></div>
+<% end %>
+
+<%= render :partial => 'summary', :locals => {:report => @report} %>
+
+<div style="background:lemonchiffon; width:80%; padding-left:5px">
+	<%= render :partial => 'filter_form', :locals => {:report => @report} %>
+</div>
+
+<% if @report.results.blank? %>
+		<h3 style="padding:2px; text-align:center; background:#636363; color:#fff">No results based on the above filter settings.</h3>
+<% end %>
+
+<% unless @report.results.blank? %>
+	<h3>Report Results</h3>
+	<%= render :partial => 'host_summary', :locals => {:report => @report} %>
+
+	<%= render :partial => 'port_summary', :locals => {:report => @report} %>
+	<br />
+
+	<%= render :partial => 'results_by_host', :locals => {:report => @report} %>
+<% end %>

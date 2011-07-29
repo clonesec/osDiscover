@@ -1,0 +1,79 @@
+<h3 style="padding:2px; text-align:center; background:#636363; color:#fff">Result Filtering:</h3>
+<%= form_tag report_path(@report.id), :method => 'get' do %>
+  <fieldset style="border:0">
+		<div class="field">
+		  <div class="filter_left">Sort by</div>
+		  <div class="filter_right"><%= collection_select('search', 'sort', Report.sort_selections, :id, :name) %></div>
+		</div>
+		<div class="field">
+		  <div class="filter_left">
+				<input name="search[apply_overrides]" type="hidden" value="0" />
+				<% checked = params[:search][:apply_overrides] == '0' ? false : true %>
+		    <%= check_box_tag "search[apply_overrides]", '1', checked %>
+		  </div>
+		  <div class="filter_right">Overrides</div>
+		</div>
+		<div class="field">
+		  <div class="filter_left">
+				<input name="search[notes]" type="hidden" value="0" />
+				<% checked = params[:search][:notes] == '0' ? false : true %>
+		    <%= check_box_tag "search[notes]", '1', checked %>
+		  </div>
+		  <div class="filter_right">show Notes</div>
+		</div>
+		<div class="field">
+		  <div class="filter_left">
+				<input name="search[result_hosts_only]" type="hidden" value="0" />
+				<% checked = params[:search][:result_hosts_only] == '0' ? false : true %>
+		    <%= check_box_tag "search[result_hosts_only]", '1', checked %>
+		  </div>
+		  <div class="filter_right">only show Hosts that have Results</div>
+		</div>
+		<div class="field">
+		  <div class="filter_left">CVSS >=</div>
+		  <div class="filter_right"><%= collection_select('search', 'cvss', Report.cvss_selections, :id, :name) %></div>
+		</div>
+		<div class="field">
+		  <div class="filter_left">Search</div>
+		  <div class="filter_right"><%= text_field_tag "search[search_phrase]", params[:search][:search_phrase], :size=>50, :maxlength=>400 %></div>
+		</div>
+		<div class="field">
+		  <div class="filter_left">Threat(s)</div>
+		  <div class="filter_right">
+				<input name="search[threat][high]" type="hidden" value="0" />
+				<% checked = params[:search][:threat][:high] == '0' ? false : true %>
+		    <%= check_box_tag "search[threat][high]", '1', checked %> High
+				&nbsp;
+				<input name="search[threat][medium]" type="hidden" value="0" />
+				<% checked = params[:search][:threat][:medium] == '0' ? false : true %>
+		    <%= check_box_tag "search[threat][medium]", '1', checked %> Medium
+				&nbsp;
+				<input name="search[threat][low]" type="hidden" value="0" />
+				<% checked = params[:search][:threat][:low] == '0' ? false : true %>
+		    <%= check_box_tag "search[threat][low]", '1', checked %> Low
+				&nbsp;
+				<input name="search[threat][log]" type="hidden" value="0" />
+				<% checked = params[:search][:threat][:log] == '0' ? false : true %>
+		    <%= check_box_tag "search[threat][log]", '1', checked %> Log
+				&nbsp;
+				<input name="search[threat][fp]" type="hidden" value="0" />
+				<% checked = params[:search][:threat][:fp] == '0' ? false : true %>
+		    <%= check_box_tag "search[threat][fp]", '1', checked %> False Positive
+		  </div>
+		</div>
+		<br /><br />
+	  <div class="actions">
+	    <div class="filter_left">&nbsp;</div>
+			<div class="filter_right">
+		    <%= big_button_submit_tag "Apply Filter" %>
+	  	</div>
+	  </div>
+  </fieldset>
+<% end %>
+
+<script>
+jQuery(document).ready(function(){
+	$("#search_cvss").val("<%=params[:search][:cvss]%>").attr("selected", "selected");
+	$("#search_sort").val("<%=params[:search][:sort]%>").attr("selected", "selected");
+});
+</script>

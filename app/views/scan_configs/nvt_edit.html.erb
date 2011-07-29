@@ -1,0 +1,90 @@
+<% title "edit Scan Config" %>
+<ul style="list-style-type:circle;">
+	<li><b>Name: <%= @nvt.name %></b></li>
+	<li>Summary: <%= @nvt.summary %></li>
+	<li><b>Family: <%= @nvt.family %></b></li>
+	<li>OID: <%= @nvt.id %></li>
+	<li>Category: <%= @nvt.category %></li>
+	<li>Version: <%= @nvt.version %></li>
+	<li>CVSS base: <%= @nvt.cvss_base %></li>
+	<li>Risk factor: <%= @nvt.risk_factor %></li>
+	<li>CVE: <%= @nvt.cve_id %></li>
+	<li>Bugtraq ID: <%= @nvt.bugtraq_id %></li>
+	<li>Xrefs: <%= @nvt.xrefs %></li>
+	<li>Fingerprints: <%= @nvt.fingerprints %></li>
+	<li>Tags: <%= @nvt.tags %></li>
+	<li>Checksum: <%= @nvt.checksum %></li>
+	<li>Algorithm: <%= @nvt.algorithm %></li>
+	<li>Description: <pre style="background:#e0e0e0; width:70%"><%= @nvt.description %></pre></li>
+	<li>Copyright: <%= @nvt.copyright %></li>
+	<li>Preference count: <%= @nvt.preference_count %></li>
+	<li>Timeout: <%= @nvt.timeout %></li>
+</ul>
+<hr />
+<%= form_for(@scan_config, :html => { :multipart => true }) do |f| %>
+  <% if @scan_config.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@scan_config.errors.count, "error") %> prohibited this Scan Config from being saved:</h2>
+      <ul>
+	      <% @scan_config.errors.full_messages.each do |msg| %>
+	        <li><%= msg %></li>
+	      <% end %>
+      </ul>
+    </div>
+  <% end %>
+	<% unless @nvt.blank? %>
+  		<%= hidden_field_tag :update_type, 'nvt' %>
+		  <%= hidden_field_tag :nvt_id, @nvt.id %>
+			<% fieldname = "nvt_values[#{@nvt.name}~scanner^:timeout.#{@nvt.id}]" %>
+			<ul>
+				<li style="clear:both; list-style:none">Timeout
+					<div class="field">
+					  <div class="wide_left">
+							<%= text_field_tag fieldname, @nvt.timeout %>
+						</div>
+						<div class="right">
+							<small><em>leave blank to apply default timeout</em></small>
+						</div>
+					</div>
+				</li>
+			</ul>
+			<ol>
+				<% @nvt.preferences.each do |pref| %>
+						<li style="clear:both"><%= pref.name %>
+							<div class="field">
+							  <div class="wide_left">
+									<% fieldname = "nvt_values[#{@nvt.name}~#{pref.val_type_desc}^:#{pref.name}]" %>
+									<% if ['checkbox'].include? pref.val_type_desc.downcase %>
+											<%= select_tag fieldname, options_from_collection_for_select(pref.preference_values, :id, :name) %>
+									<% elsif ['radio'].include? pref.val_type_desc.downcase %>
+											<%= select_tag fieldname, options_from_collection_for_select(pref.preference_values, :id, :name) %>
+									<% elsif ['password'].include? pref.val_type_desc.downcase %>
+											<%= password_field_tag fieldname, pref.value %>
+									<% elsif ['file'].include? pref.val_type_desc.downcase %>
+											<%= file_field_tag fieldname %>
+									<% elsif ['entry', 'sshlogin'].include? pref.val_type_desc.downcase %>
+											<%= text_field_tag fieldname, pref.value %>
+									<% else %>
+											<%= raw("<b>") + "Type: '#{pref.val_type_desc}' is an unknown form field type!" + raw("</b>") %>
+									<% end %>
+								</div>
+							  <div class="right">
+									<% if ['file'].include?(pref.val_type_desc.downcase) && !pref.value.blank? %>
+											<em>-or-</em> <%= check_box_tag fieldname %> remove existing file
+											&nbsp;&nbsp;&nbsp;&nbsp;
+											<%= arrowdown_pill_button_link_to 'download existing file', export_preference_file_path(:id=>@scan_config.id, :nvt_id=>@nvt.id, :pref_name=>pref.name) %>
+											<br />
+											<em>note: to replace the existing file with another just choose a file and upload it.</em>
+									<% end %>
+								</div>
+							</div>
+						</li>
+			  <% end %>
+			</ol>
+  <% end %>
+	<br />
+  <div class="actions">
+		<ul><li><div class="left"><%= big_button_submit_tag 'Save Scan Config' %></div></li></ul>
+  </div>
+	<br /><br />
+<% end %>
