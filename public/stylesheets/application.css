@@ -1,5 +1,5 @@
 body {
-  background-color: #4B7399;
+  background-color: #EEEEEE;
   font-family: Verdana, Helvetica, Arial;
   font-size: 14px;
 }
@@ -9,7 +9,7 @@ body {
 	vertical-align: middle;
 	background: #636363;
 	color: #fff;
-  font-size: 12px;
+    font-size: 12px;
 	font-family: 'Trebuchet MS', Helvetica, sans-serif;
 }
 
@@ -26,14 +26,17 @@ body {
 .logo {
 	float: left;
 	text-align: left;
+	background: url("/images/main/Clone_Systems_Managed_Security.jpeg") 15px 15px no-repeat;
+	width: 260px;
+	height: 70px;
 }
 
 .logo h1 {
 	margin-top: 5px;
-	padding-top: 20px;
-	padding-left: 10px;
-  font-size: 40px;
-	color: #6495ED;
+	padding-top: 5px;
+	padding-left: 265px;
+    font-size: 40px;
+	color: #47557F;
 	font-family: 'Trebuchet MS', Helvetica, sans-serif;
 }
 
@@ -100,7 +103,7 @@ a img {
 }
 
 a {
-	text-decoration: none;
+  text-decoration: none;
   color: #0000FF;
 }
 
@@ -112,11 +115,17 @@ a {
 
 #container {
   width: 75%;
-  margin: 0 auto;
+  margin: 0px auto;
+
   background-color: #FFF;
-  padding: 0px 1px 0px 1px;
-  border: solid 1px black;
+  border: solid 1px #ddd;
   margin-top: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 0px 2px 0px #ddd;
+  -moz-box-shadow: 0px 0px 2px 0px #ddd;
+  box-shadow: 0px 0px 2px 0px #ddd;
 }
 
 #flash_notice, #flash_error, #flash_alert {
@@ -168,15 +177,16 @@ a {
 
 footer#page_footer {
 	clear: both;
-	background-color: #E6E6E6;
+	height: 40px;
+	background-color: #eee;
 	display: block;
 	text-align: center;
 	font-size: 11px;
 	margin: 0 auto;
-	padding: 10px 0 10px 0;
+	line-height: 40px;
 	position: relative; 
 	bottom: 0px;
-	margin-top: 20px;
+	background: url("/images/main/box-bg.gif") repeat-x;
 	width: 100%;
 }
 

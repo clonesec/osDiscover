@@ -3,13 +3,25 @@ class ReportsController < ApplicationController
   # ensure user is signed in via Devise
   before_filter :authenticate_user!
 
-  before_filter :redirect_to_root, :except => [:show, :view_report]
+  before_filter :redirect_to_root, :except => [:show, :view_report, :index]
 
   # use 'execute around' to set up openvas connection for all methods:
   before_filter :openvas_connect_and_login
   after_filter  :openvas_logout
 
-  def index; end
+  def index
+    options = {} if options.blank?
+    options[:details] = '1'
+    # note just is case no params are passed, these are the defaults:
+    options[:apply_overrides] = '1' if params[:apply_overrides].blank?
+    options[:sort_field] = 'name' if params[:sort_field].blank?
+    options[:sort_order] = 'ascending' if params[:sort_order].blank?
+    # note that to sort by task status the params[:sort_field] should be 'run_status' 
+    #      ... this is not documented anywhere in OpenVAS, but it happens to be the database column name
+    params.merge!(options)
+    @tasks = Task.all(current_user, params)  
+  end
+  
   def new; end
   def create; end
   def edit; end
@@ -41,6 +53,7 @@ class ReportsController < ApplicationController
       send_data report, :type => "application/#{ext}", :filename => "report_#{params[:id]}.#{ext}", :disposition => 'attachment'
     end
   end
+
 
   private
 

@@ -1,0 +1,39 @@
+				<ul id="ddm">
+					<li class="first"></li>
+					<li><%= link_to 'Home', root_path %></li>
+					<li><%= link_to 'Scan', "#", :class => "no_menu_link" %>
+						<ul>
+							<li><%= link_to 'new Task', new_task_path %></li>
+							<li><%= link_to 'Manage Schedules', tasks_path %></li>
+							<li><%= link_to 'Exceptions', overrides_path %></li>
+							<li><%= link_to 'Notes', notes_path %></li>
+						</ul>
+					</li>
+					<li><%= link_to 'Reports', reports_path %>
+					</li>
+					<li><%= link_to 'Configuration', "#", :class => "no_menu_link" %>
+						<ul>
+							<li><%= link_to 'Scan Policies', scan_configs_path %></li>
+							<li><%= link_to 'Scan Targets', scan_targets_path %></li>
+							<li><%= link_to 'Credentials', credentials_path %></li>
+							<li><%= link_to 'Agents', agents_path %></li>
+							<li><%= link_to 'Notification', escalators_path %></li>
+							<li><%= link_to 'Schedules', schedules_path %></li>
+							<li><%= link_to 'Vulnerability Servers', slaves_path %></li>
+						</ul>
+					</li>
+					<% if session[:admin] %>
+						<li><%= link_to 'Admin', root_path, :class => "no_menu_link" %>
+							<ul>
+								<li><%= link_to 'Manage Users', openvas_users_path %></li>
+								<li><%= link_to 'Update Plugins', feeds_path %></li>
+								<li><%= link_to 'Scanner Settings', settings_path %></li>
+								<li><%= link_to 'System Report', system_reports_path %></li>
+								<li><%= link_to 'Report Formats', report_formats_path %></li>
+							</ul>
+						</li>
+					<% end %>
+					<li><%= link_to "Help", help_path %></li>
+					<li><%= link_to "Logout",  destroy_user_session_path %></li>
+					<li class="last"></li>
+				</ul>

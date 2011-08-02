@@ -4,8 +4,9 @@
 	<meta charset="UTF-8" />
   <title><%= content_for?(:title) ? yield(:title) : "osDiscover" %></title>
 	<%= css3buttons_stylesheets :include_reset => false %>
-  <%= stylesheet_link_tag "application" %>
-  <%= javascript_include_tag 'jquery', 'jquery.min', 'jquery_ujs' %>
+  <%= stylesheet_link_tag "application", "main/menu", "main/content", "tablesorter", :cache => "osdiscover" %>
+  <%= javascript_include_tag 'jquery', 'jquery.min', 'jquery_ujs', 'main/menu', 'jquery.tablesorter.min.js', :cache => 'osdiscover' %>
+  <link rel="shortcut icon" href="/favicon.ico" />
   <%= csrf_meta_tag %>
   <%= yield(:head) %>
 </head>
@@ -15,53 +16,15 @@
 		<% if user_signed_in? %>
 			<div class="logo">
 				<h1>osDiscover</h1>
-				<span style="text-align:center"><%= content_tag :h2, yield(:title) if show_title? %></span>
 			</div>
 			<div class="nav">
-				<%= button_group do %>
-					<%= disable_nav_pill_user_button_link_to current_user.username, root_path %>
-					<%= home_pill_button_link_to 'Home', root_path %>
-					<%= negative_pill_button_link_to 'Sign Out', destroy_user_session_path %>
-				<% end %>
-				<br />
-				<%= button_group do %>
-					<%= disable_nav_pill_clock_button_link_to 'scan management', root_path %>
-					<%= pill_button_link_to 'Tasks', tasks_path %>
-					<%= pill_button_link_to 'Notes', notes_path %>
-					<%= pill_button_link_to 'Overrides', overrides_path %>
-					<%= pill_button_link_to 'System', system_reports_path %>
-				<% end %>
-				<br />
-				<%= button_group do %>
-					<%= disable_nav_pill_settings_button_link_to 'configuration', root_path %>
-					<%= pill_button_link_to 'Configs', scan_configs_path %>
-					<%= pill_button_link_to 'Targets', scan_targets_path %>
-					<%= pill_button_link_to 'Credentials', credentials_path %>
-					<%= pill_button_link_to 'Agents', agents_path %>
-					<%= pill_button_link_to 'Escalators', escalators_path %>
-					<%= pill_button_link_to 'Schedules', schedules_path %>
-					<%= pill_button_link_to 'Formats', report_formats_path %>
-					<%= pill_button_link_to 'Slaves', slaves_path %>
-				<% end %>
-				<br />
-				<%# if current_user.openvas_admin? %>
-				<%= button_group do %>
-					<%= disable_nav_settings_key_pill_button_link_to 'administration', root_path %>
-					<% if session[:oap_down] %>
-							<%= negative_pill_button_link_to 'OAP server is down', root_path %>
-					<% elsif session[:admin] %>
-							<%= pill_button_link_to 'Users', openvas_users_path %>
-							<%= rss_pill_button_link_to 'NVT', feeds_path %>
-							<%= pill_button_link_to 'Settings', settings_path %>
-					<% else %>
-							<%= negative_pill_button_link_to 'requires admin role', root_path %>
-					<% end %>
-				<% end %>
+				<%= render "/partials/menu" %>
 			</div>
 		<% end %>
 	</div>
 	<div class="clear"></div>
-	<div>
+	<div id="content">
+	<span><%= content_tag :h2, yield(:title) if show_title? %></span>
 		<% flash.each do |name, msg| %>
 		  <%= content_tag :div, msg, :id => "flash_#{name}" unless msg.blank? %>
 		<% end %>

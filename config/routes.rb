@@ -10,10 +10,13 @@ Greenbone::Application.routes.draw do
   get 'resume_paused_task/:id'  => 'tasks#resume_paused_task',  :as => 'resume_paused_task'
   get 'stop_task/:id'           => 'tasks#stop_task',           :as => 'stop_task'
   get 'resume_stopped_task/:id' => 'tasks#resume_stopped_task', :as => 'resume_stopped_task'
-  root :to => 'tasks#index'
+  
+  root :to => 'pages#index'
 
   resources :reports
   get 'view_report/:id' => 'reports#view_report', :as => 'view_report'
+  get 'reports'         => 'reports#index',       :as => 'reports'
+
 
   resources :report_formats
   get 'export_report_format/:id' => 'report_formats#export_report_format', :as => 'export_report_format'
@@ -53,5 +56,7 @@ Greenbone::Application.routes.draw do
   resources :agents
   get 'verify_agent/:id' => 'agents#verify_agent', :as => 'verify_agent'
   get 'download_agent/:id' => 'agents#download_agent', :as => 'download_agent'
+  
+  get "help" => "pages#help", :as => "help"
 
 end

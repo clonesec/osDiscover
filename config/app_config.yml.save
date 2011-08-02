@@ -1,5 +1,5 @@
 development:
-  debug: false
+  debug: true
   domain: localhost:3000
   omp_version_expected: '2.0'
   openvas_omp_host: 'localhost'
@@ -9,11 +9,11 @@ development:
   openvas_oap_port: '9393'
 
 production:
-  debug: false
-  domain: localhost:3000
+  debug: flocalhost:3000alse
+  domain: 
   omp_version_expected: '2.0'
-  openvas_omp_host: 'localhost'
+  openvas_omp_host: '???'
   openvas_omp_port: '9390'
   oap_version_expected: '1.0'
-  openvas_oap_host: 'localhost'
+  openvas_oap_host: '???'
   openvas_oap_port: '9393'
