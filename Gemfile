@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rake', '~> 0.9.2'
+gem 'rake', '0.9.2'
 
 gem 'rails', '3.1.1'
 
@@ -12,6 +12,7 @@ gem 'css3buttons', '1.0.1'
 
 gem 'jquery-rails'
 gem 'therubyracer'
+gem 'sqlite3-ruby', :require => 'sqlite3'
 
 group :assets do
   gem 'sass-rails', '~> 3.1.4'
@@ -24,7 +25,6 @@ gem 'pry-remote', :group => :development
 
 
 group :development, :test do
-	gem 'sqlite3-ruby', :require => 'sqlite3'
 	gem 'nifty-generators'
 	gem "mocha"
 	gem "factory_girl_rails"
