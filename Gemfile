@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rake', '0.9.2'
 
-gem 'rails', '3.1.1'
+gem 'rails', '3.1.3'
 
 gem 'devise', '1.4.9'
 

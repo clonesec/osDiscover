@@ -28,6 +28,7 @@ namespace :deploy do
   task :start do ; end
   task :stop do ; end
   task :restart, :roles => :app, :except => { :no_release => true } do
+    run "cd #{current_path}; rake db:schema:load"
     run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
     
   end
