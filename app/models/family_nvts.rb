@@ -42,7 +42,7 @@ class FamilyNvts
     fn = FamilyNvts.new
     # thestart = Time.now
     # get the details for all NVT's in the family:
-    only_family = {:family=>family, :preference_count=>1, :sort_order=>'ascending', :sort_field=>'nvts.name'}
+    only_family = {family:family, preference_count:1, sort_order:'ascending', sort_field:'nvts.name'}
     # note this should never be nil, even if absolutely no NVT's are selected, as there are always families:
     fn.nvts_in_family = Nvt.find_by_family(user, only_family)
     fn.nvts_in_family_count = fn.nvts_in_family.nil? ? 0 : fn.nvts_in_family.count
@@ -50,7 +50,7 @@ class FamilyNvts
 
     # thestart = Time.now
     # get the details for all NVT's in the config in the family:
-    config_id_and_family = {:config_id=>config_id, :family=>family, :timeout=>1, :preference_count=>1, :selected=>true, :sort_order=>'ascending', :sort_field=>'nvts.name'}
+    config_id_and_family = {config_id:config_id, family:family, timeout:1, preference_count:1, selected:true, sort_order:'ascending', sort_field:'nvts.name'}
     # note this may be nil if no NVT's are selected:
     fn.nvts_in_family_and_config = Nvt.find_by_config_id_and_family(user, config_id_and_family)
     fn.nvts_in_family_and_config_count = fn.nvts_in_family_and_config.nil? ? 0 : fn.nvts_in_family_and_config.count

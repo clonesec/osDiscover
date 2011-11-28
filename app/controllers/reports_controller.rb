@@ -3,7 +3,7 @@ class ReportsController < ApplicationController
   # ensure user is signed in via Devise
   before_filter :authenticate_user!
 
-  before_filter :redirect_to_root, :except => [:show, :view_report, :index]
+  before_filter :redirect_to_root, except: [:show, :view_report, :index, :latest_reports]
 
   # use 'execute around' to set up openvas connection for all methods:
   before_filter :openvas_connect_and_login
@@ -47,14 +47,23 @@ class ReportsController < ApplicationController
       b = report.index('<body ', 0)
       @html_body = report[b..report.length] unless b.nil?
       @html_body = report if b.nil?
-      render :layout => false
+      render layout: false
     else
       ext = params[:format_name].downcase
-      send_data report, :type => "application/#{ext}", :filename => "report_#{params[:id]}.#{ext}", :disposition => 'attachment'
+      send_data report, type: "application/#{ext}", filename: "report_#{params[:id]}.#{ext}", disposition: 'attachment'
     end
   end
 
-
+  def latest_reports
+	if params[:id] == "0"
+		@report_date = Date.today - 7.days
+	else
+		tmp = Date.strptime("{ 2009, 4, #{params[:id]} }", "{ %Y, %m, %d }")
+		@report_date = Date.today - 7.days + tmp.day
+	end
+	@reports = current_user.show_reports(@report_date)
+  end
+  
   private
 
   def set_default_search_params

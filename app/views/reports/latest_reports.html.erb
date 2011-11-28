@@ -1,0 +1,53 @@
+<div class="main_header">
+	<h3>All Reports <span id="sub_header">for date: <%= @report_date %></span></h3>
+</div>
+
+<article class="module">
+	<header><h3>Reports</h3></header>
+	<table class="tablesorter" cellspacing="0">
+	  <thead> 
+  <tr>
+    <th>Report</th>
+    <th>Threat</th>
+    <th colspan="5">Scan Results</th>
+    <th colspan="2">Actions</th>
+  </tr>
+  <tr>
+	<th></th>
+	<th></th>
+    <th>High</th>
+    <th>Medium</th>
+    <th>Low</th>
+    <th>Log</th>
+    <th>FalsePos</th>
+	<th></th>
+	<th></th>
+	</tr>
+	</thead>
+	<tbody>
+  <% @reports.each do |report| %>
+    <tr>
+		<td>
+			<%= report.ended_at %><br />
+			<%= report.scan_run_status %>
+		</td>
+        <td><%= report.threat_level %></td>
+	    <td><%= report.result_count_total[:high] %></td>
+	    <td><%= report.result_count_total[:medium] %></td>
+	    <td><%= report.result_count_total[:low] %></td>
+	    <td><%= report.result_count_total[:log] %></td>
+	    <!-- <td><%= report.result_count_total[:debug] %></td> -->
+	    <td><%= report.result_count_total[:false_positive] %></td>
+      <td><%= pill_button_link_to "details", report_path(report.id) %></td>
+  		<td>
+			<% if report.can_delete %>
+					<%= danger_remove_pill_button_link_to "delete", report_path(report.id), :confirm => 'Are you sure?', :method => :delete %>
+			<% else %>
+					<%= disable_danger_remove_pill_button_link_to "delete", root_path, :title => 'unable to delete Report' %>
+			<% end %>
+			</td>
+    </tr>
+  <% end %>
+		</tbody>
+	</table>
+	</article>

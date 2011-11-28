@@ -3,7 +3,7 @@ class ScanTargetsController < ApplicationController
   # ensure user is signed in via Devise
   before_filter :authenticate_user!
 
-  before_filter :redirect_to_root, :only => [:edit, :update]
+  before_filter :redirect_to_root, only: [:edit, :update]
 
   # use 'execute around' to set up openvas connection for all methods:
   before_filter :openvas_connect_and_login
@@ -26,9 +26,9 @@ class ScanTargetsController < ApplicationController
     @scan_target.persisted = false
     if @scan_target.save(current_user)
       # redirect_to(@scan_target, :notice => 'Scan Target was successfully created.')
-      redirect_to(scan_targets_url, :notice => 'Scan Target was successfully created.')
+      redirect_to(scan_targets_url, notice: 'Scan Target was successfully created.')
     else
-      render :action => "new"
+      render action: "new"
     end
   end
 
@@ -42,12 +42,12 @@ class ScanTargetsController < ApplicationController
 
   def destroy
     @scan_target = ScanTarget.find(params[:id], current_user)
-    redirect_to(scan_targets_url, :notice => "Unable to find scan target #{params[:id]}.") and return if @scan_target.blank?
+    redirect_to(scan_targets_url, notice: "Unable to find scan target #{params[:id]}.") and return if @scan_target.blank?
     msg = @scan_target.delete_record(current_user)
     if msg.blank?
-      redirect_to scan_targets_url, :notice => "Successfully deleted scan target."
+      redirect_to scan_targets_url, notice: "Successfully deleted scan target."
     else
-      redirect_to scan_targets_url, :notice => msg
+      redirect_to scan_targets_url, notice: msg
     end
   end
 

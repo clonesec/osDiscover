@@ -9,16 +9,16 @@ class ReportFormatsController < ApplicationController
 
   def export_report_format
     export = ReportFormat.export(params[:id], current_user)
-    send_data export, :type => "application/xml", :filename => "report_format_#{params[:id]}.xml", :disposition => 'attachment'
+    send_data export, type: "application/xml", filename: "report_format_#{params[:id]}.xml", disposition: 'attachment'
   end
 
   def verify_report_format
     rf = ReportFormat.find(params[:id], current_user)
     msg = rf.verify_report_format(current_user)
     if msg.blank?
-      redirect_to report_formats_url, :notice => "Report Format: #{rf.name} verified."
+      redirect_to report_formats_url, notice: "Report Format: #{rf.name} verified."
     else
-      redirect_to report_formats_url, :alert => msg
+      redirect_to report_formats_url, alert: msg
     end
   end
 
@@ -39,9 +39,9 @@ class ReportFormatsController < ApplicationController
     @report_format = ReportFormat.new(params[:report_format])
     @report_format.persisted = false
     if @report_format.save(current_user)
-      redirect_to report_formats_url, :notice => "Successfully imported report format."
+      redirect_to report_formats_url, notice: "Successfully imported report format."
     else
-      render :action => 'new'
+      render action: 'new'
     end
   end
 
@@ -54,20 +54,20 @@ class ReportFormatsController < ApplicationController
     @report_format = ReportFormat.find(params[:id], current_user)
     @report_format.persisted = true
     if @report_format.update_attributes(current_user, params[:report_format])
-      redirect_to report_formats_url, :notice  => "Successfully updated report format."
+      redirect_to report_formats_url, notice:  "Successfully updated report format."
     else
-      render :action => 'edit'
+      render action: 'edit'
     end
   end
 
   def destroy
     @report_format = ReportFormat.find(params[:id], current_user)
-    redirect_to(report_formats_url, :notice => "Unable to find report format #{params[:id]}.") and return if @report_format.blank?
+    redirect_to(report_formats_url, notice: "Unable to find report format #{params[:id]}.") and return if @report_format.blank?
     msg = @report_format.delete_record(current_user)
     if msg.blank?
-      redirect_to report_formats_url, :notice => "Successfully deleted report format."
+      redirect_to report_formats_url, notice: "Successfully deleted report format."
     else
-      redirect_to report_formats_url, :notice => msg
+      redirect_to report_formats_url, notice: msg
     end
   end
 

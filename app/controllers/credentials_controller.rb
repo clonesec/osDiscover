@@ -15,7 +15,7 @@ class CredentialsController < ApplicationController
       flash[:error] = "SSH Public Key is empty for credential #{cred.name}."
       redirect_to credentials_url
     else
-      send_data public_key, :type => 'application/key', :filename => "openvas-lsc-#{cred.name}.pub", :disposition => 'attachment'
+      send_data public_key, type: 'application/key', filename: "openvas-lsc-#{cred.name}.pub", disposition: 'attachment'
     end
   end
 
@@ -27,7 +27,7 @@ class CredentialsController < ApplicationController
       flash[:error] = "#{params[:credential_format].upcase} package is empty for credential #{cred.name}."
       redirect_to credentials_url
     else
-      send_data package, :type => 'application/#{params[:credential_format].downcase}', :filename => "openvas-lsc-#{cred.name}.#{params[:credential_format].downcase}", :disposition => 'attachment'
+      send_data package, type: 'application/#{params[:credential_format].downcase}', filename: "openvas-lsc-#{cred.name}.#{params[:credential_format].downcase}", disposition: 'attachment'
     end
   end
 
@@ -48,9 +48,9 @@ class CredentialsController < ApplicationController
     @credential = Credential.new(params[:credential])
     @credential.persisted = false
     if @credential.save(current_user)
-      redirect_to credentials_url, :notice => "Successfully created credential."
+      redirect_to credentials_url, notice: "Successfully created credential."
     else
-      render :action => 'new'
+      render action: 'new'
     end
   end
 
@@ -63,20 +63,20 @@ class CredentialsController < ApplicationController
     @credential = Credential.find(params[:id], current_user)
     @credential.persisted = true
     if @credential.update_attributes(current_user, params[:credential])
-      redirect_to credentials_url, :notice  => "Successfully updated credential."
+      redirect_to credentials_url, notice:  "Successfully updated credential."
     else
-      render :action => 'edit'
+      render action: 'edit'
     end
   end
 
   def destroy
     @credential = Credential.find(params[:id], current_user)
-    redirect_to(credentials_url, :notice => "Unable to find credential #{params[:id]}.") and return if @credential.blank?
+    redirect_to(credentials_url, notice: "Unable to find credential #{params[:id]}.") and return if @credential.blank?
     msg = @credential.delete_record(current_user)
     if msg.blank?
-      redirect_to credentials_url, :notice => "Successfully deleted credential."
+      redirect_to credentials_url, notice: "Successfully deleted credential."
     else
-      redirect_to credentials_url, :notice => msg
+      redirect_to credentials_url, notice: msg
     end
   end
 

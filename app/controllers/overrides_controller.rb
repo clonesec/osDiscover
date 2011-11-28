@@ -33,9 +33,9 @@ class OverridesController < ApplicationController
     @override = Override.new(params[:override])
     @override.persisted = false
     if @override.save(current_user)
-      redirect_to overrides_url, :notice => "Successfully created override."
+      redirect_to overrides_url, notice: "Successfully created override."
     else
-      render :action => 'new'
+      render action: 'new'
     end
   end
 
@@ -48,20 +48,20 @@ class OverridesController < ApplicationController
     @override = Override.find(params[:id], current_user)
     @override.persisted = true
     if @override.update_attributes(current_user, params[:override])
-      redirect_to overrides_url, :notice  => "Successfully updated override."
+      redirect_to overrides_url, notice:  "Successfully updated override."
     else
-      render :action => 'edit'
+      render action: 'edit'
     end
   end
 
   def destroy
     @override = Override.find(params[:id], current_user)
-    redirect_to(overrides_url, :notice => "Unable to find override #{params[:id]}.") and return if @override.blank?
+    redirect_to(overrides_url, notice: "Unable to find override #{params[:id]}.") and return if @override.blank?
     msg = @override.delete_record(current_user)
     if msg.blank?
-      redirect_to overrides_url, :notice => "Successfully deleted override."
+      redirect_to overrides_url, notice: "Successfully deleted override."
     else
-      redirect_to overrides_url, :notice => msg
+      redirect_to overrides_url, notice: msg
     end
   end
 

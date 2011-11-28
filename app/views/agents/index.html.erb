@@ -1,14 +1,27 @@
+<script>
+	$(document).ready(function() { 
+		$(".tablesorter").tablesorter(); 
+	});
+</script>
+
 <% title "Agents" %>
-<div><%= add_button_link_to "new Agent", new_agent_path %></div>
-<table cellspacing="2" cellpadding="4">
-  <tr class="table_header">
-    <th>Name</th>
+<div><%= link_to "New Agent", new_agent_path, :class => "add-button" %></div>
+<div style="clear: both"></div>
+
+<article class="module">
+	<header><h3>Agents Overview</h3></header>
+<table class="tablesorter" cellspacing="0">  
+<thead>
+  <tr>
+    <th class="first">Name</th>
     <th>Comment</th>
     <th>Trust</th>
     <th colspan="3">Actions</th>
   </tr>
+</thead>
+<tbody>  
   <% for agent in @agents %>
-    <tr>
+    <tr class=<%= cycle('even', 'odd')%>>
       <td><%= agent.name %></td>
       <td><%= agent.comment %></td>
       <td>
@@ -16,10 +29,12 @@
 				<br />
 				(<%= agent.trusted_at.strftime("%b %d %Y") %>)
 			</td>
-      <td><%= danger_remove_pill_button_link_to "delete", agent_path(agent.id), :confirm => 'Are you sure?', :method => :delete %></td>
-      <td><%= pill_button_link_to "verify agent", verify_agent_path(agent.id), :title => 'verify installer' %></td>
-			<td><%= arrowdown_pill_button_link_to "download", download_agent_path(agent.id, :agent_format => 'installer'), :title => 'download installer package' %></td>
+      <td><%= button_link_to "Delete", agent_path(agent.id), :confirm => 'Are you sure?', :method => :delete, :class => "delete-button" %></td>
+      <td><%= pill_button_link_to "Verify Agent", verify_agent_path(agent.id), :title => 'verify installer' %></td>
+			<td><%= arrowdown_pill_button_link_to "Download", download_agent_path(agent.id, :agent_format => 'installer'), :title => 'download installer package' %></td>
     </tr>
 		<tr><td colspan="8"><hr /></td></tr>
   <% end %>
+	</tbody>
 </table>
+</article>

@@ -5,16 +5,16 @@ class Slave
   attr_accessor :name, :comment, :host, :port, :login, :password, :in_use
   attr_accessor :task_ids
 
-  validates :comment, :length => { :maximum => 400 }
-  validates :name,      :presence => true, :length => { :maximum => 80 }
-  validates :host,      :presence => true, :length => { :maximum => 80 }
-  validates :port,      :presence => true, :length => { :maximum => 80 }
-  validates :login,     :presence => true, :length => { :maximum => 80 }
-  validates :password,  :presence => true, :length => { :maximum => 40 }
+  validates :comment, length: { maximum: 400 }
+  validates :name,      presence: true, length: { maximum: 80 }
+  validates :host,      presence: true, length: { maximum: 80 }
+  validates :port,      presence: true, length: { maximum: 80 }
+  validates :login,     presence: true, length: { maximum: 80 }
+  validates :password,  presence: true, length: { maximum: 40 }
 
   def self.selections(user)
     slaves = []
-    slave = Slave.new({:id=>'0', :name=>'--'}) # add blank selection, so users can edit Slave selection
+    slave = Slave.new({id:'0', name:'--'}) # add blank selection, so users can edit Slave selection
     slaves << slave
     self.all(user).each do |s|
       slaves << s
@@ -23,7 +23,7 @@ class Slave
   end
 
   def self.all(user, options = {})
-    params = {:tasks => 1}
+    params = {tasks: 1}
     params[:slave_id] = options[:id] if options[:id]
     req = Nokogiri::XML::Builder.new { |xml| xml.get_slaves(params) }
     ret = []
@@ -105,7 +105,7 @@ class Slave
   end
 
   def delete_record(user)
-    req = Nokogiri::XML::Builder.new { |xml| xml.delete_slave(:slave_id => @id) }
+    req = Nokogiri::XML::Builder.new { |xml| xml.delete_slave(slave_id: @id) }
     begin
       resp = user.openvas_connection.sendrecv(req.doc)
       status = Slave.extract_value_from("//@status", resp)

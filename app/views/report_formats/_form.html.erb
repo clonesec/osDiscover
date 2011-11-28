@@ -6,7 +6,7 @@
 	<li>Content Type: <%= @report_format.content_type %></li>
 	<li>Trust: <%= @report_format.trust %></li>
 	<li>Parameters: <%= @report_format.parameters %></li>
-	<li>Description: <pre style="background:#e0e0e0; width:70%"><%= @report_format.description %></pre></li>
+	<li>Description: <pre style="background:#e0e0e0; width:70%; padding:10px;"><%= @report_format.description %></pre></li>
 </ul>
 <hr />
 <%= form_for(@report_format) do |f| %>
@@ -21,15 +21,15 @@
     </div>
   <% end %>
 	<div class="field">
-	  <div class="left">Name</div>
+	  <div class="left"><label>Name</label></div>
 		<div class="right"><%= f.text_field :name %></div>
 	</div>
 	<div class="field">
-	  <div class="left">Summary</div>
+	  <div class="left"><label>Summary</label></div>
 		<div class="right"><%= f.text_area :summary, :rows => 3, :cols => 80 %></div>
 	</div>
 	<div class="field">
-	  <div class="left">Active</div>
+	  <div class="left"><label>Active</label></div>
 		<div class="right"><%= f.check_box :active %></div>
 	</div>
 	<br /><br />

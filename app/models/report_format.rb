@@ -8,12 +8,12 @@ class ReportFormat
   # for editing:
   attr_accessor :name, :summary, :active
 
-  validates :name, :presence => true, :length => { :maximum => 80 }, :on => :update
-  validates :summary, :presence => true, :length => { :maximum => 400 }, :on => :update
+  validates :name, presence: true, length: { maximum: 80 }, on: :update
+  validates :summary, presence: true, length: { maximum: 400 }, on: :update
 
   def self.selections(user)
     rfs = []
-    rf = ReportFormat.new({:id=>'simple', :name=>'Simple Notice'})
+    rf = ReportFormat.new({id:'simple', name:'Simple Notice'})
     rfs << rf
     self.all(user).each do |rf|
       rfs << rf
@@ -97,7 +97,7 @@ class ReportFormat
   end
 
   def self.export(id, user)
-    params = { :export=>'1' }
+    params = { export:'1' }
     params[:report_format_id] = id if id
     req = Nokogiri::XML::Builder.new { |xml| xml.get_report_formats(params) }
     rf_as_xml = user.openvas_connection.sendrecv(req.doc)
@@ -105,7 +105,7 @@ class ReportFormat
   end
 
   def verify_report_format(user)
-    req = Nokogiri::XML::Builder.new { |xml| xml.verify_report_format(:report_format_id => @id) }
+    req = Nokogiri::XML::Builder.new { |xml| xml.verify_report_format(report_format_id: @id) }
     begin
       resp = user.openvas_connection.sendrecv(req.doc)
       status = ReportFormat.extract_value_from("//@status", resp)
@@ -146,7 +146,7 @@ class ReportFormat
 
   def update_report_format(user)
     req = Nokogiri::XML::Builder.new { |xml|
-      xml.modify_report_format(:report_format_id => @id) {
+      xml.modify_report_format(report_format_id: @id) {
         xml.name { xml.text(@name) }
         xml.summary { xml.text(@summary) }
         xml.active  { xml.text(@active) }
@@ -170,7 +170,7 @@ class ReportFormat
 
   def delete_record(user)
     return if @id.blank?
-    req = Nokogiri::XML::Builder.new { |xml| xml.delete_report_format(:report_format_id => @id) }
+    req = Nokogiri::XML::Builder.new { |xml| xml.delete_report_format(report_format_id: @id) }
     begin
       resp = user.openvas_connection.sendrecv(req.doc)
       status = ReportFormat.extract_value_from("//@status", resp)

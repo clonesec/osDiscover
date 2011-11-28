@@ -6,17 +6,17 @@ class ScanTarget
   attr_accessor :ssh_lsc_credential_id, :smb_lsc_credential_id
   attr_accessor :ssh_lsc_credential, :smb_lsc_credential
 
-  validates :name, :presence => true, :length => { :maximum => 80 }
-  validates :hosts, :presence => true, :length => { :maximum => 200 }
-  validates :port_range, :length => { :maximum => 400 }
-  validates :comment, :length => { :maximum => 400 }
+  validates :name, presence: true, length: { maximum: 80 }
+  validates :hosts, presence: true, length: { maximum: 200 }
+  validates :port_range, length: { maximum: 400 }
+  validates :comment, length: { maximum: 400 }
 
   def tasks
     @tasks ||= []
   end
 
   def self.all(user, options = {})
-    params = {:tasks => 1}
+    params = {tasks: 1}
     params[:target_id] = options[:id] if options[:id]
     req = Nokogiri::XML::Builder.new { |xml| xml.get_targets(params) }
     # Rails.logger.info "\n req=#{req.to_xml.to_yaml}\n"
@@ -75,7 +75,20 @@ class ScanTarget
       return false
     end
   end
-
+=begin    
+  def self.find(user, params)
+    return nil if params[:id].blank? || user.blank?
+    f = self.all(user, params).first
+    return nil if f.blank?
+    # ensure "first" has the desired id:
+    if f.id.to_s == params[:id].to_s
+      return f
+    else
+      return nil
+    end
+  end
+=end
+  
   def update_attributes(attrs={})
     # note modify(edit/update) is not implemented in OMP 2.0
     # attrs.each { |key, value|
@@ -100,8 +113,8 @@ class ScanTarget
         xml.comment    { xml.text(@comment) } unless @comment.blank?
         xml.hosts      { xml.text(hosts_string) }
         xml.port_range { xml.text(@port_range) } unless @port_range.blank?
-        xml.ssh_lsc_credential(:id => @ssh_lsc_credential) unless @ssh_lsc_credential == '0'
-        xml.smb_lsc_credential(:id => @smb_lsc_credential) unless @smb_lsc_credential == '0'
+        xml.ssh_lsc_credential(id: @ssh_lsc_credential) unless @ssh_lsc_credential == '0'
+        xml.smb_lsc_credential(id: @smb_lsc_credential) unless @smb_lsc_credential == '0'
       }
     }
     begin
@@ -122,7 +135,7 @@ class ScanTarget
   end
 
   def delete_record(user)
-    req = Nokogiri::XML::Builder.new { |xml| xml.delete_target(:target_id => @id) }
+    req = Nokogiri::XML::Builder.new { |xml| xml.delete_target(target_id: @id) }
     begin
       resp = user.openvas_connection.sendrecv(req.doc)
       status = ScanTarget.extract_value_from("//@status", resp)
@@ -134,6 +147,17 @@ class ScanTarget
     rescue Exception => e
       return e.message
     end
+  end
+  
+  def self.selections(user)
+    return nil if user.nil?
+    cfgs = []
+	#targetscan = Target.new({:id=>'0', :name=>'--'})
+	#cfgs << targetscan
+    self.all(user).each do |o|
+      cfgs << o unless o.name == 'empty' || o.name == 'Localhost' # ignore the 'empty'(base) and 'localhost' scan target
+    end
+    cfgs
   end
 
 end

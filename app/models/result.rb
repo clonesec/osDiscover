@@ -33,9 +33,9 @@ class Result
   def self.find_by_id_and_format(id, format_name, format_id, user)
     options = {}
     # params = {}
-    params =  { :notes=>'1', :notes_details=>'1', 
-                :overrides=>'1', :overrides_details=>'1', :apply_overrides=>'1',
-                :result_hosts_only=>'1'
+    params =  { notes:'1', notes_details:'1', 
+                overrides:'1', overrides_details:'1', apply_overrides:'1',
+                result_hosts_only:'1'
               }
     params[:levels] = 'hmlgdf' unless options[:levels]
     params[:report_id] = id if id
@@ -52,14 +52,14 @@ class Result
 
   def result_count_total
     unless @result_count_total
-      @result_count_total = {:total=>0, :debug=>0, :log=>0, :low=>0, :medium=>0, :high=>0}
+      @result_count_total = {total:0, debug:0, log:0, low:0, medium:0, high:0}
     end
     @result_count_total
   end
 
   def result_count_filtered
     unless @result_count_filtered
-      @result_count_filtered = {:total=>0, :debug=>0, :log=>0, :low=>0, :medium=>0, :high=>0}
+      @result_count_filtered = {total:0, debug:0, log:0, low:0, medium:0, high:0}
     end
     @result_count_filtered
   end

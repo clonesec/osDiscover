@@ -14,9 +14,9 @@ class NvtFeedsController < ApplicationController
   def sync_feed
     resp = NvtFeed.sync_feed(current_user)
     if NvtFeed.extract_value_from("//@status", resp) =~ /20\d/
-      redirect_to feeds_url, :notice => "Successfully submitted request to synchronize with NVT feed."
+      redirect_to feeds_url, notice: "Successfully submitted request to synchronize with NVT feed."
     else
-      redirect_to feeds_url, :notice => "Error: " + NvtFeed.extract_value_from("//@status_text", resp)
+      redirect_to feeds_url, notice: "Error: " + NvtFeed.extract_value_from("//@status_text", resp)
     end
   end
 

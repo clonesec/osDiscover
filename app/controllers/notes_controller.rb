@@ -33,9 +33,9 @@ class NotesController < ApplicationController
     @note = Note.new(params[:note])
     @note.persisted = false
     if @note.save(current_user)
-      redirect_to notes_url, :notice => "Successfully created note."
+      redirect_to notes_url, notice: "Successfully created note."
     else
-      render :action => 'new'
+      render action: 'new'
     end
   end
 
@@ -48,20 +48,20 @@ class NotesController < ApplicationController
     @note = Note.find(params[:id], current_user)
     @note.persisted = true
     if @note.update_attributes(current_user, params[:note])
-      redirect_to notes_url, :notice  => "Successfully updated note."
+      redirect_to notes_url, notice:  "Successfully updated note."
     else
-      render :action => 'edit'
+      render action: 'edit'
     end
   end
 
   def destroy
     @note = Note.find(params[:id], current_user)
-    redirect_to(notes_url, :notice => "Unable to find note #{params[:id]}.") and return if @note.blank?
+    redirect_to(notes_url, notice: "Unable to find note #{params[:id]}.") and return if @note.blank?
     msg = @note.delete_record(current_user)
     if msg.blank?
-      redirect_to notes_url, :notice => "Successfully deleted note."
+      redirect_to notes_url, notice: "Successfully deleted note."
     else
-      redirect_to notes_url, :notice => msg
+      redirect_to notes_url, notice: msg
     end
   end
 

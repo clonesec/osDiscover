@@ -1,0 +1,87 @@
+<div class="main_header">
+	<h3>All Reports <span id="sub_header">for Schedule: <%= @task.name %></span></h3>
+</div>
+<div>
+	<%= button_group do %>
+		<%= arrowleft_pill_button_link_to "back", tasks_path %>
+			
+			<% if params[:apply_overrides] == '1' || params[:apply_overrides].blank? %>
+					<% params.merge!({:apply_overrides=>'1'}) if params[:apply_overrides].blank? %>
+					<%= disable_danger_lock_pill_button_link_to 'overrides are On', task_path(@task.id), :title=>"overrides are On and applied" %>
+				<div class="override override-on">	
+					<%= link_to 'set Off', task_path(:id=>@task.id, :apply_overrides=>'0'), :title=>"turn overrides off", :class => "set-off-on" %>
+					<%= link_to 'set On', task_path(:id=>@task.id, :apply_overrides=>'1'), :title=>"turn overrides on", :class => "set-on-on"  %>
+				</div>
+			<% else %>
+					<%= disable_unlock_pill_button_link_to 'overrides are Off', task_path(@task.id), :title=>"overrides are Off" %>
+				<div class="override override-off">
+					<%= link_to 'set Off', task_path(:id=>@task.id, :apply_overrides=>'0'), :title=>"turn overrides off", :class => "set-off-off" %>
+					<%= link_to 'set On', task_path(:id=>@task.id, :apply_overrides=>'1'), :title=>"turn overrides on", :class => "set-on-off" %>
+				</div>
+			<% end %>
+			
+			
+			
+	<% end %>
+</div>
+
+<article class="module">
+	<header><h3>Reports</h3></header>
+	<table class="tablesorter" cellspacing="0">
+	  <thead> 
+  <tr>
+    <th>Report</th>
+    <th>Threat</th>
+    <th colspan="5">Scan Results</th>
+    <th colspan="2">Actions</th>
+  </tr>
+  <tr>
+	<th></th>
+	<th></th>
+    <th>High</th>
+    <th>Medium</th>
+    <th>Low</th>
+    <th>Log</th>
+    <th>FalsePos</th>
+	<th></th>
+	<th></th>
+	</tr>
+	</thead>
+	<tbody>
+  <% @task.reports.each do |report| %>
+    <tr class=<%= cycle('even', 'odd')%>>
+		<td>
+			<%= report.timestamp %><br />
+			<%= report.scan_run_status %>
+		</td>
+        <td><%= report.threat_level %></td>
+	    <td><%= report.result_count_total[:high] %></td>
+	    <td><%= report.result_count_total[:medium] %></td>
+	    <td><%= report.result_count_total[:low] %></td>
+	    <td><%= report.result_count_total[:log] %></td>
+	    <!-- <td><%= report.result_count_total[:debug] %></td> -->
+	    <td><%= report.result_count_total[:false_positive] %></td>
+      <td><%= link_to "details", report_path(report.id), :class => "details-button" %></td>
+  		<td>
+			<% if report.can_delete %>
+					<%= link_to "delete", report_path(report.id), :confirm => 'Are you sure?', :method => :delete, :class => "delete-button" %>
+			<% else %>
+					<%= link_to "delete", root_path, :title => 'unable to delete Report', :class => "delete-button" %>
+			<% end %>
+			</td>
+    </tr>
+  <% end %>
+		</tbody>
+	</table>
+	</article>
+<p>
+	<b>Name: <%= @task.name %></b><br />
+	Comment: <%= @task.comment %><br />
+	Config:	<%= link_to "#{@task.config_name}", scan_config_path(@task.config_id) %><br />
+	Escalator: <%= @task.escalator_name %><br />
+	Schedule: <%= @task.schedule_name %><br />
+	Target: <%= link_to "#{@task.target_name}", scan_target_path(@task.target_id) %><br />
+	Slave: <%= @task.slave_name %><br />
+	Status: <%= @task.status %> <%= "at #{@task.overall_progress}%" if ['Stopped', 'Paused', 'Running'].include?(@task.status) && @task.overall_progress != '-1' %><br />
+	Reports: <%= @task.reports_count %> (Finished: <%= @task.finished_reports_count %>)
+</p>

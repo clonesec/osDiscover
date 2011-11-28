@@ -1,16 +1,18 @@
 Greenbone::Application.routes.draw do
-
+  get "latest-reports/:id" => "reports#latest_reports"
+  get "latest-schedules/:id" => "tasks#latest_schedules"
+  
   devise_for :users
 
   resources :openvas_users
 
   resources :tasks
-  get 'start_task/:id'          => 'tasks#start_task',          :as => 'start_task'
-  get 'pause_task/:id'          => 'tasks#pause_task',          :as => 'pause_task'
-  get 'resume_paused_task/:id'  => 'tasks#resume_paused_task',  :as => 'resume_paused_task'
-  get 'stop_task/:id'           => 'tasks#stop_task',           :as => 'stop_task'
+  get 'start_schedule/:id'          => 'tasks#start_task',          :as => 'start_task'
+  get 'pause_schedule/:id'          => 'tasks#pause_task',          :as => 'pause_task'
+  get 'resume_paused_schedule/:id'  => 'tasks#resume_paused_task',  :as => 'resume_paused_task'
+  get 'stop_schedule/:id'           => 'tasks#stop_task',           :as => 'stop_task'
   get 'resume_stopped_task/:id' => 'tasks#resume_stopped_task', :as => 'resume_stopped_task'
-  
+  get 'ajax_task'                   => 'tasks#ajax_task', :as => 'ajax_task'
   root :to => 'pages#index'
 
   resources :reports
@@ -58,5 +60,8 @@ Greenbone::Application.routes.draw do
   get 'download_agent/:id' => 'agents#download_agent', :as => 'download_agent'
   
   get "help" => "pages#help", :as => "help"
-
+  get "monitor" => "pages#monitor", :as => "monitor"
+  get "schedule-graph" => "pages#schedule_graph"
+  get "report-graph" => "pages#report_graph"
+  
 end

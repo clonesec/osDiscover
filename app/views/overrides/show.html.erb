@@ -1,7 +1,7 @@
-<% title "Override details" %>
+<% title "Exception Details" %>
 
 <% if session[:go_back] %>
-	<div><%= arrowleft_pill_button_link_to "back", session[:go_back] %></div>
+	<div><%= arrowleft_pill_button_link_to "Back", session[:go_back] %></div>
 <% end %>
 
 <p>
@@ -20,8 +20,8 @@
 	Result: <%= @override.result_description %>
 </p>
 
-<div style="padding:4px; margin:3px; margin-bottom:0px; margin-top:0px; border: 1px solid #CCCCCC; border-top: 0px; background-color: #ffff90;">
-	<b>Override from <%=@override.threat%> to <%=@override.new_threat%></b>
+<div style="padding:4px; margin:0 3px; border: 1px solid #CCCCCC; background-color: #ffff90;">
+	<b>Exception from <%=@override.threat%> to <%=@override.new_threat%></b>
 	<br />
 	<pre><%= @override.override_text %></pre>
 	Last modified: <%= @override.modification_time %>.

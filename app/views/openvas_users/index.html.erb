@@ -1,29 +1,43 @@
+<script>
+	$(document).ready(function() { 
+		$(".tablesorter").tablesorter(); 
+	});
+</script>
+
 <% title "Users" %>
-<div><%= add_button_link_to "new User", new_openvas_user_path %></div>
-<table cellspacing="2" cellpadding="4">
-  <tr class="table_header">
-    <th>Name</th>
+<div><%= link_to "New User", new_openvas_user_path, :class => "add-button" %></div>
+<div style="clear: both"></div>
+
+<article class="module">
+	<header><h3>Users Overview</h3></header>
+<table class="tablesorter" cellspacing="0">  
+<thead>   
+  <tr>
+    <th class="first">Name</th>
     <th>Role</th>
     <th>Host Access</th>
     <th colspan="2">Actions</th>
   </tr>
+</thead>
+<tbody>
   <% for openvas_user in @openvas_users %>
-    <tr>
+    <tr class=<%= cycle('even', 'odd')%>>
       <td><%= openvas_user.name %></td>
       <td><%= openvas_user.role %></td>
       <td>
 				<%= openvas_user.hosts_allow_humanized %>
       	<%= openvas_user.hosts %>
 			</td>
-      <td><%= pill_button_link_to "edit", edit_openvas_user_path(openvas_user.name) %></td>
+      <td><%= link_to "Edit", edit_openvas_user_path(openvas_user.name), :class => "edit-button" %></td>
       <td>
 				<% if current_user.username.downcase == openvas_user.name.downcase %>
-						<%= disable_danger_remove_pill_button_link_to "delete", openvas_users_path, :title=>'unable to delete' %>
+						<%= disable_danger_remove_pill_button_link_to "Delete", openvas_users_path, :title=>'unable to delete' %>
 				<% else %>
-						<%= danger_remove_pill_button_link_to "delete", openvas_user_path(openvas_user.name), :confirm => 'Are you sure?', :method => :delete %>
+						<%= link_to "Delete", openvas_user_path(openvas_user.name), :confirm => 'Are you sure?', :method => :delete, :class => "delete-button" %>
 			  <% end %>
 			</td>
     </tr>
-		<tr><td colspan="5"><hr /></td></tr>
   <% end %>
+	</tbody>
 </table>
+</article>

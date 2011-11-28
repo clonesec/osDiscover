@@ -1,0 +1,23 @@
+<div style="margin:0 auto; text-align:center; padding-top:30px">
+	<h1><a href="http://www.clone-systems.com/" id="clone_systems"></a><div id="os_discover"></div></h1>
+	<%= form_for(resource, :as => resource_name, :url => session_path(resource_name), :style => "margin:0 auto") do |f| %>
+	<div id="login_label">Login</div>
+	  <p><%= f.label :username %>
+	  <%= f.text_field :username %></p>
+	  <p><%= f.label :password %>
+	  <%= f.password_field :password %></p>
+	  <p><%= f.submit "Sign in" %></p>
+	<div id="login_footer">
+		<small class="left">
+			<%= Time.now.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z") %>
+			&nbsp;&nbsp;
+		</small>
+		<small class="right">
+			OMP Version: <%=APP_CONFIG[:omp_version_expected]%>
+			and
+			OAP Version: <%=APP_CONFIG[:oap_version_expected]%>
+		</small>
+	</div>
+	<% end %>
+	<div style="clear: both"></div>
+</div>

@@ -1,9 +1,19 @@
+<script>
+	$(document).ready(function() { 
+		$(".tablesorter").tablesorter(); 
+	});
+</script>
 <% title "Slaves" %>
+
+<div ><%= link_to "New Slave", new_slafe_path, :class => "add-button" %></div>
+<div style="clear: both"></div>
 <%# note: rails sees the singular of 'slaves' as 'slafe': %>
-<div><%= add_button_link_to "new Slave", new_slafe_path %></div>
-<table cellspacing="2" cellpadding="4">
-  <tr class="table_header">
-    <th>Name</th>
+<article class="module">
+	<header><h3>Slaves Overview</h3></header>
+<table class="tablesorter" cellspacing="0">  
+<thead>    
+  <tr>
+    <th class="first">Name</th>
     <th>Comment</th>
     <th>Host</th>
     <th>Port</th>
@@ -11,8 +21,10 @@
     <th>In Use</th>
     <th>Actions</th>
   </tr>
+</thead>
+<tbody>
   <% for slave in @slaves %>
-    <tr>
+    <tr class=<%= cycle('even', 'odd')%>>
       <td><%= slave.name %></td>
       <td><%= slave.comment %></td>
       <td><%= slave.host %></td>
@@ -20,12 +32,14 @@
       <td><%= slave.login %></td>
       <td><%= slave.in_use == 0 ? 'no' : 'yes' %></td>
 			<% if slave.in_use > 0 %>
-  				<td><%= disable_danger_remove_pill_button_link_to "delete", slafe_path(slave.id), :title=>'slave is in use' %></td>
+  				<td><%= disable_danger_remove_pill_button_link_to "Delete", slafe_path(slave.id), :title=>'slave is in use' %></td>
   		<% else %>
 					<%# note: rails sees the singular of 'slaves' as 'slafe': %>
-      		<td><%= danger_remove_pill_button_link_to "delete", slafe_path(slave.id), :confirm => 'Are you sure?', :method => :delete %></td>
+      		<td><%= link_to "Delete", slafe_path(slave.id), :confirm => 'Are you sure?', :method => :delete, :class => "delete-button" %></td>
 		  <% end %>
     </tr>
 		<tr><td colspan="7"><hr /></td></tr>
   <% end %>
+	</tbody>
 </table>
+</article>

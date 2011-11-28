@@ -1,0 +1,2 @@
+{ "elements": [ { "type": "bar_3d", "values": [ 8, 6, 7, 5, 4, 6, 9, 3, 7, { "top": 5, "colour": "#900000", "tip": "Hello
+#val#" } ], "colour": "#D54C78" } ], "title": { "text": "Wed Aug 24 2011" }, "x_axis": { "3d": 5, "colour": "#909090", "labels": [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] } }

@@ -1,0 +1,9 @@
+    <% if @task && @task.status == "Requested" %>
+      $("#<%= params[:task_id] %>").html("<span style='color:red'>Requested</span>");
+    <% elsif @task.status == "Done" %>
+       $("#<%= params[:task_id] %>").replaceWith("<span class='done-icon'>Done</span>");
+       $("#button-container-<%= @taskid %>").html("<div class='button-group'><a title='Start Schedule' class='start-button' href='/start_schedule/<%= @taskid %>'>Start</a></div>");
+    <% else %> 
+       $("#<%= params[:task_id] %>").text("<%= @task.status %> at <%= @task.overall_progress %>%");
+       $("#button-container-<%= @taskid %>").html("<div class='button-group'><a class='start-button' title='Pause Schedule' href='/pause_schedule/<%= @taskid %>'>Pause</a><a class='start-button' title='Stop Schedule' href='/stop_schedule/<%= @taskid %>'>Stop</a></div>");
+    <% end %>

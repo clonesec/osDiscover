@@ -1,11 +1,9 @@
-<b>Result of Task: <%= @report.task_name %></b><br />
-Order of results:	by host<br /> <%# yes, this was hard coded in GSA %>
-<b>Started at: <%= @report.started_at %></b><br />
-Ended at: <%= @report.ended_at %><br />
-Status: <%= @report.status %>
-<table cellspacing="2" cellpadding="4">
-  <tr class="table_header">
-    <th>&nbsp;</th>
+<article class="Rmodule">
+	<header><h3>Summary</h3></header>
+	<table class="tablesorter" cellspacing="0">
+		<thead> 
+	<tr>
+    <th class="first">&nbsp;</th>
     <th>High</th>
     <th>Medium</th>
     <th>Low</th>
@@ -15,6 +13,8 @@ Status: <%= @report.status %>
     <th>Total</th>
     <th style="text-align:center">Download Report in these Formats</th>
   </tr>
+	</thead>
+	<tbody>
   <tr>
 		<td>Full report:</td>
 		<td align="right"><%= @report.result_count_total[:high] %></td>
@@ -54,4 +54,6 @@ Status: <%= @report.status %>
 				</td>
 		<% end %>
 	</tr>
-</table>
+		</tbody>
+	</table>
+</article>

@@ -1,8 +1,19 @@
+<script>
+	$(document).ready(function() { 
+		$(".tablesorter").tablesorter(); 
+	});
+</script>
+
 <% title "Schedules" %>
-<div><%= add_button_link_to "new Schedule", new_schedule_path %></div>
-<table cellspacing="2" cellpadding="4">
-  <tr class="table_header">
-    <th>Name</th>
+<div><%= link_to "New Schedule", new_schedule_path, :class => "add-button" %></div>
+<div style="clear: both"></div>
+
+<article class="module">
+	<header><h3>Schedules Overview</h3></header>
+<table class="tablesorter" cellspacing="0">  
+<thead>  
+  <tr>
+    <th class="first">Name</th>
     <th>Comment</th>
     <th>First Run</th>
     <th>Next Run</th>
@@ -11,8 +22,10 @@
     <th>In Use</th>
     <th>Actions</th>
   </tr>
+</thead>
+<tbody>
   <% for schedule in @schedules %>
-    <tr>
+    <tr class=<%= cycle('even', 'odd')%>>
       <td><%= schedule.name %></td>
       <td><%= schedule.comment %></td>
       <td><%= schedule.first_time %></td>
@@ -21,10 +34,12 @@
       <td><%= schedule.duration %></td>
       <td><%= schedule.in_use == 0 ? 'no' : 'yes' %></td>
 			<% if schedule.in_use > 0 %>
-  			<td><%= disable_danger_remove_pill_button_link_to 'delete', schedules_path, :title => 'schedule is in use' %></td>
+  			<td><%= disable_danger_remove_pill_button_link_to 'Delete', schedules_path, :title => 'schedule is in use' %></td>
   		<% else %>
-	    		<td><%= danger_remove_pill_button_link_to 'delete', schedule_path(schedule.id), :title => 'delete schedule', :confirm => 'Are you sure?', :method => :delete %></td>
+	    		<td><%= link_to 'Delete', schedule_path(schedule.id), :title => 'delete schedule', :confirm => 'Are you sure?', :method => :delete, :class => "delete-button" %></td>
 		  <% end %>
     </tr>
   <% end %>
+	</tbody>
 </table>
+</article>

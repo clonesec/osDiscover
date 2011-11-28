@@ -9,8 +9,8 @@ class Escalator
   attr_accessor :email_to_address, :email_from_address, :email_report_format, :http_get_url
   attr_accessor :method_datas, :condition_datas
 
-  validates :name, :presence => true, :length => { :maximum => 80 }
-  validates :comment, :length => { :maximum => 400 }
+  validates :name, presence: true, length: { maximum: 80 }
+  validates :comment, length: { maximum: 400 }
 
   def tasks
     @tasks ||= []
@@ -32,41 +32,41 @@ class Escalator
 
   def self.event_selections
     events = []
-    events << Selection.new({:id=>'Done', :name=>'Done'})
-    events << Selection.new({:id=>'Delete Requested', :name=>'Delete Requested'})
-    events << Selection.new({:id=>'New', :name=>'New'})
-    events << Selection.new({:id=>'Requested', :name=>'Requested'})
-    events << Selection.new({:id=>'Running', :name=>'Running'})
-    events << Selection.new({:id=>'Stop Requested', :name=>'Stop Requested'})
-    events << Selection.new({:id=>'Stopped', :name=>'Stopped'})
+    events << Selection.new({id:'Done', name:'Done'})
+    events << Selection.new({id:'Delete Requested', name:'Delete Requested'})
+    events << Selection.new({id:'New', name:'New'})
+    events << Selection.new({id:'Requested', name:'Requested'})
+    events << Selection.new({id:'Running', name:'Running'})
+    events << Selection.new({id:'Stop Requested', name:'Stop Requested'})
+    events << Selection.new({id:'Stopped', name:'Stopped'})
     events
   end
 
   def self.condition_selections
     conditions = []
-    conditions << Selection.new({:id=>'always',     :name=>'Always'})
-    conditions << Selection.new({:id=>'high',       :name=>'Threat level at least High'})
-    conditions << Selection.new({:id=>'medium',     :name=>'Threat level at least Medium'})
-    conditions << Selection.new({:id=>'low',        :name=>'Threat level at least Low'})
-    conditions << Selection.new({:id=>'log',        :name=>'Threat level at least Log'})
-    conditions << Selection.new({:id=>'changed',    :name=>'Threat level changed'})
-    conditions << Selection.new({:id=>'increased',  :name=>'Threat level increased'})
-    conditions << Selection.new({:id=>'decreased',  :name=>'Threat level decreased'})
+    conditions << Selection.new({id:'always',     name:'Always'})
+    conditions << Selection.new({id:'high',       name:'Threat level at least High'})
+    conditions << Selection.new({id:'medium',     name:'Threat level at least Medium'})
+    conditions << Selection.new({id:'low',        name:'Threat level at least Low'})
+    conditions << Selection.new({id:'log',        name:'Threat level at least Log'})
+    conditions << Selection.new({id:'changed',    name:'Threat level changed'})
+    conditions << Selection.new({id:'increased',  name:'Threat level increased'})
+    conditions << Selection.new({id:'decreased',  name:'Threat level decreased'})
     conditions
   end
 
   def self.method_selections
     methods = []
-    methods << Selection.new({:id=>'Email', :name=>'Email'})
-    methods << Selection.new({:id=>'syslog syslog', :name=>'System Logger (Syslog)'})
-    methods << Selection.new({:id=>'syslog SNMP', :name=>'SNMP'})
-    methods << Selection.new({:id=>'HTTP Get', :name=>'HTTP Get'})
+    methods << Selection.new({id:'Email', name:'Email'})
+    methods << Selection.new({id:'syslog syslog', name:'System Logger (Syslog)'})
+    methods << Selection.new({id:'syslog SNMP', name:'SNMP'})
+    methods << Selection.new({id:'HTTP Get', name:'HTTP Get'})
     methods
   end
 
   def self.selections(user)
     escalators = []
-    esc = Escalator.new({:id=>'0', :name=>'--'}) # add blank selection, so users can edit Escalator selection
+    esc = Escalator.new({id:'0', name:'--'}) # add blank selection, so users can edit Escalator selection
     escalators << esc
     self.all(user).each do |e|
       escalators << e
@@ -279,7 +279,7 @@ class Escalator
   end
 
   def delete_record(user)
-    req = Nokogiri::XML::Builder.new { |xml| xml.delete_escalator(:escalator_id => @id) }
+    req = Nokogiri::XML::Builder.new { |xml| xml.delete_escalator(escalator_id: @id) }
     begin
       resp = user.openvas_connection.sendrecv(req.doc)
       status = Escalator.extract_value_from("//@status", resp)
@@ -294,7 +294,7 @@ class Escalator
   end
 
   def test_escalator(user)
-    req = Nokogiri::XML::Builder.new { |xml| xml.test_escalator(:escalator_id => @id) }
+    req = Nokogiri::XML::Builder.new { |xml| xml.test_escalator(escalator_id: @id) }
     begin
       resp = user.openvas_connection.sendrecv(req.doc)
       status = Escalator.extract_value_from("//@status", resp)

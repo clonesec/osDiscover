@@ -8,6 +8,17 @@ class ApplicationController < ActionController::Base
 
   before_filter :set_back
 
+  layout :layout_by_resource
+
+  def layout_by_resource
+    if devise_controller? && resource_name == :user && action_name == 'new'
+      "login"
+    else
+      "application"
+    end
+  end
+
+  
   private
 
   def set_back
@@ -17,7 +28,7 @@ class ApplicationController < ActionController::Base
   end
 
   def redirect_to_root
-    redirect_to root_url, :alert => "Action is not allowed!"
+    redirect_to root_url, alert: "Action is not allowed!"
   end
 
   def sign_out_and_redirect(resource_or_scope)

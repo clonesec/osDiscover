@@ -10,22 +10,22 @@
 	  </div>
 	<% end %>
 	<div class="field">
-	  <div class="left">Name</div>
+	  <div class="left"><label>Name</label></div>
 	  <div class="right"><%= f.text_field :name, :maxlength => 80, :autocomplete => 'off' %></div>
 	</div>
 	<br /><br />
 	<div class="field">
-	  <div class="left">Password</div>
+	  <div class="left"><label>Password</label></div>
 	  <div class="right"><%= f.password_field :password, :maxlength => 40, :autocomplete => 'off' %></div>
 	</div>
 	<br /><br />
 	<div class="field">
-	  <div class="left">Role</div>
+	  <div class="left"><label>Role</label></div>
 	  <div class="right"><%= collection_select(:openvas_user, :role, OpenvasUser.role_selections, :id, :name) %></div>
 	</div>
 	<br /><br />
 	<div class="field">
-	  <div class="left">Host Access</div>
+	  <div class="left"><label>Host Access</label></div>
 	  <div class="right">
 			<%= collection_select(:openvas_user, :hosts_allow, OpenvasUser.access_selections, :id, :name) %>
 		</div>

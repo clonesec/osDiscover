@@ -3,7 +3,7 @@ class SlavesController < ApplicationController
   # ensure user is signed in via Devise
   before_filter :authenticate_user!
 
-  before_filter :redirect_to_root, :only => [:edit, :update]
+  before_filter :redirect_to_root, only: [:edit, :update]
 
   # use 'execute around' to set up openvas connection for all methods:
   before_filter :openvas_connect_and_login
@@ -26,9 +26,9 @@ class SlavesController < ApplicationController
     @slave = Slave.new(params[:slave])
     @slave.persisted = false
     if @slave.save(current_user)
-      redirect_to slaves_url, :notice => "Successfully created slave."
+      redirect_to slaves_url, notice: "Successfully created slave."
     else
-      render :action => 'new'
+      render action: 'new'
     end
   end
 
@@ -42,12 +42,12 @@ class SlavesController < ApplicationController
 
   def destroy
     @slave = Slave.find(params[:id], current_user)
-    redirect_to(slaves_url, :notice => "Unable to find slave #{params[:id]}.") and return if @slave.blank?
+    redirect_to(slaves_url, notice: "Unable to find slave #{params[:id]}.") and return if @slave.blank?
     msg = @slave.delete_record(current_user)
     if msg.blank?
-      redirect_to slaves_url, :notice => "Successfully deleted slave."
+      redirect_to slaves_url, notice: "Successfully deleted slave."
     else
-      redirect_to slaves_url, :notice => msg
+      redirect_to slaves_url, notice: msg
     end
   end
 

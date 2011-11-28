@@ -13,8 +13,10 @@
   <% end %>
 	<%= hidden_field_tag :update_type, 'family_nvts' %>
 	<%= hidden_field_tag :family, params[:family] %>
-	<table cellspacing="5" cellpadding="4">
-	  <tr class="table_header">
+	<article class="module">
+		<header><h3>Family Nvts</h3></header>
+		<table class="tablesorter" cellspacing="0">
+		<tr>
 	    <th>Name</th>
 	    <th>Risk</th>
 	    <th>CVSS</th>
@@ -22,6 +24,8 @@
 	    <th>Pref's</th>
 	    <th>Selected</th>
 	  </tr>
+	  </thead>
+	  <tbody>
 		<% @family_nvts.nvts.each do |n| %>
 				<tr>
 				  <td>
@@ -50,10 +54,10 @@
 						<%= check_box_tag "selects[#{Nvt.extract_value_from("@oid", n)}]", '1', selected %>
 					</td>
 				</tr>
-				<tr><td colspan="6"><hr /></td></tr>
 		<% end %>
+		</tbody>
 	</table>
-  <div class="actions">
+</article>    <div class="actions">
 		<div class="left"><%= big_button_submit_tag 'Save Scan Config' %></div>
   </div>
 	<br /><br />

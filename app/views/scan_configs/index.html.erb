@@ -1,17 +1,31 @@
+<script>
+	$(document).ready(function() { 
+		$(".tablesorter").tablesorter(); 
+	});
+</script>
+
+
 <% title "Scan Configs" %>
-<div><%= add_button_link_to 'create / import Scan config', new_scan_config_path %></div>
-<table cellspacing="2" cellpadding="4">
-  <tr class="table_header">
-    <th>Name</th>
-    <th>Family count</th>
-    <th>Families grow</th>
-    <th>NVTs count</th>
-    <th>NVTs grow</th>
-    <th>In use</th>
+<div><%= link_to 'Create / Import Scan Config', new_scan_config_path, :class => "add2-button" %></div>
+<div style="clear: both"></div>
+
+<article class="module">
+	<header><h3>Scan Configs Overview</h3></header>
+<table class="tablesorter" cellspacing="0">
+  <thead>
+  <tr>
+    <th class="first">Name</th>
+    <th style="width: 110px">Family Count</th>
+    <th style="width: 120px">Families Grow</th>
+    <th style="width: 100px">NVTs Count</th>
+    <th style="width: 90px">NVTs Grow</th>
+    <th style="width: 60px">In Use</th>
     <th colspan="2">Actions</th>
   </tr>
+  </thead>
+  <tbody>
 	<% @scan_configs.each do |scan_config| %>
-	  <tr>
+	  <tr class=<%= cycle('even', 'odd')%>>
 	    <td>
 				<%= link_to scan_config.name, scan_config_path(scan_config.id), :title => 'details of Scan Config' %>
 				<br />
@@ -22,11 +36,14 @@
 	    <td><%= scan_config.nvts_count %></td>
 	    <td><%= scan_config.nvts_grow %></td>
 	    <td><%= scan_config.in_use %></td>
-			<td><%= pill_button_link_to 'export', export_config_path(scan_config.id) %></td>
+			<td><%= link_to 'Export', export_config_path(scan_config.id), :class => "details-button" %></td>
 			<% unless scan_config.in_use > 0 %>
-		    <td><%= danger_remove_pill_button_link_to 'delete', scan_config_path(scan_config.id), :title => 'delete scan config', :confirm => 'Are you sure?', :method => :delete %></td>
+		    <td><%= link_to 'Delete', scan_config_path(scan_config.id), :title => 'delete scan config', :confirm => 'Are you sure?', :method => :delete, :class => "delete-button" %></td>
+			<% else %>
+			<td>&nbsp;</td>
 			<% end %>
 	  </tr>
-		<tr><td colspan="9"><hr /></td></tr>
 	<% end %>
+	</tbody>
 </table>
+</article>

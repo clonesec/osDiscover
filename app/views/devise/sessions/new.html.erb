@@ -1,10 +1,21 @@
 <div style="margin:0 auto; text-align:center; padding-top:30px">
-	<h1><span class="sign_in">osDiscover</span></h1>
+	<h1><a href="http://www.clone-systems.com/" id="clone_systems"></a><div id="os_discover"></div></h1>
 	<%= form_for(resource, :as => resource_name, :url => session_path(resource_name), :style => "margin:0 auto") do |f| %>
+	<div id="login_label">Login</div>
 	  <p><%= f.label :username %>
 	  <%= f.text_field :username %></p>
 	  <p><%= f.label :password %>
 	  <%= f.password_field :password %></p>
-	  <p><%= big_user_button_tag "Sign in" %></p>
+	  <p><%= f.submit "Sign in", id: "user_submit" %></p>
+	<div id="login_footer">
+		<small class="left">
+			<%= Time.now.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z") %>
+			&nbsp;&nbsp;
+		</small>
+		<small class="right">
+			<a href="http://www.clone-systems.com">www.clone-systems.com</a>
+		</small>
+	</div>
 	<% end %>
+	<div style="clear: both"></div>
 </div>

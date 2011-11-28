@@ -1,0 +1,250 @@
+#box-holders {
+	margin: -8px 0 30px -15px;
+	width: 997px;
+	overflow: auto;
+}
+
+#box-holders .box {
+	float: left;
+	width: 310px;
+	height: 210px;
+	margin-left: 16px;
+}
+
+
+#box-holders .center-box {
+#	margin: 0 10px;
+}
+
+#box-holders .other-box {
+
+}
+
+#box-holders .other-box .total-hosts {
+	position: absolute;
+	margin-top: -125px;
+	margin-left: 195px;
+	font-size: 12px;
+	font-weight: bold;
+	color: #535353;
+}
+
+#box-holders .all-hosts {
+      background:url("<%= asset_path("main/box-all-hosts.png") %>") no-repeat;  
+}
+
+#box-holders .other-box .title .box-bottom-fonts {
+	font-size: 16px;
+	font-weight: bold;
+	color: #535353;
+	text-shadow: 0 0 0 #535353;
+}
+
+.failed-green {
+	color: #86C81D;
+	font-size: 30px;
+	font-weight: bold;
+}
+
+#box-holders .all-hosts-title {
+	font-weight: bold;
+	font-size: 18px;
+}
+
+#box-holders .other-box {
+	background:url("<%= asset_path("main/other-box.png") %>") no-repeat;  
+}
+
+#box-holders .other-box .all-scanned-title {
+	font-size: 30px;
+	font-weight: bold;
+	color: #86c81d;
+}
+
+#box-holders .other-box .all-hosts-title {
+	color: #86c81d;
+}
+
+#box-holders .other-box .count {
+	color: #86c81d;
+}
+
+#box-holders .count {
+	font-style: normal;
+	font-weight: bold;
+	text-align: center;
+	text-decoration: none;
+	text-shadow: -1px 1px 1px #333;
+	font-size: 100px;
+	margin-top: 8px;
+	color: #f4f5f8;
+}
+
+#box-holders .other-box .count{
+	margin-bottom: 10px;
+}
+
+#box-holders .title {
+	color: #f4f5f8;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	letter-spacing: -1px;
+	text-align: center;
+	line-height: 30px;
+	margin-top: -15px;
+	text-decoration: none;
+	text-shadow: 1px 1px 1px #333;
+	text-transform: uppercase;
+}
+
+/* Tabs */
+.tabbed_area {    
+	background-color:#fff;  
+	padding:8px;  
+	width: 950px;
+	margin:0 auto;
+}   
+
+ul.tabs {  
+	margin:0px; padding:0px;  
+	position: relative;
+	top: -10px ;
+}
+  
+ul.tabs li {  
+    list-style:none;  
+    display:inline;  
+}
+
+    ul.tabs li a {  
+        background-color:#464c54;  
+        color:#ffebb5;  
+        padding:8px 14px 8px 14px;  
+        text-decoration:none;  
+        font-size:14px;  
+        font-family:Verdana, Arial, Helvetica, sans-serif;  
+        font-weight:bold;  
+        text-transform:uppercase;  
+        border:1px solid #464c54;  
+    }  
+    ul.tabs li a:hover {  
+        background-color:#eee;  
+    }  
+    ul.tabs li a.active {  
+        background-color:#ffffff;  
+        color:#282e32;
+position: relative;
+z-index: 100000;    
+    }
+
+.content {  
+    background-color:#ffffff;  
+    padding:10px;  
+    border:1px solid #464c54; 
+	border-top: 0;
+	position: relative;
+	z-index: 10;
+}  
+
+#reports_tab { display:none; }
+
+	ul.tabs {  
+		margin:0px; padding:0px;  
+	} 
+
+    ul.tabs li a {
+border: 1px solid #bdbdbd; 
+-webkit-border-top-left-radius: 7px;
+-webkit-border-top-right-radius: 7px;
+-moz-border-radius-topleft: 7px;
+-moz-border-radius-topright: 7px;
+border-top-left-radius: 7px;
+border-top-right-radius: 7px; 
+background-color: #f6f6f6;
+padding: 10px 15px;
+line-height: 0px;
+color: #565656;
+position: relative;
+
+    }  
+    ul.tabs li a.active {  
+        background-image:url("<%= asset_path("main/tab-bg.png") %>");  
+        background-repeat:repeat-x;  
+        background-position:top;
+border-top: 0;
+border-bottom: 1px solid #D9E1E5;  
+    }  
+
+
+
+.total-hosts {
+font-size: 12px;
+}
+
+.content {
+border: 1px solid #bdbdbd;
+background-color: #D9E1E5;
+}
+
+
+#reports_graph {
+border: 1px solid #bdbdbd;
+}
+
+#box-holders #active-box {
+background:url("<%= asset_path("main/box-all-hosts.png") %>") no-repeat;  
+}
+
+#box-holders #active-box .count,#box-holders #active-box .title, #box-holders #active-box .all-hosts-title, 
+#box-holders #active-box .all-scanned-title, #box-holders #active-box .total-hosts, 
+#box-holders #active-box .failed-green 
+ {
+	color: #f6f7f9;
+}
+
+#box-holders #active-box .total-hosts {
+	color: #f6f7f9;
+}
+
+.left-box {
+	float: left;
+}
+
+#box-holders .right-box {
+	margin-right: 16px;
+	float: right;
+}
+
+#box-holders .center-box .red-font {
+	color: red;
+}
+
+.view-more {
+display: block;
+text-align: right;
+color: #000;
+}
+
+.view-more:hover {
+text-decoration: underline;
+}
+
+#schedules_tab .module {
+border: 0;
+}
+
+#reports_tab .module {
+border: 0;
+}
+
+#schedules_tab .first-th, #reports_tab .first-th {
+border: 0;
+}
+
+
+#schedules_tab .module, #reports_tab .module {
+margin: 10px 0 5px 0px;
+}
+
+

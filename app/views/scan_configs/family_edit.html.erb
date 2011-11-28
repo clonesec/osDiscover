@@ -12,13 +12,18 @@
     </div>
   <% end %>
 	<%= hidden_field_tag :update_type, 'family' %>
-	<table cellspacing="5" cellpadding="4">
-	  <tr class="table_header">
+<article class="module">
+	<header><h3>Family Details</h3></header>
+	<table class="tablesorter" cellspacing="0">
+		<thead> 
+		<tr>
 	    <th>Family</th>
 	    <th>NVT's selected</th>
 	    <th>Select all NVT's</th>
 	    <th>Trend</th>
 	  </tr>
+	  </thead>
+	  <tbody>
 		<% @scan_config.families.each do |key, family| %>
 		  <tr>
 		    <td>
@@ -36,10 +41,11 @@
 					<%= select_tag "trends[#{family.name}]", raw("#{options}") %>
 				</td>
 		  </tr>
-			<tr><td colspan="4"><hr /></td></tr>
 		<% end %>
+		</tbody>
 	</table>
-  <div class="actions">
+</article>  
+<div class="actions">
 		<div class="left"><%= big_button_submit_tag 'Save Scan Config' %></div>
   </div>
 	<br /><br />

@@ -1,7 +1,7 @@
 <% title "Scan Config Details" %>
 
 <% if session[:go_back] %>
-	<div><%= arrowleft_pill_button_link_to "back", session[:go_back] %></div>
+	<div><%= arrowleft_pill_button_link_to "Back", session[:go_back] %></div><p />
 <% end %>
 
 <b>Name: <%= @scan_config.name %></b><br />
@@ -15,12 +15,17 @@ In use: <%= @scan_config.in_use %><br />
 <% if @scan_config.in_use < 1 %>
 		<%= pill_button_link_to 'edit NVT Families', edit_scan_config_path(:id=>@scan_config.id, :update_type=>'family'), :title => 'edit NVT Families' %>
 <% end %>
-<table cellspacing="5" cellpadding="4">
-  <tr class="table_header">
+<article class="module">
+	<header><h3>Family Details</h3></header>
+	<table class="tablesorter" cellspacing="0">
+		<thead>
+	<tr>
     <th>Family</th>
     <th>NVT's selected</th>
     <th>Trend</th>
   </tr>
+  </thead>
+  <tbody>
 	<% @scan_config.families.each do |key, family| %>
 	  <tr>
 	    <td><%= family.name %></td>
@@ -31,32 +36,47 @@ In use: <%= @scan_config.in_use %><br />
 	  </tr>
 		<tr><td colspan="4"><hr /></td></tr>
 	<% end %>
-</table>
+		</tbody>
+	</table>
+</article>  
 <br />
 <h2>Scanner Preferences</h2>
 <% if @scan_config.in_use < 1 %>
 		<%= pill_button_link_to 'edit Scanner Preferences', edit_scan_config_path(:id=>@scan_config.id, :update_type=>'scanner'), :title => 'edit Scanner Preference' %>
 <% end %>
-<table cellspacing="2" cellpadding="4">
-  <tr class="table_header">
+<article class="module">
+	<header><h3>Family Details</h3></header>
+	<table class="tablesorter" cellspacing="0">
+		<thead> 
+		<tr>
     <th>Name</th>
     <th>Value</th>
   </tr>
+	</thead>
+	<tbody>
 	<% @scan_config.scanner_preferences.each do |pref| %>
 	  <tr>
 	    <td><%= pref.name %></td>
 	    <td><%= pref.value %></td>
 	  </tr>
 	<% end %>
-</table>
+		</tbody>
+	</table>
+</article>  
+
 <br />
 <h2>Network Vulnerability Test Preferences</h2>
-<table cellspacing="2" cellpadding="4">
-  <tr class="table_header">
+<article class="module">
+	<header><h3>Family Details</h3></header>
+	<table class="tablesorter" cellspacing="0">
+		<thead>
+	<tr>
     <th>NVT</th>
     <th>Name</th>
     <th>Value</th>
   </tr>
+  </thead>
+  <tbody>
 	<% @scan_config.nvt_preferences.each do |pref| %>
 	  <tr>
 	    <td>
@@ -74,18 +94,26 @@ In use: <%= @scan_config.in_use %><br />
 				<% end %>
 			</td>
 	  </tr>
-		<!-- <tr><td colspan="4"><%#=debug pref%></td></tr> -->
 	<% end %>
-</table>
+	</tbody>
+	</table>
+</article>  
 <br />
 <h2>Tasks using this Config</h2>
-<table cellspacing="2" cellpadding="4">
-  <tr class="table_header">
+<article class="module">
+	<header><h3>Family Details</h3></header>
+	<table class="tablesorter" cellspacing="0">
+		<thead> 
+	<tr >
     <th>Name</th>
   </tr>
+  	  </thead>
+	  <tbody>
 	<% @scan_config.tasks.each do |task| %>
 	  <tr>
 	    <td><%= task.name %></td>
 	  </tr>
 	<% end %>
-</table>
+		</tbody>
+	</table>
+</article>  

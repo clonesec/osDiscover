@@ -1,0 +1,23 @@
+{ "elements": 
+[ { "type": "line", "text":"Reports per day", "on-show":{"type": "pop-up", "cascade":0, "delay":0}, "colour": "#ccc", "values":[ <%= a = current_user.show_reports(Date.today - 7.days).count rescue "0" %>,<%= b = current_user.show_reports(Date.today - 6.days).count rescue "0" %>,<%= c = current_user.show_reports(Date.today - 5.days).count rescue "0" %>,<%= d = current_user.show_reports(Date.today - 4.days).count rescue "0" %>,<%= e = current_user.show_reports(Date.today - 3.days).count rescue "0" %>,<%= f = current_user.show_reports(Date.today - 2.days).count rescue "0" %>,<%= g = current_user.show_reports(Date.today - 1.days).count rescue "0" %>], "dot-style": { "type":"solid-dot", "colour":"#ddd", "dot-size": 6 } }  ],
+ "title": { "text": "Latest Reports", "style":"{color: #333333; font-size: 25;}" },
+ 	"y_axis":{
+		"grid-colour": "#999999",
+		"stroke": 5,
+		"tick-length":  0,
+		"colour": "#909090",
+		"max": <%= [a,b,c,d,e,f,g].max + 1 rescue "1" %>
+	},
+  	"x_axis":{
+		"3d": 15, "colour": "#909090",
+		"grid-visible": false,		
+		"stroke": 400,
+		"labels":{  
+		  "visible": true,
+		  "steps":  1,
+		  "labels": [<%= raw @days %>]
+		}	
+	},
+
+  "bg_colour":  "#f7f8fa"
+}

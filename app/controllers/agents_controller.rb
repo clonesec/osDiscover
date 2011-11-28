@@ -3,7 +3,7 @@ class AgentsController < ApplicationController
   # ensure user is signed in via Devise
   before_filter :authenticate_user!
 
-  before_filter :redirect_to_root, :only => [:edit, :update]
+  before_filter :redirect_to_root, only: [:edit, :update]
 
   # use 'execute around' to set up openvas connection for all methods:
   before_filter :openvas_connect_and_login
@@ -26,9 +26,9 @@ class AgentsController < ApplicationController
     @agent = Agent.new(params[:agent])
     @agent.persisted = false
     if @agent.save(current_user)
-      redirect_to agents_url, :notice => "Successfully created agent."
+      redirect_to agents_url, notice: "Successfully created agent."
     else
-      render :action => 'new'
+      render action: 'new'
     end
   end
 
@@ -42,12 +42,12 @@ class AgentsController < ApplicationController
 
   def destroy
     @agent = Agent.find(params[:id], current_user)
-    redirect_to(agents_url, :notice => "Unable to find agent #{params[:id]}.") and return if @agent.blank?
+    redirect_to(agents_url, notice: "Unable to find agent #{params[:id]}.") and return if @agent.blank?
     msg = @agent.delete_record(current_user)
     if msg.blank?
-      redirect_to agents_url, :notice => "Successfully deleted agent."
+      redirect_to agents_url, notice: "Successfully deleted agent."
     else
-      redirect_to agents_url, :notice => msg
+      redirect_to agents_url, notice: msg
     end
   end
 
@@ -55,9 +55,9 @@ class AgentsController < ApplicationController
     @agent = Agent.find(params[:id], current_user)
     msg = @agent.verify_agent(current_user)
     if msg.blank?
-      redirect_to agents_url, :notice => "Agent: #{@agent.name} verified."
+      redirect_to agents_url, notice: "Agent: #{@agent.name} verified."
     else
-      redirect_to agents_url, :notice => msg
+      redirect_to agents_url, notice: msg
     end
   end
 
@@ -73,7 +73,7 @@ class AgentsController < ApplicationController
       mime_type = Mime::Type.lookup_by_extension(extname)
       content_type = mime_type.to_s unless mime_type.nil?
       content_type = 'application/octet-stream' if content_type.blank?
-      send_data agent.package, :type => content_type, :filename => "#{agent.package_filename}", :disposition => 'attachment'
+      send_data agent.package, type: content_type, filename: "#{agent.package_filename}", disposition: 'attachment'
     end
   end
 

@@ -9,14 +9,14 @@ class Report
 
   def result_count_total
     unless @result_count_total
-      @result_count_total = {:total=>0, :false_positive=>0, :debug=>0, :log=>0, :low=>0, :medium=>0, :high=>0}
+      @result_count_total = {total:0, false_positive:0, debug:0, log:0, low:0, medium:0, high:0}
     end
     @result_count_total
   end
 
   def result_count_filtered
     unless @result_count_filtered
-      @result_count_filtered = {:total=>0, :false_positive=>0, :debug=>0, :log=>0, :low=>0, :medium=>0, :high=>0}
+      @result_count_filtered = {total:0, false_positive:0, debug:0, log:0, low:0, medium:0, high:0}
     end
     @result_count_filtered
   end
@@ -62,27 +62,27 @@ class Report
 
   def self.sort_selections
     sorts = []
-    sorts << Selection.new({:id=>'threat descending', :name=>'threat descending'})
-    sorts << Selection.new({:id=>'threat ascending',  :name=>'threat ascending'})
-    sorts << Selection.new({:id=>'port descending',   :name=>'port descending'})
-    sorts << Selection.new({:id=>'port ascending',    :name=>'port ascending'})
+    sorts << Selection.new({id:'threat descending', name:'threat descending'})
+    sorts << Selection.new({id:'threat ascending',  name:'threat ascending'})
+    sorts << Selection.new({id:'port descending',   name:'port descending'})
+    sorts << Selection.new({id:'port ascending',    name:'port ascending'})
     sorts
   end
 
   def self.cvss_selections
     cvsss = []
-    cvsss << Selection.new({:id=>'',     :name=>'None'})
-    cvsss << Selection.new({:id=>'10.0', :name=>'10.0'})
-    cvsss << Selection.new({:id=>'9.0',  :name=>'9.0'})
-    cvsss << Selection.new({:id=>'8.0',  :name=>'8.0'})
-    cvsss << Selection.new({:id=>'7.0',  :name=>'7.0'})
-    cvsss << Selection.new({:id=>'6.0',  :name=>'6.0'})
-    cvsss << Selection.new({:id=>'5.0',  :name=>'5.0'})
-    cvsss << Selection.new({:id=>'4.0',  :name=>'4.0'})
-    cvsss << Selection.new({:id=>'3.0',  :name=>'3.0'})
-    cvsss << Selection.new({:id=>'2.0',  :name=>'2.0'})
-    cvsss << Selection.new({:id=>'1.0',  :name=>'1.0'})
-    cvsss << Selection.new({:id=>'0.0',  :name=>'0.0'})
+    cvsss << Selection.new({id:'',     name:'None'})
+    cvsss << Selection.new({id:'10.0', name:'10.0'})
+    cvsss << Selection.new({id:'9.0',  name:'9.0'})
+    cvsss << Selection.new({id:'8.0',  name:'8.0'})
+    cvsss << Selection.new({id:'7.0',  name:'7.0'})
+    cvsss << Selection.new({id:'6.0',  name:'6.0'})
+    cvsss << Selection.new({id:'5.0',  name:'5.0'})
+    cvsss << Selection.new({id:'4.0',  name:'4.0'})
+    cvsss << Selection.new({id:'3.0',  name:'3.0'})
+    cvsss << Selection.new({id:'2.0',  name:'2.0'})
+    cvsss << Selection.new({id:'1.0',  name:'1.0'})
+    cvsss << Selection.new({id:'0.0',  name:'0.0'})
     cvsss
   end
 
@@ -112,7 +112,7 @@ class Report
   end
 
   def self.find(options, user)
-    params = { :notes_details=>'1', :overrides=>'1', :overrides_details=>'1' } # can't be changed by user
+    params = { notes_details:'1', overrides:'1', overrides_details:'1' } # can't be changed by user
     params[:levels] = self.levels(options)
     params[:report_id] = options[:id] unless options[:id].blank?
     params.merge!(options)
@@ -127,7 +127,7 @@ class Report
   end
 
   def self.find_by_id_and_format(user, options)
-    params = { :notes_details=>'1', :overrides=>'1', :overrides_details=>'1' } # can't be changed by user
+    params = { notes_details:'1', overrides:'1', overrides_details:'1' } # can't be changed by user
     params[:report_id] = options[:id] unless options[:id].blank?
     params[:format_id] = options[:format_id] unless options[:format_id].blank?
     full_report = false
@@ -207,7 +207,7 @@ class Report
       rep.started_at  = extract_value_from("scan_start", r)
       rep.started_at  = Time.parse(rep.started_at) unless rep.started_at.blank?
       rep.ended_at    = extract_value_from("scan_end", r)
-      rep.ended_at    = Time.parse(rep.ended_at) unless rep.started_at.blank?
+      rep.ended_at    = Time.parse(rep.ended_at) unless rep.started_at.blank? rescue ""
       rep.result_count_total[:total]  = extract_value_from("result_count/full", r).to_i
       rep.result_count_total[:debug]  = extract_value_from("result_count/debug/full", r).to_i
       rep.result_count_total[:high]   = extract_value_from("result_count/hole/full", r).to_i
@@ -288,6 +288,46 @@ class Report
   		threat = 'Medium'
 	  end
 		high = @result_count_total[:high]
+		if high > 0
+  		threat = 'High'
+	  end
+		return 'Low' if threat == 'Log'
+		threat
+  end
+  
+  def medium_with_no_override
+	medium_override = 0
+	self.results.each do |result|
+		result.overrides.each do |override|
+			medium_override = medium_override + 1 if override.threat == "Medium"
+		end
+	end
+	return self.result_count_total[:medium] - medium_override
+  end
+  
+  def high_with_no_override
+	high_override = 0
+	self.results.each do |result|
+		result.overrides.each do |override|
+			high_override = high_override + 1 if override.threat == "High"
+		end
+	end
+	return self.result_count_total[:high] - high_override
+  end
+  
+  
+    def active_threat
+		#Rails.logger.info("test:::: #{@result_count_total[:false_positive]} ::::test")
+		return 'None' if @result_count_total[:total] == 0
+		high_medium_low = @result_count_total[:high] + @result_count_total[:medium] + @result_count_total[:low]
+		return 'None' if high_medium_low <= 0
+		low = @result_count_total[:low]
+		threat = 'Low'
+		medium = self.medium_with_no_override 
+		if medium > 0
+  		threat = 'Medium'
+	  end
+		high = self.high_with_no_override 
 		if high > 0
   		threat = 'High'
 	  end

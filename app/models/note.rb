@@ -10,7 +10,7 @@ class Note
 
   define_attribute_methods [:nvt_oid, :nvt_name, :hosts, :port, :threat, :note_text, :task_id, :result_id, :report_id]
 
-  validates :note_text, :presence => true, :length => { :maximum => 600 }
+  validates :note_text, presence: true, length: { maximum: 600 }
 
   def self.parse_result_node(xml)
     nt = Note.new
@@ -46,19 +46,19 @@ class Note
 
   def self.two_selections(second_id, second_name)
     s = []
-    s << Selection.new({:id=>'', :name=>'Any'})
+    s << Selection.new({id:'', name:'Any'})
     unless second_id.blank?
       if second_name.blank?
-        s << Selection.new({:id=>second_id, :name=>second_id})
+        s << Selection.new({id:second_id, name:second_id})
       else
-        s << Selection.new({:id=>second_id, :name=>second_name})
+        s << Selection.new({id:second_id, name:second_name})
       end
     end
     s
   end
 
   def self.all(user, options = {})
-    params = {:details => "1", :result => "1"}
+    params = {details: "1", result: "1"}
     params[:note_id] = options[:id] if options[:id]
     params[:task_id] = options[:task_id] if options[:task_id]
     params[:sort_field] = options[:sort_field] if options[:sort_field]
@@ -107,13 +107,13 @@ class Note
   def create_or_update(user)
     req = Nokogiri::XML::Builder.new { |xml|
       if @id
-        xml.modify_note(:note_id => @id) {
+        xml.modify_note(note_id: @id) {
           xml.text_   { xml.text(@note_text) }
           xml.hosts   { xml.text(@hosts) }
           xml.port    { xml.text(@port) }
           xml.threat  { xml.text(@threat) }
-          xml.result(:id => @result_id)
-          xml.task(:id => @task_id)
+          xml.result(id: @result_id)
+          xml.task(id: @task_id)
         }
       else
         xml.create_note {
@@ -121,9 +121,9 @@ class Note
           xml.hosts   { xml.text(@hosts) }
           xml.port    { xml.text(@port) }
           xml.threat  { xml.text(@threat) }
-          xml.nvt(:oid => @nvt_oid)
-          xml.result(:id => @result_id)
-          xml.task(:id => @task_id)
+          xml.nvt(oid: @nvt_oid)
+          xml.result(id: @result_id)
+          xml.task(id: @task_id)
         }
       end
     }
@@ -144,7 +144,7 @@ class Note
   end
 
   def delete_record(user)
-    req = Nokogiri::XML::Builder.new { |xml| xml.delete_note(:note_id => @id) }
+    req = Nokogiri::XML::Builder.new { |xml| xml.delete_note(note_id: @id) }
     begin
       resp = user.openvas_connection.sendrecv(req.doc)
       status = Note.extract_value_from("//@status", resp)

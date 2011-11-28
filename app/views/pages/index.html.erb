@@ -1,2 +1,47 @@
-<h1>Dashboard</h1>
-<p>Find me in app/views/pages/index.html.erb</p>
+<%= stylesheet_link_tag "main/dashboard" %>
+<%= javascript_include_tag "main/dashboard", "swfobject" %>
+<%# 
+<script type="text/javascript">
+	swfobject.embedSWF(
+		"flash/open-flash-chart.swf", "reports_graph",
+		"928", "300", "9.0.0", "expressInstall.swf",
+	{"data-file":"/report-graph.json", "id":"reports_graph_id"} );
+</script> 
+%>
+<% title "Dashboard" %>
+
+<div id="box-holders">
+	<a class="box other-box left-box" id="active-box" href="#">
+		<div class="count"><%= current_user.unique_ips rescue "0" %></div>
+		<div class="title"><span class="all-hosts-title">Hosts</span><br /><span class="all-scanned-title">scanned</span></div>
+	</a>
+	
+	<a class="box other-box center-box"  href="#">
+		<div class="count red-font"><%= current_user.severity_count %></div>
+		<div class="title"><span class="failed-green red-font">failed</span><br /><span class="box-bottom-fonts">with vulnerabilities</span></div>
+	</a>
+	
+	<a class="box other-box right-box" href="#">
+		<div class="count"><%= current_user.date_severity_count rescue "0" %></div>
+		<div class="title"><span class="failed-green">unscanned</span><br /><span class="box-bottom-fonts">for 90+ days</span></div>
+	</a>
+</div>
+
+<div style="clear: both"></div>
+
+<div class="tabbed_area">
+	<ul class="tabs">
+		<li><a class="tab active" title="Schedules" store="schedules_tab" href="#">Schedules</a></li>
+		<li><a class="tab" title="Reports" store="reports_tab" href="#">Reports</a></li>
+	</ul>
+	<div id="schedules_tab" class="content"><%= render :partial => "schedule" %></div>
+	<div id="reports_tab" class="content"><%= render :partial => "report" %></div>
+	
+</div>
+
+
+
+	
+
+
+	

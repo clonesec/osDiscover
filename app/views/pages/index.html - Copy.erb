@@ -1,0 +1,33 @@
+<script>
+	$(document).ready(function() { 
+		$(".tablesorter").tablesorter(); 
+	});
+</script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+			  var data = new google.visualization.DataTable();
+			  data.addColumn('string', 'Severity');
+			  data.addColumn('number', 'Vulnerability Assesment Tests');
+			  data.addRows(5);
+			  data.setValue(0, 0, 'Serious');
+			  data.setValue(0, 1, 11);
+			  data.setValue(1, 0, 'High');
+			  data.setValue(1, 1, 2);
+			  data.setValue(2, 0, 'Medium');
+			  data.setValue(2, 1, 2);
+			  data.setValue(3, 0, 'Info');
+			  data.setValue(3, 1, 2);
+
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        chart.draw(data, {width: 800, height: 360, title: 'Recent VAT Signatures'});
+      }
+    </script>
+
+
+
+<% title "Dashboard" %>
+<div id="chart_div"></div>
+<%= %>

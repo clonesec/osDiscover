@@ -1,0 +1,81 @@
+		<% @tasks.each do |task| %>
+		  <tr class=<%= cycle('even', 'odd')%>>
+				<td>
+					<div class="button-container" id="button-container-<%= task.id %>">
+						<%# status: New, Done,
+												Stopped, 
+												Paused, 
+												Running, 
+												Internal Error, 
+												Requested, Pause Requested, Resume Requested, Stop Requested, Delete Requested
+						%>
+						<% can_delete = true %>
+						<% if ['New','Done'].include? task.status %>
+								<div class="button-group">
+									<%= link_to "Start", start_task_path(task.id), :title => 'Start Schedule', :class => "start-button" %>
+									<%#= disable_pill_button_link_to "Resume" %>
+									<%#= disable_pill_button_link_to "Stop" %>
+								</div>
+						<% elsif ['Stopped'].include? task.status %>
+								<div class="button-group">
+									<%= link_to "Start", start_task_path(task.id), :title => 'Start Schedule', :class => "start-button" %>
+									<%= link_to "Resume", resume_stopped_task_path(task.id), :title => 'Resume Schedule', :class => "start-button" %>
+									<%#= disable_pill_button_link_to "Stop", :class => "start-button" %>
+								</div>
+						<% elsif ['Paused'].include? task.status %>
+								<% can_delete = false %>
+								<div class="button-group">
+									<%#= disable_pill_button_link_to "Start", :title => 'not available' %>
+									<%= link_to "Resume", resume_paused_task_path(task.id), :title => 'Resume Schedule', :class => "start-button" %>
+									<%= link_to "Stop", stop_task_path(task.id), :title => 'Stop Schedule', :class => "start-button" %>
+								</div>
+						<% elsif ['Running'].include? task.status %>
+								<% can_delete = false %>
+								<div class="button-group">
+									<%#= disable_pill_button_link_to "Start" %>
+									<%= link_to "Pause", pause_task_path(task.id), :title => 'Pause Schedule', :class => "start-button" %>
+									<%= link_to "Stop", stop_task_path(task.id), :title => 'Stop Schedule', :class => "start-button" %>
+								</div>
+						<% elsif ['Internal Error'].include? task.status %>
+								<div class="button-group">
+									<%= link_to "Start", start_task_path(task.id), :title => 'Start Schedule', :class => "start-button" %>
+									<%#= disable_pill_button_link_to "Resume" %>
+									<%#= disable_pill_button_link_to "Stop" %>
+								</div>
+						<% else %>
+								<%# some type of 'requested' status %>
+								<% can_delete = false %>
+								<%= disable_pill_button_link_to "no actions available", root_path %>
+						<% end %>
+					</div>
+				</td>
+		    <td width="20%">
+					<%#= truncate(task.name, :length => 25) %>
+					<b><%= task.name %></b>
+					<% unless task.comment.blank? %>
+							<br />
+							<em><small><%= task.comment %><%#= truncate(task.comment, :length => 15) %></small></em>
+					<% end %>
+				</td>
+		    <td>
+					<% if ['New','Done'].include?(task.status) %>
+							<span class="done-icon"><%= task.status %></span>
+					<% elsif task.status =~ /Requested/ %>
+							<span class="ajax-scan" id="ajax-scan-<%= task.id %>"><span style="color:red"><%= task.status %></span></span>
+					<% else %>
+							<span class="ajax-scan" id="ajax-scan-<%= task.id %>"><%= task.status %> at <%= task.overall_progress %>%</span> 
+					<% end %>
+				</td>
+				<td><%# threat: High, Medium, Low, Log, Debug (Log,Debug = None) %><span class="<%= task.threat %>-icon"><%= task.threat %></span></td>
+				<td><%# trend: up, down, more, less, same %><span class="<%= task.trend %>"><%= task.trend %></span></td>
+	      <td><%= link_to "Details", task_path(task.id), :title => "view Task: #{truncate(task.name, :length => 20)}", :class => "details-button" %></td>
+				<td><%= link_to "Edit", edit_task_path(task.id), :title => "edit Task: #{truncate(task.name, :length => 20)}", :class => "edit-button" %></td>
+    		<td>
+					<% if can_delete %>
+							<%= link_to "Delete", task_path(task.id), :title => "delete Task: #{truncate(task.name, :length => 20)}", :confirm => 'Are you sure?', :method => :delete, :class => "delete-button" %>
+					<% else %>
+							<%= link_to "Delete", root_path, :title => "unable to delete Task: #{truncate(task.name, :length => 20)}", :class => "delete-button" %>
+					<% end %>
+				</td>
+		  </tr>
+		<% end %>

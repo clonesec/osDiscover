@@ -1,7 +1,7 @@
 <%= form_for @override do |f| %>
 	<% if @override.errors.any? %>
 	  <div id="error_explanation">
-	    <h2><%= pluralize(@override.errors.count, "error") %> prohibited this Override from being saved:</h2>
+	    <h2><%= pluralize(@override.errors.count, "error") %> prohibited this Exception from being saved:</h2>
 	    <ul>
 	      <% @override.errors.full_messages.each do |msg| %>
 	        <li><%= raw(msg) %></li>
@@ -12,54 +12,54 @@
   <%= f.hidden_field :nvt_oid %>
   <%= f.hidden_field :report_id %>
 	<div class="field">
-	  <div class="left">NVT Name</div>
+	  <div class="left"><label>NVT Name</label></div>
 	  <div class="right"><%= @override.nvt_oid %></div>
 	</div>
 	<br /><br />
 	<div class="field">
-	  <div class="left">Hosts</div>
+	  <div class="left"><label>Hosts</label></div>
 	  <div class="right">
 			<%= collection_select(:override, :hosts, Override.two_selections(@override.hosts, @override.hosts), :id, :name) %>
 		</div>
 	</div>
 	<br /><br />
 	<div class="field">
-	  <div class="left">Port</div>
+	  <div class="left"><label>Port</label></div>
 	  <div class="right">
 			<%= collection_select(:override, :port, Override.two_selections(@override.port, @override.port), :id, :name) %>
 		</div>
 	</div>
 	<br /><br />
 	<div class="field">
-	  <div class="left">Threat</div>
+	  <div class="left"><label>Threat</label></div>
 	  <div class="right">
 			<%= collection_select(:override, :threat, Override.two_selections(@override.threat, @override.threat), :id, :name) %>
 		</div>
 	</div>
 	<br /><br />
 	<div class="field">
-	  <div class="left"><strong>New Threat</strong></div>
+	  <div class="left"><label><strong>New Threat</strong></label></div>
 	  <div class="right">
 			<%= collection_select(:override, :new_threat, Override.threat_selections, :id, :name) %>
 		</div>
 	</div>
 	<br /><br />
 	<div class="field">
-	  <div class="left">Task</div>
+	  <div class="left"><label>Task</label></div>
 	  <div class="right">
 			<%= collection_select(:override, :task_id, Override.two_selections(@override.task_id, @override.task_name), :id, :name) %>
 		</div>
 	</div>
 	<br /><br />
 	<div class="field">
-	  <div class="left">Result</div>
+	  <div class="left"><label>Result</label></div>
 	  <div class="right">
 			<%= collection_select(:override, :result_id, Override.two_selections(@override.result_id, @override.result_description), :id, :name) %>
 		</div>
 	</div>
 	<br /><br />
   <div class="field">
-    <div class="left">Text</div>
+    <div class="left"><label>Text</label></div>
     <div class="right"><%= f.text_area :override_text, :rows => 5, :cols => 80 %></div>
   </div>
 	<br /><br />
@@ -67,9 +67,9 @@
     <div class="left">&nbsp;</div>
 		<div class="right">
 			<% if @override.new_record? %>
-	    		<%= big_button_submit_tag 'Create Override' %>
+	    		<%= big_button_submit_tag 'Create Exception' %>
 			<% else %>
-	    		<%= big_button_submit_tag 'Save Override' %>
+	    		<%= big_button_submit_tag 'Save Exception' %>
 			<% end %>
   	</div>
   </div>

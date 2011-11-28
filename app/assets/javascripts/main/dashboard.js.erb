@@ -1,0 +1,26 @@
+  $(document).ready(function(){  
+    $("a.tab").click(function (e) {  
+        $(".active").removeClass("active");  
+        $(this).addClass("active");  
+        $(".content").hide();
+        var content_show = $(this).attr("store");  		
+        $("#"+content_show).show();  
+		e.preventDefault();
+    });
+	
+	
+	//Boxes
+	$(".box").click(function(e) {
+		$(".box").removeAttr("id");
+		$(this).attr("id", "active-box");
+		e.preventDefault();
+	});
+  });  
+  
+function report_graph_date( reports_graph_id, index ){
+	 window.location = "/latest-reports/" + reports_graph_id
+}	
+
+function schedule_graph_date( schedules_graph_id, index ){
+	 window.location = "/latest-schedules/" + schedules_graph_id
+}	

@@ -1,0 +1,44 @@
+	<script>
+		$(document).ready(function() { 
+			$(".tablesorter").tablesorter(); 
+		});
+	</script>
+
+<% if @tasks.blank? %>
+		<h3>No tasks found.</h3>
+<% else %>
+			<article class="module">
+				<table class="tablesorter" cellspacing="0"> 
+					<thead> 
+						<tr>
+							<th class="first-th">Task Name</th> 
+							<th>Schedule Name</th> 
+							<th>Target Hosts</th> 
+							<th>Last Report</th> 
+							<th>Total Reports</th> 
+						</tr> 
+					</thead> 
+					<tbody> 
+					<% @tasks.each_with_index do |task, index| %>
+					<% if index < 3 %>
+						<tr>
+							<td><%= task.name %></td>
+							<td><%= task.schedule_name %> <%= "Empty" if task.schedule_name.blank? %></td> 
+							<td><%= task.target_name %></td> 
+							<td>
+								<% lrd = Time.parse(task.last_report_date) unless task.last_report_date.blank? %>
+								<%= link_to(lrd.strftime("%b %d %Y"), report_path(task.last_report_id), :title => 'view Last Report') unless task.last_report_date.blank? %>
+								<%= "Empty" if task.last_report_date.blank? %>
+							</td>
+							<td>
+								<%= link_to(task.finished_reports_count, task_path(task.id), :title => 'view Reports') unless task.reports_count <= 0 %>
+								<%= "No reports found" if task.reports_count <= 0 %>
+							</td> 
+						</tr>
+					<% end %>
+					<% end %>
+					</tbody> 
+				</table>
+			</article>
+<a href="<%= reports_path %>" class="view-more">View more...</a>
+<% end %>

@@ -18,7 +18,7 @@
     <div class="right"><%= f.text_area :comment, :rows => 5, :cols => 80 %></div>
   </div>
   <div class="field">
-    <div class="left">Scan Config</div>
+    <div class="left"><label>Scan Config</label></div>
 		<div class="right">
 			<% if @task.new_record? %>
 				<%= collection_select(:task, :config_id, ScanConfig.selections(current_user), :id, :name) %>
@@ -28,14 +28,18 @@
   	</div>
   </div>
   <div class="field">
-    <div class="left">Scan Target</div>
+    <div class="left"><label>Scan Target</label></div>
 		<div class="right">
 			<% if @task.new_record? %>
-				<%= collection_select(:task, :target_id, ScanTarget.selections(current_user), :id, :name) %>
+				<% if ScanTarget.selections(current_user).empty? %>
+					<%= select(:task, :target_id, {"--" => "0"}) %> <%= link_to 'Create new scan target', new_scan_target_path %>
+				<% else %>
+					<%= collection_select(:task, :target_id, ScanTarget.selections(current_user), :id, :name) %>
+				<% end %>
 			<% else %>
 				<%= collection_select(:task, :target_id, ScanTarget.selections(current_user), :id, :name, {}, {:disabled => true}) %>
 			<% end %>
-  	</div>
+	  	</div>
   </div>
   <div class="field">
     <div class="left"><%= f.label "Escalator" %></div>
@@ -54,9 +58,9 @@
     <div class="left">&nbsp;</div>
 		<div class="right">
 			<% if @task.new_record? %>
-	    		<%= big_button_submit_tag 'Create Task' %>
+	    		<%= big_button_submit_tag 'Create Schedule' %>
 			<% else %>
-	    		<%= big_button_submit_tag 'Save Task' %>
+	    		<%= big_button_submit_tag 'Save Schedule' %>
 			<% end %>
   	</div>
   </div>

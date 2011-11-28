@@ -1,16 +1,28 @@
+<script>
+	$(document).ready(function() { 
+		$(".tablesorter").tablesorter(); 
+	});
+</script>
+
 <% title "System Reports" %>
-<table cellspacing="2" cellpadding="4">
-  <tr class="table_header">
-    <th>Name</th>
+<article class="module">
+	<header><h3>System Reports Overview</h3></header>
+<table class="tablesorter" cellspacing="0">  
+<thead> 
+  <tr>
+    <th class="first">Name</th>
     <th>Title</th>
   </tr>
+</thead>
+<tbody>
   <% for system_report in @system_reports %>
-    <tr>
+    <tr class=<%= cycle('even', 'odd')%>>
       <td>
-		    <%= button_link_to system_report.name, system_report_path(system_report.name), :title => "view #{system_report.title}" %>
+		    <%= link_to system_report.name, system_report_path(system_report.name), :title => "view #{system_report.title}", :class => "details-button" %>
 			</td>
       <td><%= system_report.title %></td>
     </tr>
   <% end %>
+	</tbody>
 </table>
-
+</article>

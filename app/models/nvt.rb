@@ -66,7 +66,7 @@ class Nvt
   end
 
   def self.all(user, options = {})
-    params = {:details => 1}
+    params = {details: 1}
     params[:sort_order]       = options[:sort_order] if options[:sort_order]
     params[:sort_field]       = options[:sort_field] if options[:sort_field]
     params[:nvt_oid]          = options[:id] if options[:id]
@@ -117,12 +117,12 @@ class Nvt
           pref.timeout        = preferences_timeout
           nvt.preferences << pref
           # note that <value> isn't included in the <alt>(s), so let's add it as a selectable value:
-          pref.preference_values << PreferenceSelect.new({:id=>pref.value, :name=>pref.value})
+          pref.preference_values << PreferenceSelect.new({id:pref.value, name:pref.value})
           if pref.val_type_desc.downcase == 'checkbox'
             yes_or_no = pref.value.downcase == 'yes' ? 'no' : 'yes'
-            pref.preference_values << PreferenceSelect.new({:id=>yes_or_no, :name=>yes_or_no})
+            pref.preference_values << PreferenceSelect.new({id:yes_or_no, name:yes_or_no})
           end
-          p.xpath("alt").each { |alt| pref.preference_values << PreferenceSelect.new({:id=>alt.text, :name=>alt.text}) }
+          p.xpath("alt").each { |alt| pref.preference_values << PreferenceSelect.new({id:alt.text, name:alt.text}) }
         }
         ret << nvt
       }
@@ -149,7 +149,7 @@ class Nvt
   end
 
   def self.all_xml_only(user, options = {})
-    params = {:details => 1}
+    params = {details: 1}
     params[:sort_order]       = options[:sort_order] if options[:sort_order]
     params[:sort_field]       = options[:sort_field] if options[:sort_field]
     params[:nvt_oid]          = options[:id] if options[:id]

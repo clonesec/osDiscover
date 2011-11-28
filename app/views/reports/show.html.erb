@@ -1,12 +1,12 @@
 <% title "Task Report Summary" %>
 
 <% if session[:go_back] %>
-	<div><%= arrowleft_pill_button_link_to "back", tasks_path %></div>
+	<div><%= arrowleft_pill_button_link_to "Back", tasks_path %></div>
 <% end %>
 
 <%= render :partial => 'summary', :locals => {:report => @report} %>
 
-<div style="background:lemonchiffon; width:80%; padding-left:5px">
+<div style="background:lemonchiffon; width:100%;">
 	<%= render :partial => 'filter_form', :locals => {:report => @report} %>
 </div>
 

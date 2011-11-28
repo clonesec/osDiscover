@@ -1,0 +1,23 @@
+$(function() {
+	if($(".ajax-scan").length > 0) {
+		setTimeout(updateTaskStatus, 5000);
+	}	
+	
+	if($("#schedule_first_time").length > 0) { // Schedule Page, datapicker
+		$("#schedule_first_time").datetimepicker({
+			showAnim: "slide",
+			dateFormat: "yy-mm-dd",
+			timeFormat: "hh:mm",
+			changeMonth: true,
+			changeYear: true,
+		});
+	}
+});
+
+function updateTaskStatus() {
+	$.each($(".ajax-scan"), function() {
+        $.get("/ajax_task", { task_id: $(this).attr("id") } ); 	
+    });
+	setTimeout(updateTaskStatus, 5000);
+}
+

@@ -1,8 +1,18 @@
+<script>
+	$(document).ready(function() { 
+		$(".tablesorter").tablesorter(); 
+	});
+</script>
+
 <% title "Report Formats" %>
-<div><%= add_button_link_to 'import Report Format', new_report_format_path %></div>
-<table cellspacing="2" cellpadding="4">
-  <tr class="table_header">
-    <th>Name</th>
+<div><%= link_to 'Import Report Format', new_report_format_path, :class => "add2-button" %></div>
+<div style="clear: both"></div>
+<article class="module">
+	<header><h3>Report Formats Overview</h3></header>
+<table class="tablesorter" cellspacing="0">  
+<thead>   
+	<tr>
+    <th class="first">Name</th>
     <th>Extension</th>
     <th>Content Type</th>
     <th>Trust</th>
@@ -10,9 +20,11 @@
     <th>Summary</th>
     <th colspan="3">Actions</th>
   </tr>
+</thead>
+<tbody>
   <% for report_format in @report_formats %>
     <tr>
-      <td><%= pill_button_link_to report_format.name, edit_report_format_path(report_format.id), :title => 'edit Report Format' %></td>
+      <td><%= link_to report_format.name, edit_report_format_path(report_format.id), :title => 'edit Report Format', :class => "details-button" %></td>
       <td><%= report_format.extension %></td>
       <td><%= report_format.content_type %></td>
       <td>
@@ -23,16 +35,17 @@
 			</td>
       <td><%= report_format.active == '1' ? 'yes' : 'no' %></td>
       <td><%= report_format.summary %></td>
-      <td><%= arrowdown_pill_button_link_to 'download', export_report_format_path(report_format.id), :title => 'download report format' %></td>
-      <td><%= pill_button_link_to "verify report format", verify_report_format_path(report_format.id), :title => 'verify report format' %></td>
+      <td><%= pill_button_link_to 'Download', export_report_format_path(report_format.id), :title => 'download report format' %></td>
+      <td><%= pill_button_link_to "Verify Report Format", verify_report_format_path(report_format.id), :title => 'verify report format' %></td>
       <td>
 				<% if report_format.global == '0' %>
-						<%= danger_remove_pill_button_link_to "delete", report_format_path(report_format.id), :confirm => 'Are you sure?', :method => :delete %>
+						<%= danger_remove_pill_button_link_to "Delete", report_format_path(report_format.id), :confirm => 'Are you sure?', :method => :delete %>
 			  <% else %>
-						<%= disable_danger_remove_pill_button_link_to "delete", report_formats_path, :title=>'report format is in use' %>
+						<%= link_to "Delete", report_formats_path, :title=>'report format is in use', :class => "delete-button" %>
 			  <% end %>
 			</td>
     </tr>
-		<tr><td colspan="9"><hr /></td></tr>
   <% end %>
+	</tbody>
 </table>
+</article>

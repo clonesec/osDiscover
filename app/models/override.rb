@@ -11,15 +11,15 @@ class Override
 
   define_attribute_methods [:nvt_oid, :nvt_name, :hosts, :port, :threat, :override_text, :task_id, :result_id, :report_id]
 
-  validates :override_text, :presence => true, :length => { :maximum => 600 }
+  validates :override_text, presence: true, length: { maximum: 600 }
 
   def self.threat_selections
     threats = []
-    threats << Selection.new({:id=>'False Positive', :name=>'False Positive'})
-    threats << Selection.new({:id=>'High', :name=>'High'})
-    threats << Selection.new({:id=>'Medium', :name=>'Medium'})
-    threats << Selection.new({:id=>'Low', :name=>'Low'})
-    threats << Selection.new({:id=>'Log', :name=>'Log'})
+    threats << Selection.new({id:'False Positive', name:'False Positive'})
+    threats << Selection.new({id:'High', name:'High'})
+    threats << Selection.new({id:'Medium', name:'Medium'})
+    threats << Selection.new({id:'Low', name:'Low'})
+    threats << Selection.new({id:'Log', name:'Log'})
     threats
   end
 
@@ -58,19 +58,19 @@ class Override
 
   def self.two_selections(second_id, second_name)
     s = []
-    s << Selection.new({:id=>'', :name=>'Any'})
+    s << Selection.new({id:'', name:'Any'})
     unless second_id.blank?
       if second_name.blank?
-        s << Selection.new({:id=>second_id, :name=>second_id})
+        s << Selection.new({id:second_id, name:second_id})
       else
-        s << Selection.new({:id=>second_id, :name=>second_name})
+        s << Selection.new({id:second_id, name:second_name})
       end
     end
     s
   end
 
   def self.all(user, options = {})
-    params = {:details => "1", :result => "1"}
+    params = {details: "1", result: "1"}
     params[:override_id] = options[:id] if options[:id]
     params[:task_id] = options[:task_id] if options[:task_id]
     params[:sort_field] = options[:sort_field] if options[:sort_field]
@@ -120,14 +120,14 @@ class Override
   def create_or_update(user)
     req = Nokogiri::XML::Builder.new { |xml|
       if @id
-        xml.modify_override(:override_id => @id) {
+        xml.modify_override(override_id: @id) {
           xml.text_       { xml.text(@override_text) }
           xml.hosts       { xml.text(@hosts) }
           xml.port        { xml.text(@port) }
           xml.threat      { xml.text(@threat) }
           xml.new_threat  { xml.text(@new_threat) }
-          xml.result(:id => @result_id)
-          xml.task(:id => @task_id)
+          xml.result(id: @result_id)
+          xml.task(id: @task_id)
         }
       else
         xml.create_override {
@@ -136,9 +136,9 @@ class Override
           xml.port        { xml.text(@port) }
           xml.threat      { xml.text(@threat) }
           xml.new_threat  { xml.text(@new_threat) }
-          xml.nvt(:oid => @nvt_oid)
-          xml.result(:id => @result_id)
-          xml.task(:id => @task_id)
+          xml.nvt(oid: @nvt_oid)
+          xml.result(id: @result_id)
+          xml.task(id: @task_id)
         }
       end
     }
@@ -159,7 +159,7 @@ class Override
   end
 
   def delete_record(user)
-    req = Nokogiri::XML::Builder.new { |xml| xml.delete_override(:override_id => @id) }
+    req = Nokogiri::XML::Builder.new { |xml| xml.delete_override(override_id: @id) }
     begin
       resp = user.openvas_connection.sendrecv(req.doc)
       status = Override.extract_value_from("//@status", resp)

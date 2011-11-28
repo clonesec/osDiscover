@@ -6,9 +6,9 @@ class Agent
   attr_accessor :installer, :installer_signature
   attr_accessor :package, :package_format, :package_filename
 
-  validates :installer, :presence => true
-  validates :name, :presence => true, :length => { :maximum => 80 }
-  validates :comment, :length => { :maximum => 400 }
+  validates :installer, presence: true
+  validates :name, presence: true, length: { maximum: 80 }
+  validates :comment, length: { maximum: 400 }
 
   class Datum
     attr_accessor :data, :name
@@ -130,7 +130,7 @@ class Agent
   end
 
   def delete_record(user)
-    req = Nokogiri::XML::Builder.new { |xml| xml.delete_agent(:agent_id => @id) }
+    req = Nokogiri::XML::Builder.new { |xml| xml.delete_agent(agent_id: @id) }
     begin
       resp = user.openvas_connection.sendrecv(req.doc)
       status = Agent.extract_value_from("//@status", resp)
@@ -145,7 +145,7 @@ class Agent
   end
 
   def verify_agent(user)
-    req = Nokogiri::XML::Builder.new { |xml| xml.verify_agent(:agent_id => @id) }
+    req = Nokogiri::XML::Builder.new { |xml| xml.verify_agent(agent_id: @id) }
     begin
       resp = user.openvas_connection.sendrecv(req.doc)
       status = Agent.extract_value_from("//@status", resp)

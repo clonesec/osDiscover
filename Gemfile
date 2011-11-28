@@ -1,18 +1,47 @@
 source 'http://rubygems.org'
 
-gem 'rake', '~> 0.8.7'
+gem 'rake', '~> 0.9.2'
 
-gem 'rails', '3.0.7'
+gem 'rails', '3.1.1'
 
-gem 'devise', '1.3.4'
+gem 'devise', '1.4.9'
 
-gem 'nokogiri', '1.4.4'
+gem 'nokogiri', '1.5.0'
 
-gem 'css3buttons', '0.9.5'
+gem 'css3buttons', '1.0.1'
+
+gem 'jquery-rails'
+gem 'therubyracer'
+
+group :assets do
+  gem 'sass-rails', '~> 3.1.4'
+  gem 'coffee-rails', '~> 3.1.1'
+  gem 'uglifier', '~> 1.0.4'
+end
+
+gem 'pry-rails', :group => :development
+gem 'pry-remote', :group => :development
+
 
 group :development, :test do
 	gem 'sqlite3-ruby', :require => 'sqlite3'
-	gem 'jquery-rails'
 	gem 'nifty-generators'
 	gem "mocha"
+	gem "factory_girl_rails"
+  gem "capybara"
+  gem "guard-rspec"
+  gem "rspec-rails"
+  gem "shoulda-matchers"
+  gem 'spork', "> 0.9.0.rc"
+  gem "guard-spork"
+  gem "launchy"
+  gem "pry-remote"
+  gem "pry-rails"
 end
+
+group :development do
+  gem 'capistrano'
+end
+
+
+

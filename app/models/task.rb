@@ -12,8 +12,8 @@ class Task
                 :last_report_debug, :last_report_high, :last_report_low, :last_report_log, :last_report_medium,
                 :finished_reports_count, :reports_count
 
-  validates :comment, :length => { :maximum => 400 }
-  validates :name, :presence => true, :length => { :maximum => 80 }
+  validates :comment, length: { maximum: 400 }
+  validates :name, presence: true, length: { maximum: 80 }
 
   def reports
     @reports ||= []
@@ -139,7 +139,7 @@ class Task
 
   def save(user)
     if valid?
-      vt = Task.find(user, {:id=>self.id}) # for update action
+      vt = Task.find(user, {id:self.id}) # for update action
       vt = Task.new if vt.blank? # for create action
       vt.name         = self.name
       vt.comment      = self.comment
@@ -172,22 +172,22 @@ class Task
   def create_or_update(user)
     req = Nokogiri::XML::Builder.new { |xml|
       if @id
-        xml.modify_task(:task_id => @id) {
+        xml.modify_task(task_id: @id) {
           xml.name    { xml.text(@name) }
           xml.comment { xml.text(@comment) }
-          xml.schedule(:id => @schedule_id) unless @schedule_id.blank? || @schedule_id == '0'
-          xml.slave(:id => @slave_id)
-          xml.escalator(:id => @escalator_id)
+          xml.schedule(id: @schedule_id) unless @schedule_id.blank? || @schedule_id == '0'
+          xml.slave(id: @slave_id)
+          xml.escalator(id: @escalator_id)
         }
       else
         xml.create_task {
           xml.name    { xml.text(@name) }
           xml.comment { xml.text(@comment) } unless @comment.blank?
-          xml.config(:id => @config_id)
-          xml.target(:id => @target_id)
-          xml.schedule(:id => @schedule_id) unless @schedule_id.blank? || @schedule_id == '0'
-          xml.slave(:id => @slave_id) unless @slave_id.blank? || @slave_id == '0'
-          xml.escalator(:id => @escalator_id) unless @escalator_id.blank? || @escalator_id == '0'
+          xml.config(id: @config_id)
+          xml.target(id: @target_id)
+          xml.schedule(id: @schedule_id) unless @schedule_id.blank? || @schedule_id == '0'
+          xml.slave(id: @slave_id) unless @slave_id.blank? || @slave_id == '0'
+          xml.escalator(id: @escalator_id) unless @escalator_id.blank? || @escalator_id == '0'
         }
       end
     }
@@ -200,9 +200,9 @@ class Task
       nil
     end
   end
-
+  
   def delete_record(user)
-    req = Nokogiri::XML::Builder.new { |xml| xml.delete_task(:task_id => @id) }
+    req = Nokogiri::XML::Builder.new { |xml| xml.delete_task(task_id: @id) }
     begin
       resp = user.openvas_connection.sendrecv(req.doc)
       # Rails.logger.info "resp=#{resp.to_xml.to_yaml}\n\n"
@@ -218,6 +218,26 @@ class Task
   end
 
   def threat
+		threat_level = "None"
+		if self.last_threat == 'None' || self.last_threat == ''
+			threat_level = "None"
+		else
+			self.reports.each do |report|
+				if report.threat_level == "Low" && threat_level == "None"
+					threat_level = "Low"
+				end
+				if report.threat_level == "Medium" && (threat_level == "None" || threat_level == "Low")
+					threat_level = "Medium"
+				end
+				if report.threat_level == "High" && (threat_level == "None" || threat_level == "Low" || threat_level == "Medium")
+					threat_level = "High"
+				end			
+			end
+		end
+		return threat_level
+  end
+  
+  def last_threat
 		# threat: High, Medium, Low, Log, Debug ... where Log,Debug are shown as None
 		return '' if (@last_report_low + @last_report_medium + @last_report_high) == 0
 		max = nil
@@ -236,27 +256,27 @@ class Task
   end
 
   def start(user)
-    req = Nokogiri::XML::Builder.new { |xml| xml.resume_or_start_task(:task_id => @id) }
+    req = Nokogiri::XML::Builder.new { |xml| xml.resume_or_start_task(task_id: @id) }
     user.openvas_connection.sendrecv(req.doc)
   end
 
   def stop(user)
-    req = Nokogiri::XML::Builder.new { |xml| xml.stop_task(:task_id => @id) }
+    req = Nokogiri::XML::Builder.new { |xml| xml.stop_task(task_id: @id) }
     user.openvas_connection.sendrecv(req.doc)
   end
 
   def pause(user)
-    req = Nokogiri::XML::Builder.new { |xml| xml.pause_task(:task_id => @id) }
+    req = Nokogiri::XML::Builder.new { |xml| xml.pause_task(task_id: @id) }
     user.openvas_connection.sendrecv(req.doc)
   end
 
   def resume_paused(user)
-    req = Nokogiri::XML::Builder.new { |xml| xml.resume_paused_task(:task_id => @id) }
+    req = Nokogiri::XML::Builder.new { |xml| xml.resume_paused_task(task_id: @id) }
     user.openvas_connection.sendrecv(req.doc)
   end
 
   def resume_stopped(user)
-    req = Nokogiri::XML::Builder.new { |xml| xml.resume_stopped_task(:task_id => @id) }
+    req = Nokogiri::XML::Builder.new { |xml| xml.resume_stopped_task(task_id: @id) }
     user.openvas_connection.sendrecv(req.doc)
   end
 

@@ -19,18 +19,18 @@
   </div>
   <div class="field">
     <div class="left"><%= f.label :first_time %></div>
-    <div class="right"><%= f.datetime_select :first_time %> (UTC)</div>
+    <div class="right"><%#= f.date_select :first_time %><%= f.text_field :first_time %> (UTC)</div>
   </div>
 	<br />
   <div class="field">
-    <div class="left">Period</div>
+    <div class="left"><label>Period</label></div>
     <div class="right">
 			<%= f.text_field :period_amount %>
 			<%= f.select :period_unit, "<option value=\"hour\" selected=\"selected\">hour(s)</option><option value=\"day\">day(s)</option><option value=\"week\">week(s)</option><option value=\"month\">month(s)</option>".html_safe %>
 		</div>
   </div>
   <div class="field">
-    <div class="left">Duration</div>
+    <div class="left"><label>Duration</label></div>
     <div class="right">
     	<%= f.text_field :duration_amount %> 
 			<%= f.select :duration_unit, "<option value=\"hour\" selected=\"selected\">hour(s)</option><option value=\"day\">day(s)</option><option value=\"week\">week(s)</option>".html_safe %>

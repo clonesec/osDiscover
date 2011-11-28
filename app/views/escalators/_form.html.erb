@@ -19,22 +19,22 @@
   </div>
 	<br /><br />
   <div class="field">
-    <div class="left">Event</div>
+    <div class="left"><label>Event</label></div>
 		<div class="right">
-			Task run status changed to
 			<%= collection_select(:escalator, :escalator_event, Escalator.event_selections, :id, :name) %>
+			(Task run status changed to this)
 		</div>
   </div>
 	<br /><br />
   <div class="field">
-    <div class="left">Condition</div>
+    <div class="left"><label>Condition</label></div>
 		<div class="right">
 			<%= collection_select(:escalator, :escalator_condition, Escalator.condition_selections, :id, :name) %>
 		</div>
   </div>
 	<br /><br />
   <div class="field">
-    <div class="left">Method</div>
+    <div class="left"><label>Method</label></div>
 		<div class="right">
 			<%= collection_select(:escalator, :escalator_method, Escalator.method_selections, :id, :name) %>
 			<br /><br />

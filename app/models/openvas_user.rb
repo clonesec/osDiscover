@@ -4,9 +4,9 @@ class OpenvasUser
 
   attr_accessor :name, :password, :role, :hosts_allow, :hosts_allow_humanized, :hosts
 
-  validates :name,      :presence => true, :length => { :maximum => 80 }
-  validates :password,  :presence => true, :on => :create
-  validates :password,  :length => { :maximum => 40 }
+  validates :name,      presence: true, length: { maximum: 80 }
+  validates :password,  presence: true, on: :create
+  validates :password,  length: { maximum: 40 }
 
   class Selection
     attr_accessor :id, :name
@@ -20,16 +20,16 @@ class OpenvasUser
 
   def self.role_selections
     roles = []
-    roles << Selection.new({:id=>'User', :name=>'User'})
-    roles << Selection.new({:id=>'Admin', :name=>'Admin'})
+    roles << Selection.new({id:'User', name:'User'})
+    roles << Selection.new({id:'Admin', name:'Admin'})
     roles
   end
 
   def self.access_selections
     accesses = []
-    accesses << Selection.new({:id=>'2', :name=>'Allow All'})
-    accesses << Selection.new({:id=>'1', :name=>'Allow'})
-    accesses << Selection.new({:id=>'0', :name=>'Deny'})
+    accesses << Selection.new({id:'2', name:'Allow All'})
+    accesses << Selection.new({id:'1', name:'Allow'})
+    accesses << Selection.new({id:'0', name:'Deny'})
     accesses
   end
 
@@ -65,7 +65,7 @@ class OpenvasUser
 
   def self.find(name, user)
     return nil if name.blank? || user.blank?
-    f = self.all(user, {:name=>name}).first
+    f = self.all(user, {name:name}).first
     return nil if f.blank?
     # ensure "first" has the desired id:
     if f.name.to_s == name.to_s
@@ -108,18 +108,18 @@ class OpenvasUser
         xml.modify_user {
           xml.name      { xml.text(@name) }
           if self.password.blank?
-            xml.password(:modify => '0')
+            xml.password(modify: '0')
           else
-            xml.password(:modify => '1')  { xml.text(@password) }
+            xml.password(modify: '1')  { xml.text(@password) }
           end
           xml.role      { xml.text(@role) }
           # note: GSA defaults to Allow All if the hosts field is blank (seems odd, why not complain at the user?)
           if @hosts_allow == '2' # allow all
-            xml.hosts(:allow => @hosts_allow)
+            xml.hosts(allow: @hosts_allow)
           elsif @hosts_allow == '1' && !@hosts.blank? # allow + host list
-            xml.hosts(:allow => @hosts_allow) { xml.text(@hosts) }
+            xml.hosts(allow: @hosts_allow) { xml.text(@hosts) }
           elsif @hosts_allow == '0' && !@hosts.blank? # deny + host list
-            xml.hosts(:allow => @hosts_allow) { xml.text(@hosts) }
+            xml.hosts(allow: @hosts_allow) { xml.text(@hosts) }
           end
         }
       else
@@ -129,11 +129,11 @@ class OpenvasUser
           xml.role        { xml.text(@role) }
           # note: GSA defaults to Allow All if the hosts field is blank (seems odd, why not complain at the user?)
           if @hosts_allow == '2' # allow all
-            xml.hosts(:allow => @hosts_allow)
+            xml.hosts(allow: @hosts_allow)
           elsif @hosts_allow == '1' && !@hosts.blank? # allow + host list
-            xml.hosts(:allow => @hosts_allow) { xml.text(@hosts) }
+            xml.hosts(allow: @hosts_allow) { xml.text(@hosts) }
           elsif @hosts_allow == '0' && !@hosts.blank? # deny + host list
-            xml.hosts(:allow => @hosts_allow) { xml.text(@hosts) }
+            xml.hosts(allow: @hosts_allow) { xml.text(@hosts) }
           end
         }
       end
@@ -155,7 +155,7 @@ class OpenvasUser
   end
 
   def delete_record(user)
-    req = Nokogiri::XML::Builder.new { |xml| xml.delete_user(:name => @name) }
+    req = Nokogiri::XML::Builder.new { |xml| xml.delete_user(name: @name) }
     begin
       resp = user.openvas_connection.sendrecv(req.doc)
       status = OpenvasUser.extract_value_from("//@status", resp)

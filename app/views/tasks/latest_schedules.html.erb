@@ -1,0 +1,59 @@
+	<script>
+		$(document).ready(function() { 
+			$(".tablesorter").tablesorter(); 
+		});
+	</script>
+
+<% title "Schedules for date: #{@schedule_date}" %>
+<% if @schedules.blank? %>
+		<h3>No schedules found.</h3>
+<% else %>
+<article class="module">
+	<header><h3>Schedules Overview</h3></header>
+	<table class="tablesorter" cellspacing="0">
+	  <thead> 
+	  <tr>
+	    <th>
+
+				Schedule Name
+			</th>
+	    <th>Status</th>
+
+	    <th>Threat</th>
+	    <th>Trend</th>
+	    <th colspan="2">Actions</th>
+	  </tr>
+	</thead> 	  
+	<tbody>
+		<% @schedules.each do |task| %>
+		  <tr>
+
+		    <td width="20%">
+					<%#= truncate(task.name, :length => 25) %>
+					<b><%= task.name %></b>
+					<% unless task.comment.blank? %>
+							<br />
+							<em><small><%= task.comment %><%#= truncate(task.comment, :length => 15) %></small></em>
+					<% end %>
+				</td>
+		    <td>
+					<% if ['New','Done'].include?(task.status) %>
+							<%= task.status %>
+					<% elsif task.status =~ /Requested/ %>
+							<span style="color:red"><%= task.status %></span>
+					<% else %>
+							<%= task.status %> at <%= task.overall_progress %>%
+					<% end %>
+				</td>
+				<td><%# threat: High, Medium, Low, Log, Debug (Log,Debug = None) %><%= task.threat %></td>
+				<td><%# trend: up, down, more, less, same %><%= task.trend %></td>
+	      <td><%= pill_button_link_to "details", task_path(task.id), :title => "view Task: #{truncate(task.name, :length => 20)}" %></td>
+				<td><%= pill_button_link_to "edit", edit_task_path(task.id), :title => "edit Task: #{truncate(task.name, :length => 20)}" %></td>
+
+		  </tr>
+		<% end %>
+		</tbody>
+	</table>
+	</article>
+
+<% end %>

@@ -7,9 +7,9 @@ class ScanConfig
   # only for editing:
   attr_accessor :update_type, :family, :nvt_id, :nvt_values, :scanner_values, :selects, :trends
 
-  validates :name, :presence => true, :length => { :maximum => 80 }, :on => :create
-  validates :comment, :length => { :maximum => 400 }, :on => :create
-  validates :id, :presence => true, :on => :update
+  validates :name, presence: true, length: { maximum: 80 }, on: :create
+  validates :comment, length: { maximum: 400 }, on: :create
+  validates :id, presence: true, on: :update
 
   def tasks
     @tasks ||= []
@@ -39,8 +39,8 @@ class ScanConfig
 
   def self.base_selections
     cfgs = []
-    cfgs << Selection.new({:id=>'085569ce-73ed-11df-83c3-002264764cea', :name=>'Empty, static and fast'})
-    cfgs << Selection.new({:id=>'daba56c8-73ec-11df-a475-002264764cea', :name=>'Full and fast'})
+    cfgs << Selection.new({id:'085569ce-73ed-11df-83c3-002264764cea', name:'Empty, static and fast'})
+    cfgs << Selection.new({id:'daba56c8-73ec-11df-a475-002264764cea', name:'Full and fast'})
     cfgs
   end
 
@@ -76,7 +76,7 @@ class ScanConfig
   end
 
   def self.export(id, user)
-    params = { :export=>'1' }
+    params = { export:'1' }
     params[:config_id] = id if id
     req = Nokogiri::XML::Builder.new { |xml| xml.get_configs(params) }
     config_as_xml = user.openvas_connection.sendrecv(req.doc)
@@ -101,9 +101,9 @@ class ScanConfig
   end
 
   def self.all(user, options = {})
-    params = {:sort_field  => "name"}
+    params = {sort_field:  "name"}
     if options[:show_details] && options[:show_details] == true
-      params.merge!({:families => "1", :preferences => "1"})
+      params.merge!({families: "1", preferences: "1"})
     else
       params[:families]     = options[:families] if options[:families]
       params[:preferences]  = options[:preferences] if options[:preferences]
@@ -159,12 +159,12 @@ class ScanConfig
             #   <alt>full_audit</alt>
             # </preference>
             # note that <value> isn't included in the <alt>(s), so let's add it as a selectable value:
-            pref.preference_values << PreferenceSelect.new({:id=>pref.value, :name=>pref.value})
+            pref.preference_values << PreferenceSelect.new({id:pref.value, name:pref.value})
             if pref.val_type_desc.downcase == 'checkbox'
               yes_or_no = pref.value.downcase == 'yes' ? 'no' : 'yes'
-              pref.preference_values << PreferenceSelect.new({:id=>yes_or_no, :name=>yes_or_no})
+              pref.preference_values << PreferenceSelect.new({id:yes_or_no, name:yes_or_no})
             end
-            p.xpath("alt").each { |alt| pref.preference_values << PreferenceSelect.new({:id=>alt.text, :name=>alt.text}) }
+            p.xpath("alt").each { |alt| pref.preference_values << PreferenceSelect.new({id:alt.text, name:alt.text}) }
           end
         }
         cfg.nvt_families(user) if options[:families] || options[:show_details] == true
@@ -222,11 +222,11 @@ class ScanConfig
   def family_nvts_update_openvas(user)
     config_id = @id
       req = Nokogiri::XML::Builder.new { |xml|
-        xml.modify_config(:config_id => config_id) {
+        xml.modify_config(config_id: config_id) {
           xml.nvt_selection {
             xml.family { xml.text(@family) }
             @selects.each do |ky, val|
-              xml.nvt(:oid => ky) unless val == '0'
+              xml.nvt(oid: ky) unless val == '0'
             end
           }
         }
@@ -260,7 +260,7 @@ class ScanConfig
   def family_update_openvas(user)
     config_id = @id
       req = Nokogiri::XML::Builder.new { |xml|
-        xml.modify_config(:config_id => config_id) {
+        xml.modify_config(config_id: config_id) {
           xml.family_selection {
             xml.growing  { xml.text(@families_grow) }
             # note that we're assuming that @selects and @trends mirror each other; i.e. every family has both
@@ -306,7 +306,7 @@ class ScanConfig
     @scanner_values.each do |ky, val|
       next if (ky =~ /\~file\^/) && !val.respond_to?(:tempfile)
       req = Nokogiri::XML::Builder.new { |xml|
-        xml.modify_config(:config_id => config_id) {
+        xml.modify_config(config_id: config_id) {
           xml.preference {
             aname = ky.gsub('~', '[')
             aname.gsub!('^', ']')
@@ -355,9 +355,9 @@ class ScanConfig
       # next if (ky =~ /\~file\^/) && !val.respond_to?(:tempfile)
       val = '' if (ky =~ /\~file\^/) && val == '1'
       req = Nokogiri::XML::Builder.new { |xml|
-        xml.modify_config(:config_id => config_id) {
+        xml.modify_config(config_id: config_id) {
           xml.preference {
-            xml.nvt(:oid => @nvt_id) unless (ky =~ /\~scanner\^/)
+            xml.nvt(oid: @nvt_id) unless (ky =~ /\~scanner\^/)
             aname = ky.gsub('~', '[')
             aname.gsub!('^', ']')
             xml.name  { xml.text(aname) }
@@ -437,7 +437,7 @@ class ScanConfig
   end
 
   def delete_record(user)
-    req = Nokogiri::XML::Builder.new { |xml| xml.delete_config(:config_id => @id) }
+    req = Nokogiri::XML::Builder.new { |xml| xml.delete_config(config_id: @id) }
     begin
       resp = user.openvas_connection.sendrecv(req.doc)
       status = ScanConfig.extract_value_from("//@status", resp)

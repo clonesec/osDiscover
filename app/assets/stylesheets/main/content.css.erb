@@ -1,0 +1,319 @@
+#content {
+	margin-top: 15px;
+	padding: 0px 15px 20px 15px;
+	min-height: 400px;
+	border: 1px solid #bdbdbd;
+	-webkit-border-top-left-radius: 12px;
+	-webkit-border-top-right-radius: 12px;
+	-moz-border-radius-topleft: 12px;
+	-moz-border-radius-topright: 12px;
+	border-top-left-radius: 12px;
+	border-top-right-radius: 12px;
+}
+
+#sub_header {
+	font-size: 14px;
+	color: #000;
+	position: relative;
+	top: -2px;
+}
+
+#content span h2 {
+	padding: 2px 10px;
+	border: 1px solid #ccc;
+	background: #efefef;
+}
+
+
+.main_header h3 {
+	margin: 0;
+	padding:0;
+	position: relative;
+	left: -15px;
+	width: 998px;
+	border-bottom: 1px solid #bdbdbd;
+	height: 43px;
+	line-height: 43px;
+	background: url("<%= asset_path("main/content-header.png") %>") repeat-x; 
+	-webkit-border-top-left-radius: 12px;
+	-webkit-border-top-right-radius: 12px;
+	-moz-border-radius-topleft: 12px;
+	-moz-border-radius-topright: 12px;
+	border-top-left-radius: 12px;
+	border-top-right-radius: 12px;
+	text-indent: 21px;
+	color: #565656;
+	margin-bottom: 20px;
+	text-shadow: 1px 1px #fff;
+}
+
+form .field label {
+line-height: 30px;
+float: right;
+margin-right: 10px;
+}
+
+form .field input, form .field textarea {
+border: 1px solid #ccc;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+background: #f8f8f8;
+padding: 5px;
+margin-bottom: 5px;
+width: 250px
+}
+
+form .field select {
+border: 1px solid #ccc;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+background: #f8f8f8;
+padding: 5px;
+margin-bottom: 5px;
+min-width: 262px
+}
+
+
+form .big.button {
+background: url("<%= asset_path("main/big-button.png") %>") no-repeat;
+color: #fff;
+width: 140px;
+border: 0;
+text-shadow: 1px 1px #000;
+}
+
+form .big.button:hover {
+background-position: 0 -32px;
+}
+
+form#new_scan_config .big.button {
+background: url("<%= asset_path("main/really-big-button.png") %>") no-repeat;
+width: 193px;
+}
+
+form#new_scan_config .big.button:hover {
+background-position: 0 -32px;
+}
+
+
+.add-button {
+	display: block;
+	float: left;
+	line-height: 25px;
+	color: #333;
+	margin-left: 30px;
+	text-indent: 30px;
+	width: 137px;
+	height: 30px;
+	background:url("<%= asset_path("tables/add-button.png") %>") no-repeat;
+	text-shadow: 1px 1px #fff;
+}
+
+.add2-button {
+	display: block;
+	float: left;
+	line-height: 25px;
+	color: #333;
+	margin-left: 30px;
+	text-indent: 35px;
+	width: 250px;
+	height: 30px;
+	background:url("<%= asset_path("tables/add2-button.png") %>") no-repeat;
+	text-shadow: 1px 1px #fff;
+}
+
+
+#content .module header {
+	height: 50px;
+	font-family: arial;
+	line-height: 34px;
+	 background: url("<%= asset_path("tables/table-header.png") %>") repeat-x;
+}
+
+#content .module header h3 {
+	font-size: 18px;
+	text-indent: -10px;
+	font-weight: normal;
+}
+
+.start-button {
+	background: url("<%= asset_path("tables/start-button.png") %>") no-repeat;
+	width: 77px;
+	height: 31px;
+	line-height: 26px;
+	color: #fff;
+	display: block;
+	text-align: center;
+	text-shadow: 1px 1px #000000; 
+}
+
+thead tr{
+	border-top: 3px solid #ccc !important;
+}
+
+th.header {
+	font-weight: normal;
+	border-left: 1px solid #ccc;
+}
+
+.start-button:hover {
+	background-position: 0 -42px;
+}
+
+tr.odd {
+	background-color: #eeeff4;
+}
+
+tr.even {
+	background-color: #f7f8fa;
+}
+
+.done-icon {
+	display: block;
+	text-indent: 16px;
+	background: url("<%= asset_path("tables/blue-check.png") %>") 0px 4px no-repeat;
+}
+
+.details-button {
+	background: url("<%= asset_path("tables/detail-button.png") %>") no-repeat;
+	width: 57px;
+	height: 26px;
+	font-size: 12px;
+	line-height: 26px;
+	color: #333;
+	display: block;
+	text-align: center;
+	text-shadow: 1px 1px #fff; 
+}
+
+.details-button:hover {
+	background-position: 0 -28px;
+}
+
+.edit-button {
+	background: url("<%= asset_path("tables/edit-button.png") %>") no-repeat;
+	width: 47px;
+	height: 26px;
+	font-size: 12px;
+	line-height: 26px;
+	color: #333;
+	display: block;
+	text-align: center;
+	text-shadow: 1px 1px #fff; 
+}
+
+.edit-button:hover {
+	background-position: 0 -28px;
+}
+
+.delete-button {
+	background: url("<%= asset_path("tables/delete-button.png") %>") no-repeat;
+	width: 71px;
+	height: 26px;
+	font-size: 12px;
+	line-height: 24px;
+	color: #333;
+	display: block;
+	text-indent: 22px;
+	text-shadow: 1px 1px #fff;
+}
+
+.delete-button:hover {
+	background-position: 0 -26px;
+}
+
+.Low-icon {
+color: #fff;
+width: 82px;
+height: 22px;
+	display: block;
+text-align: center;
+	background: url("<%= asset_path("main/low.png") %>") 0px 0px no-repeat;
+}
+
+.Medium-icon {
+color: #fff;
+width: 82px;
+height: 22px;
+	display: block;
+text-align: center;
+	background: url("<%= asset_path("main/medium.png") %>") 0px 0px no-repeat;
+}
+
+.High-icon {
+color: #fff;
+width: 82px;
+height: 22px;
+	display: block;
+text-align: center;
+	background: url("<%= asset_path("main/high.png") %>") 0px 0px no-repeat;
+}
+
+.down {
+	display: block;
+	text-indent: 16px;
+	background: url("<%= asset_path("tables/error-icon.png") %>") 0px 4px no-repeat;
+}
+
+.same {
+	display: block;
+	text-indent: 16px;
+	background: url("<%= asset_path("tables/neutral-icon.png") %>") 0px 6px no-repeat;
+}
+
+.up {
+	display: block;
+	text-indent: 16px;
+	background: url("<%= asset_path("tables/green-icon.png") %>") 0px 4px no-repeat;
+}
+
+.override-on {
+	float: left;
+	margin-left: 20px;
+	background: url("<%= asset_path("tables/set.png") %>") 0px -40px no-repeat;
+	height: 32px;
+	width: 144px;
+}
+
+.override-off {
+	float: left;
+	margin-left: 20px;
+	background: url("<%= asset_path("tables/set.png") %>") 0px 0px no-repeat;
+	height: 32px;
+	width: 144px;
+}
+
+.override a {
+	color: #fff;
+	display: block;
+	float: left;
+	width: 70px;
+	height: 30px;
+	text-indent: 10px;
+	line-height: 27px;
+	text-shadow: 1px 1px #000000;
+
+}
+
+.override-on a.set-off-on {
+	color: #666;
+	text-shadow: 1px 1px #fff;
+}
+
+.override-off a.set-on-off {
+	color: #666;
+	text-shadow: 1px 1px #fff;
+}
+
+thead th {
+	border-left: 1px solid #ccc;
+}
+
+.button.icon.disable.icon:before {
+	margin: 0;
+	width: 0px;
+} 
+
+

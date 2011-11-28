@@ -6,10 +6,10 @@ class Credential
 
   define_attribute_methods [:name, :login, :comment, :password_type, :password, :in_use, :package_format]
 
-  validates :name,      :presence => true, :length => { :maximum => 80 }
-  validates :password,  :length => { :maximum => 40 }
-  validates :comment,   :length => { :maximum => 400 }
-  validates :login,     :length => { :maximum => 80 }
+  validates :name,      presence: true, length: { maximum: 80 }
+  validates :password,  length: { maximum: 40 }
+  validates :comment,   length: { maximum: 400 }
+  validates :login,     length: { maximum: 80 }
 
   class OpenvasModelAttributes
     attr_accessor :name, :value, :datatype
@@ -23,10 +23,10 @@ class Credential
 
   def attributes
     a = Hash.new
-    a['name']     = OpenvasModelAttributes.new({:name=>'name', :value=>self.name, :datatype=>'string'})
-    a['comment']  = OpenvasModelAttributes.new({:name=>'comment', :value=>self.comment, :datatype=>'text'})
-    a['login']    = OpenvasModelAttributes.new({:name=>'login', :value=>self.login, :datatype=>'string'})
-    a['password'] = OpenvasModelAttributes.new({:name=>'password', :value=>self.password, :datatype=>'password'})
+    a['name']     = OpenvasModelAttributes.new({name:'name', value:self.name, datatype:'string'})
+    a['comment']  = OpenvasModelAttributes.new({name:'comment', value:self.comment, datatype:'text'})
+    a['login']    = OpenvasModelAttributes.new({name:'login', value:self.login, datatype:'string'})
+    a['password'] = OpenvasModelAttributes.new({name:'password', value:self.password, datatype:'password'})
     a
   end
 
@@ -36,7 +36,7 @@ class Credential
 
   def self.selections(user)
     credentials = []
-    cred = Credential.new({:id=>'0', :name=>'--'}) # add blank selection, so users can edit Credential selection
+    cred = Credential.new({id:'0', name:'--'}) # add blank selection, so users can edit Credential selection
     credentials << cred
     self.all(user).each do |c|
       credentials << c
@@ -125,7 +125,7 @@ class Credential
   def create_or_update(user)
     req = Nokogiri::XML::Builder.new { |xml|
       if @id
-        xml.modify_lsc_credential(:lsc_credential_id => @id) {
+        xml.modify_lsc_credential(lsc_credential_id: @id) {
           xml.name      { xml.text(@name) }
           xml.comment   { xml.text(@comment) }
           xml.login     { xml.text(@login) }    unless @password_type.downcase == 'gen'
@@ -157,7 +157,7 @@ class Credential
   end
 
   def delete_record(user)
-    req = Nokogiri::XML::Builder.new { |xml| xml.delete_lsc_credential(:lsc_credential_id => @id) }
+    req = Nokogiri::XML::Builder.new { |xml| xml.delete_lsc_credential(lsc_credential_id: @id) }
     begin
       resp = user.openvas_connection.sendrecv(req.doc)
       status = Credential.extract_value_from("//@status", resp)

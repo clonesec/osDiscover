@@ -1,11 +1,22 @@
+<script>
+	$(document).ready(function() { 
+		$(".tablesorter").tablesorter(); 
+	});
+</script>
+
 <% title "NVT Feed Management" %>
 <div><%= danger_rss_pill_button_link_to "Synchronize with Feed now", sync_feed_path %></div>
-<table cellspacing="2" cellpadding="4">
-  <tr class="table_header">
-    <th>Name</th>
+<article class="module">
+	<header><h3>Feed Overview</h3></header>
+<table class="tablesorter" cellspacing="0">  
+<thead>   
+	<tr>
+    <th class="first">Name</th>
     <th>Version</th>
     <th>Description</th>
   </tr>
+</thead>
+<tbody>
   <% for nvt_feed in @nvt_feeds %>
     <tr>
       <td><%= nvt_feed.name %></td>
@@ -13,5 +24,6 @@
       <td><%= nvt_feed.description %></td>
     </tr>
   <% end %>
+	</tbody>
 </table>
-
+</article>

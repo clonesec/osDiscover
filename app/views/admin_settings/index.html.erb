@@ -1,14 +1,26 @@
+<script>
+	$(document).ready(function() { 
+		$(".tablesorter").tablesorter(); 
+	});
+</script>
+
 <% title "Scanner Settings" %>
-<table cellspacing="2" cellpadding="4">
-  <tr class="table_header">
-    <th>Setting</th>
+<article class="module">
+	<header><h3>Scanner Settings Overview</h3></header>
+<table class="tablesorter" cellspacing="0">  
+<thead>     
+	<tr>
+    <th class="first">Setting</th>
     <th>Value</th>
   </tr>
+</thead>
+<tbody>
   <% for setting in @settings %>
     <tr>
       <td><%= setting.name %></td>
       <td><%= setting.value %></td>
     </tr>
   <% end %>
+	</tbody>
 </table>
-
+</article>

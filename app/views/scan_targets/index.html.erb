@@ -1,30 +1,44 @@
+<script>
+	$(document).ready(function() { 
+		$(".tablesorter").tablesorter(); 
+	});
+</script>
+
 <% title "Scan Targets" %>
-<div><%= add_button_link_to 'new Target', new_scan_target_path %></div>
-<table cellspacing="2" cellpadding="4">
-  <tr class="table_header">
-    <th>Name</th>
+<div><%= link_to 'New Target', new_scan_target_path, :class => "add-button" %></div>
+<div style="clear: both"></div>
+
+<article class="module">
+	<header><h3>Scan Targets Overview</h3></header>
+<table class="tablesorter" cellspacing="0">
+<thead>
+  <tr>
+    <th class="first">Name</th>
     <th>Comment</th>
     <th>Hosts</th>
-		<th>IPs</th>
+	<th>IPs</th>
     <th>Ports</th>
-    <th>In use</th>
+    <th>In Use</th>
     <th colspan="2">Actions</th>
   </tr>
+  </thead>
+  <tbody>
 	<% @scan_targets.each do |scan_target| %>
-	  <tr>
+	  <tr class=<%= cycle('even', 'odd')%>>
 	    <td><%= scan_target.name %></td>
 	    <td><%= scan_target.comment %></td>
 	    <td><%= scan_target.hosts %></td>
 			<td><%= scan_target.max_hosts %></td>
 	    <td><%= scan_target.port_range %></td>
       <td><%= scan_target.in_use == 0 ? 'no' : 'yes' %></td>
-      <td><%= pill_button_link_to "details", scan_target_path(scan_target.id), :title=>'view scan target' %></td>
+      <td><%= link_to "Details", scan_target_path(scan_target.id), :title=>'view scan target', :class => "details-button" %></td>
 			<% if scan_target.in_use > 0 && !scan_target.tasks.blank? %>
-	    		<td><%= disable_danger_remove_pill_button_link_to 'delete', scan_targets_path, :title=>'scan target is in use' %></td>
+	    		<td><%= disable_danger_remove_pill_button_link_to 'Delete', scan_targets_path, :title=>'scan target is in use' %></td>
 			<% else %>
-	    		<td><%= danger_remove_pill_button_link_to 'delete', scan_target_path(scan_target.id), :confirm => 'Are you sure?', :method => :delete %></td>
+	    		<td><%= link_to 'Delete', scan_target_path(scan_target.id), :confirm => 'Are you sure?', :method => :delete, :class => "delete-button" %></td>
 			<% end %>
 	  </tr>
-		<tr><td colspan="8"><hr /></td></tr>
 	<% end %>
+	</tbody>
 </table>
+</article>

@@ -1,163 +1,52 @@
-<% title "Tasks" %>
+	<script>
+		$(document).ready(function() { 
+			$(".tablesorter").tablesorter(); 
+		});
+	</script>
+
+<% title "Manage Schedules" %>
 <div>
 	<%= button_group do %>
-			<%= add_button_link_to 'new Task', new_task_path %>
+			<%= link_to 'New Schedule', new_task_path, :class => "add-button" %>
 			<% if params[:apply_overrides] == '1' || params[:apply_overrides].blank? %>
-					<% params.merge!({:apply_overrides=>'1'}) if params[:apply_overrides].blank? %>
-					<%= disable_danger_lock_pill_button_link_to 'overrides are On', tasks_path, :title=>"overrides are On and applied" %>
-					<%= pill_button_link_to 'set Off', tasks_path(:apply_overrides=>'0', :sort_field=>params[:sort_field], :sort_order=>params[:sort_order]), :title=>"turn overrides off" %>
+				<div class="override override-on">	
+					<%= link_to 'Set Off', tasks_path(:apply_overrides=>'0', :sort_field=>params[:sort_field], :sort_order=>params[:sort_order]), :title=>"turn overrides off", :class => "set-off-on" %>
+					<%= link_to 'Set On', tasks_path(:apply_overrides=>'1', :sort_field=>params[:sort_field], :sort_order=>params[:sort_order]), :title=>"turn overrides on", :class => "set-on-on" %>
+				</div>
 			<% else %>
-					<%= disable_unlock_pill_button_link_to 'overrides are Off', tasks_path, :title=>"overrides are Off" %>
-					<%= pill_button_link_to 'set On', tasks_path(:apply_overrides=>'1', :sort_field=>params[:sort_field], :sort_order=>params[:sort_order]), :title=>"turn overrides on" %>
+				<div class="override override-off">	
+					<%= link_to 'Set Off', tasks_path(:apply_overrides=>'0', :sort_field=>params[:sort_field], :sort_order=>params[:sort_order]), :title=>"turn overrides off", :class => "set-off-off" %>
+					<%= link_to 'Set On', tasks_path(:apply_overrides=>'1', :sort_field=>params[:sort_field], :sort_order=>params[:sort_order]), :title=>"turn overrides on", :class => "set-on-off" %>
+				</div>
 			<% end %>
 	<% end %>
 </div>
 
 <% if @tasks.blank? %>
-		<h3>No tasks found.</h3>
+		<h3>No schedules found.</h3>
 <% else %>
-	<table cellspacing="2" cellpadding="4">
-	  <tr class="table_header">
-	    <th rowspan="2">Scan Actions</th>
-	    <th rowspan="2">
-				<%= button_group do %>
-						<% if params[:sort_field] == 'run_status' || params[:sort_field].blank? %>
-								<%= arrowup_pill_button_link_to '', tasks_path(:apply_overrides=>params[:apply_overrides], :sort_field=>'name', :sort_order=>'ascending'), :title=>"sort ascending by Name" %>
-								<%= arrowdown_pill_button_link_to '', tasks_path(:apply_overrides=>params[:apply_overrides], :sort_field=>'name', :sort_order=>'descending'), :title=>"sort descending by Name" %>
-						<% elsif params[:sort_order] == 'ascending' %>
-								<%= disable_arrowup_pill_button_link_to '', tasks_path, :title=>"current sort is ascending by Name" %>
-								<%= arrowdown_pill_button_link_to '', tasks_path(:apply_overrides=>params[:apply_overrides], :sort_field=>'name', :sort_order=>'descending'), :title=>"sort descending by Name" %>
-						<% else %>
-								<%= arrowup_pill_button_link_to '', tasks_path(:apply_overrides=>params[:apply_overrides], :sort_field=>'name', :sort_order=>'ascending'), :title=>"sort ascending by Name" %>
-								<%= disable_arrowdown_pill_button_link_to '', tasks_path, :title=>"current sort is descending by Name" %>
-						<% end %>
-				<% end %>
-				<br />
-				Name
+<article class="module">
+	<header><h3>Schedules Overview</h3></header>
+	<table class="tablesorter" cellspacing="0">
+	  <thead> 
+	  <tr>
+	    <th class="first">Scan Actions</th>
+	    <th>
+
+				Schedule Name
 			</th>
-	    <th rowspan="2">
-				<%= button_group do %>
-						<% if params[:sort_field] == 'name' || params[:sort_field].blank? %>
-								<%= arrowup_pill_button_link_to '', tasks_path(:apply_overrides=>params[:apply_overrides], :sort_field=>'run_status', :sort_order=>'ascending'), :title=>"sort ascending by Status" %>
-								<%= arrowdown_pill_button_link_to '', tasks_path(:apply_overrides=>params[:apply_overrides], :sort_field=>'run_status', :sort_order=>'descending'), :title=>"sort descending by Status" %>
-						<% elsif params[:sort_order] == 'ascending' %>
-								<%= disable_arrowup_pill_button_link_to '', tasks_path, :title=>"current sort is ascending by Status" %>
-								<%= arrowdown_pill_button_link_to '', tasks_path(:apply_overrides=>params[:apply_overrides], :sort_field=>'run_status', :sort_order=>'descending'), :title=>"sort descending by Status" %>
-						<% else %>
-								<%= arrowup_pill_button_link_to '', tasks_path(:apply_overrides=>params[:apply_overrides], :sort_field=>'run_status', :sort_order=>'ascending'), :title=>"sort ascending by Status" %>
-								<%= disable_arrowdown_pill_button_link_to '', tasks_path, :title=>"current sort is descending by Status" %>
-						<% end %>
-				<% end %>
-				<br />
+	    <th>
 				Status
 			</th>
-	    <th colspan="3">Reports</th>
-	    <th rowspan="2">Threat</th>
-	    <th rowspan="2">Trend</th>
-	    <th rowspan="2" colspan="3">Actions</th>
+	    <th>Threat</th>
+	    <th>Trend</th>
+	    <th colspan="3" class="last-th">Actions</th>
 	  </tr>
-	  <tr class="table_header">
-			<th>Total</th>
-			<th>First</th>
-			<th>Last</th>
-		</tr>
-		<% @tasks.each do |task| %>
-		  <tr>
-				<td>
-					<div class="button-container">
-						<%# status: New, Done,
-												Stopped, 
-												Paused, 
-												Running, 
-												Internal Error, 
-												Requested, Pause Requested, Resume Requested, Stop Requested, Delete Requested
-						%>
-						<% can_delete = true %>
-						<% if ['New','Done'].include? task.status %>
-								<div class="button-group">
-									<%= pill_button_link_to "start", start_task_path(task.id), :title => 'Start Task' %>
-									<%#= disable_pill_button_link_to "resume" %>
-									<%#= disable_pill_button_link_to "stop" %>
-								</div>
-						<% elsif ['Stopped'].include? task.status %>
-								<div class="button-group">
-									<%= pill_button_link_to "start", start_task_path(task.id), :title => 'Start Task' %>
-									<%= pill_button_link_to "resume", resume_stopped_task_path(task.id), :title => 'Resume Task' %>
-									<%#= disable_pill_button_link_to "stop" %>
-								</div>
-						<% elsif ['Paused'].include? task.status %>
-								<% can_delete = false %>
-								<div class="button-group">
-									<%#= disable_pill_button_link_to "start", :title => 'not available' %>
-									<%= pill_button_link_to "resume", resume_paused_task_path(task.id), :title => 'Resume Task' %>
-									<%= pill_button_link_to "stop", stop_task_path(task.id), :title => 'Stop Task' %>
-								</div>
-						<% elsif ['Running'].include? task.status %>
-								<% can_delete = false %>
-								<div class="button-group">
-									<%#= disable_pill_button_link_to "start" %>
-									<%= pill_button_link_to "pause", pause_task_path(task.id), :title => 'Pause Task' %>
-									<%= pill_button_link_to "stop", stop_task_path(task.id), :title => 'Stop Task' %>
-								</div>
-						<% elsif ['Internal Error'].include? task.status %>
-								<div class="button-group">
-									<%= pill_button_link_to "start", start_task_path(task.id), :title => 'Start Task' %>
-									<%#= disable_pill_button_link_to "resume" %>
-									<%#= disable_pill_button_link_to "stop" %>
-								</div>
-						<% else %>
-								<%# some type of 'requested' status %>
-								<% can_delete = false %>
-								<%= disable_pill_button_link_to "no actions available", root_path %>
-						<% end %>
-					</div>
-				</td>
-		    <td width="20%">
-					<%#= truncate(task.name, :length => 25) %>
-					<b><%= task.name %></b>
-					<% unless task.comment.blank? %>
-							<br />
-							<em><small><%= task.comment %><%#= truncate(task.comment, :length => 15) %></small></em>
-					<% end %>
-				</td>
-		    <td>
-					<% if ['New','Done'].include?(task.status) %>
-							<%= task.status %>
-					<% elsif task.status =~ /Requested/ %>
-							<span style="color:red"><%= task.status %></span>
-					<% else %>
-							<%= task.status %> at <%= task.overall_progress %>%
-					<% end %>
-				</td>
-		    <td>
-					<%#= task.finished_reports_count %>
-			    <%= link_to(task.finished_reports_count, task_path(task.id), :title => 'view Reports') unless task.reports_count <= 0 %>
-				</td>
-		    <td>
-					<%# openvas returns datetime as a string formatted like: "Thu May 19 21:09:19 2011" %>
-					<%# frd = DateTime.strptime(task.first_report_date, "%a %b %d %H:%M:%S %Y") unless task.first_report_date.blank? %>
-					<% frd = Time.parse(task.first_report_date) unless task.first_report_date.blank? %>
-			    <%= link_to(frd.strftime("%b %d %Y"), report_path(task.first_report_id), :title => 'view First Report') unless task.first_report_date.blank? %>
-				</td>
-		    <td>
-					<%# openvas returns datetime as a string formatted like: "Thu May 19 21:09:19 2011" %>
-					<%# lrd = DateTime.strptime(task.last_report_date, "%a %b %d %H:%M:%S %Y") unless task.last_report_date.blank? %>
-					<% lrd = Time.parse(task.last_report_date) unless task.last_report_date.blank? %>
-			    <%= link_to(lrd.strftime("%b %d %Y"), report_path(task.last_report_id), :title => 'view Last Report') unless task.last_report_date.blank? %>
-				</td>
-				<td><%# threat: High, Medium, Low, Log, Debug (Log,Debug = None) %><%= task.threat %></td>
-				<td><%# trend: up, down, more, less, same %><%= task.trend %></td>
-	      <td><%= pill_button_link_to "details", task_path(task.id), :title => "view Task: #{truncate(task.name, :length => 20)}" %></td>
-				<td><%= pill_button_link_to "edit", edit_task_path(task.id), :title => "edit Task: #{truncate(task.name, :length => 20)}" %></td>
-    		<td>
-					<% if can_delete %>
-							<%= danger_remove_pill_button_link_to "delete", task_path(task.id), :title => "delete Task: #{truncate(task.name, :length => 20)}", :confirm => 'Are you sure?', :method => :delete %>
-					<% else %>
-							<%= disable_danger_remove_pill_button_link_to "delete", root_path, :title => "unable to delete Task: #{truncate(task.name, :length => 20)}" %>
-					<% end %>
-				</td>
-		  </tr>
-			<tr><td colspan="11"><hr /></td></tr>
-		<% end %>
+	</thead> 	  
+	<tbody>
+	<%= render "task" %>
+	</tbody>
 	</table>
+	</article>
+
 <% end %>

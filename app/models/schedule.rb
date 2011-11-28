@@ -6,13 +6,13 @@ class Schedule
   attr_accessor :period_amount, :period_unit, :duration_amount, :duration_unit, :next_time
   attr_accessor :next_time, :in_use, :task_ids, :period, :duration
 
-  validates :name, :presence => true, :length => { :maximum => 80 }
-  validates :comment, :length => { :maximum => 400 }
-  validates :first_time, :presence => true
+  validates :name, presence: true, length: { maximum: 80 }
+  validates :comment, length: { maximum: 400 }
+  validates :first_time, presence: true
 
   def self.selections(user)
     schedules = []
-    sch = Schedule.new({:id=>'0', :name=>'--'}) # add blank selection, so users can edit schedule selection
+    sch = Schedule.new({id:'0', name:'--'}) # add blank selection, so users can edit schedule selection
     schedules << sch
     self.all(user).each do |s|
       schedules << s
@@ -22,7 +22,7 @@ class Schedule
 
   def self.all(user, options = {})
     manual_sort = false
-    params = {:details => '1'}
+    params = {details: '1'}
     params[:schedule_id] = options[:id] if options[:id]
     case options[:sort_by]
       when :schedule_id
@@ -150,7 +150,7 @@ class Schedule
 
   def delete_record(user)
     return if @id.blank?
-    req = Nokogiri::XML::Builder.new { |xml| xml.delete_schedule(:schedule_id => @id) }
+    req = Nokogiri::XML::Builder.new { |xml| xml.delete_schedule(schedule_id: @id) }
     begin
       resp = user.openvas_connection.sendrecv(req.doc)
       status = Schedule.extract_value_from("//@status", resp)

@@ -8,7 +8,7 @@ class SystemReport
     params = {}
     params[:name] = options[:name] if options[:name]
     if options[:brief] && options[:brief] == true
-      params.merge!({:brief => "1"})
+      params.merge!({brief: "1"})
     end    
     req = Nokogiri::XML::Builder.new { |xml| xml.get_system_reports(params) }
     ret = []
@@ -29,7 +29,7 @@ class SystemReport
 
   def self.find(id, user)
     return nil if id.blank? || user.blank?
-    f = self.all(user, :name=>id).first
+    f = self.all(user, name:id).first
     return nil if f.blank?
     # ensure "first" has the desired name:
     if f.name == id

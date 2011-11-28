@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+  <title><%= content_for?(:title) ? yield(:title) : "osDiscover" %></title>
+  <%= stylesheet_link_tag "sign_in" %>
+  <%= javascript_include_tag 'application' %>
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <%= csrf_meta_tag %>
+  <%= yield(:head) %>
+</head>
+<body>
+<div id="container">
+	<div id="header-content">
+		<div id="nav_wrapper">
+			<% if user_signed_in? %>
+				<a href="http://www.clone-systems.com/" class="logo"></a><div class="app_name"></div>
+				<div class="nav">
+					<%= render "/partials/menu" %>
+				</div>
+			<% end %>
+		</div>
+		<div class="clear"></div>
+		<div id="content">
+			<%= yield %>
+		</div>
+	</div>
+</div>
+
+<script>
+jQuery(document).ready(function(){
+
+	$("input:text:visible:first").focus();
+
+	$("a.disable").click(function(e) {
+		e.preventDefault();
+		return false;
+	});
+
+	// help stop double clicking
+	function do_nothing() { 
+	  return false;
+	}
+
+	// prevent a second click for 5 seconds:
+	$('a.button').live('click', function(e) { 
+	  $(e.target).click(do_nothing); 
+	  setTimeout(function(){
+	    $(e.target).unbind('click', do_nothing);
+	  }, 5000); 
+	});
+
+	// prevent a second click for 5 seconds:
+	$("input[type='submit']").live('click', function(e) { 
+	  $(e.target).click(do_nothing); 
+	  setTimeout(function(){
+	    $(e.target).unbind('click', do_nothing);
+	  }, 5000); 
+	});
+
+});
+</script>
+</body>
+</html>

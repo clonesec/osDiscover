@@ -4,11 +4,12 @@
 		<% unless current_host == r.host %>
 				<%# FIXME maybe, coz this is based on a big assumption that the results are always returned in order by host %>
 				<% current_host = r.host %>
-				<h3 style="padding:2px; text-align:center; background:#636363; color:#fff">Security Issues reported for <%=current_host%></h3>
+				<h3 style="margin:5px 3px; padding:2px; text-align:center; background:#636363; color:#fff">Security Issues Reported for <%=current_host%></h3>
 		<% end %>
 		<%
-		c = 'd5d5d5' # Log and False Positive
-		c = '539dcb' if r.threat.downcase == 'low'
+		c = '00cc00' # Log
+		c = '539dcb' if r.threat.downcase == 'false positive'
+		c = 'c9c930' if r.threat.downcase == 'low'
 		c = 'f99f31' if r.threat.downcase == 'medium'
 		c = 'cb1d17' if r.threat.downcase == 'high'
 		%>

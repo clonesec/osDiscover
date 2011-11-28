@@ -1,0 +1,25 @@
+<% title "Monitor" %>
+
+<p>
+	<% if @openvas_manager.empty? %>
+			OpenVAS Manager is <span style="color: red">down</span>
+	<% else %>
+			OpenVAS Manager is <span style="color: green">running</span>
+	<% end %>
+	<br />
+
+	<% if @openvas_scanner.empty? %>
+			OpenVAS Scanner is <span style="color: red">down</span>
+	<% else %>
+			OpenVAS Scanner is <span style="color: green">running</span>
+	<% end %>
+	
+	<br />
+	
+	<% if @openvas_administrator.empty? %>
+			OpenVAS Administrator is <span style="color: red">down</span>
+	<% else %>
+			OpenVAS Administrator is <span style="color: green">running</span>
+	<% end %>
+	<br />
+</p>

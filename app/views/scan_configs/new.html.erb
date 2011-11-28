@@ -1,4 +1,4 @@
-<% title "new Scan Config" %>
+<% title "New Scan Config" %>
 <%= form_for(@scan_config, :html => { :multipart => true }) do |f| %>
   <% if @scan_config.errors.any? %>
     <div id="error_explanation">
@@ -20,7 +20,7 @@
   </div>
 	<br /><br />
   <div class="field">
-    <div class="left">Base</div>
+    <div class="left"><label>Base</label></div>
 		<div class="right">
 			<%= collection_select(:scan_config, :copy_id, ScanConfig.base_selections, :id, :name) %>
 		</div>
