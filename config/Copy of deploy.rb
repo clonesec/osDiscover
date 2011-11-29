@@ -2,10 +2,9 @@ require "bundler/capistrano"
 #load "deploy/assets"
 
 set :application, "osDiscover"
-set :location, "38.123.140.43"
+set :location, "38.123.140.55"
 set :repository, "file:///Code/repositories/osdiscover.git" #git clone ssh://osdiscover@38.123.140.55/Code/repositories/osdiscover.git
 set :local_repository, "file://."
-
 
 set :scm, :git
 # Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
@@ -28,7 +27,7 @@ namespace :deploy do
   task :start do ; end
   task :stop do ; end
   task :restart, :roles => :app, :except => { :no_release => true } do
-    run "cd #{current_path}; bundle exec rake db:schema:load"
+    run "cd #{current_path}; rake db:schema:load"
     run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
     
   end
