@@ -22,5 +22,5 @@ Unique Tasks<br />
 <br />
 Unique Hosts: <%= current_user.unique_scanned_hosts.count %><br />
 <% current_user.unique_scanned_hosts.each_with_index do |host, index| %>
-<%= index + 1 %>) <%= host %><br />
+<%= index + 1 %>) <span><%= host %></span><br />
 <% end %>

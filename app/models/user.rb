@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
     scanned_hosts = self.show_scanned_hosts
     scanned_hosts.each do |sh|
       sh.hosts.split(", ").each do |host|
-        hosts << host
+        hosts << host.gsub(" ", "")
       end
     end
     return hosts.uniq.sort
