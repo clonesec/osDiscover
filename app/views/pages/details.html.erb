@@ -1,26 +1,21 @@
-Scan targets
-<div class="count">
-	<% current_user.scan_targets.each do |test| %>
-	<%= test.id %><br />
-	<% end %>
-</div>
-<br />
-<br />
-Tasks<br />
-<% Task.all(current_user).each do |task| %>
-<%= task.id %><br />
-<% end %>
-
-<br />
-<br />
-Unique Tasks<br />
-<% current_user.unique_tasks.each do |task2| %>
-<%= task2.id %><br />
-<% end %>
-
-<br />
-<br />
 Unique Hosts: <%= current_user.unique_scanned_hosts.count %><br />
 <% current_user.unique_scanned_hosts.each_with_index do |host, index| %>
 <%= index + 1 %>) <span><%= host %></span><br />
 <% end %>
+
+<br />
+<br />
+Unique Hosts with vulnerabilities: <%= current_user.vulnerable_unique_hosts.count %><br />
+<% current_user.vulnerable_unique_hosts.each_with_index do |host, index| %>
+<%= index + 1 %>) <span><%= host %></span><br />
+<% end %>
+
+<br />
+<br />
+Outdated scanned hosts: <%= current_user.outdated_hosts.count %><br />
+<% current_user.outdated_hosts.each_with_index do |host, index| %>
+<%= index + 1 %>) <span><%= host %></span><br />
+<% end %>
+
+<br />
+<%= current_user.date_severity_count %>

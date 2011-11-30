@@ -17,12 +17,12 @@
 	</a>
 	
 	<a class="box other-box center-box"  href="#">
-		<div class="count red-font"><%= current_user.severity_count %></div>
+		<div class="count red-font"><%= current_user.vulnerable_unique_hosts.uniq.count %></div>
 		<div class="title"><span class="failed-green red-font">failed</span><br /><span class="box-bottom-fonts">with vulnerabilities</span></div>
 	</a>
 	
 	<a class="box other-box right-box" href="#">
-		<div class="count"><%= current_user.date_severity_count rescue "0" %></div>
+		<div class="count"><%= current_user.date_severity_count.count rescue "0" %></div>
 		<div class="title"><span class="failed-green">unscanned</span><br /><span class="box-bottom-fonts">for 90+ days</span></div>
 	</a>
 </div>
