@@ -59,6 +59,7 @@ Greenbone::Application.routes.draw do
   get 'verify_agent/:id' => 'agents#verify_agent', :as => 'verify_agent'
   get 'download_agent/:id' => 'agents#download_agent', :as => 'download_agent'
   
+  get "details" => "pages#details", :as => "details"
   get "help" => "pages#help", :as => "help"
   get "monitor" => "pages#monitor", :as => "monitor"
   get "schedule-graph" => "pages#schedule_graph"

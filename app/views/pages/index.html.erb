@@ -8,11 +8,11 @@
 	{"data-file":"/report-graph.json", "id":"reports_graph_id"} );
 </script> 
 %>
-<% title "Dashboard test" %>
+<% title "Dashboard" %>
 
 <div id="box-holders">
 	<a class="box other-box left-box" id="active-box" href="#">
-		<div class="count"><%= current_user.unique_ips rescue "0" %></div>
+		<div class="count"><%= current_user.unique_scanned_hosts.count rescue "0" %></div>
 		<div class="title"><span class="all-hosts-title">Hosts</span><br /><span class="all-scanned-title">scanned</span></div>
 	</a>
 	

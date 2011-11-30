@@ -17,6 +17,10 @@ class PagesController < ApplicationController
     @tasks = Task.all(current_user, params)
 	#@tasks_count = 0
   end 
+  
+  def details
+    
+  end
 
   def help
     #binding.remote_pry

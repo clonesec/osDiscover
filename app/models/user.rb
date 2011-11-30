@@ -20,24 +20,84 @@ class User < ActiveRecord::Base
     @openvas_admin
   end
   
-  def unique_ips
-	unique_ip_count = 0
-	tmp_targets = []
-	all_tasks = Task.all(self)
-	unique_tasks_ids = Hash[all_tasks.map{|x| [x]}].keys
-	unique_tasks_ids.each do |task|
-		tmp_targets << ScanTarget.find(task.target_id, self) if task.status == "Done"
-	end
-	
-	unique_target_ids = Hash[tmp_targets.map{|x| [x.id]}].keys
-	unique_target_ids.each do |target|
-		tmp_target = ScanTarget.find(target, self)
-		if tmp_target.name != "Localhost" #&& tmp_target == 
-			unique_ip_count = unique_ip_count + tmp_target.max_hosts.to_i
-		end
-	end
-	return unique_ip_count
+############ Find Unique Hosts #############
+  def unique_scanned_hosts
+    hosts = []
+    scanned_hosts = self.show_scanned_hosts
+    scanned_hosts.each do |sh|
+      sh.hosts.split(", ").each do |host|
+        hosts << host
+      end
+    end
+    return hosts.uniq.sort
   end
+
+  def scan_targets
+    tmp_targets = []
+    unique_tasks_ids = self.unique_tasks
+    unique_tasks_ids.each do |task|
+      tmp_targets << ScanTarget.find(task.target_id, self) if task.status == "Done"
+    end
+    return tmp_targets
+  end
+  
+  def unique_tasks
+    all_tasks = Task.all(self)
+    unique_tasks_ids = Hash[all_tasks.map{|x| [x]}].keys
+    return unique_tasks_ids
+  end
+  
+  def unique_target_ids
+    tmp_targets = self.scan_targets
+    unique_target_ids = Hash[tmp_targets.map{|x| [x.id]}].keys
+    return unique_target_ids
+  end
+  
+  def show_scanned_hosts
+    tmp_targets = []
+    hosts = []
+    unique_target_ids = self.unique_target_ids
+    unique_target_ids.each do |target|
+      tmp_target = ScanTarget.find(target, self)
+      if tmp_target.name != "Localhost" #&& tmp_target == 
+        hosts << tmp_target
+      end
+    end
+    return hosts  
+  end
+  
+  def unique_ips
+    tmp_targets = []
+    unique_ip_count = 0
+    unique_target_ids = self.unique_target_ids
+    unique_target_ids.each do |target|
+      tmp_target = ScanTarget.find(target, self)
+      if tmp_target.name != "Localhost" #&& tmp_target == 
+        unique_ip_count = unique_ip_count + tmp_target.max_hosts.to_i
+      end
+    end
+    return unique_ip_count  
+  end
+############ Find Unique Hosts #############
+
+
+  def unique_reports
+    
+  end
+
+  def severity_count
+    tmp_tasks = []
+    tmp_targets = []
+    total_vulnerable_hosts = 0
+    #all_reports = Report.all(self)
+    unique_reports = Hash[self.all_latest_reports.map{|x| [x]}].keys
+    unique_reports.each do |report|
+      if report && report.hosts_threat_totals.sum > 0 && (report.active_threat == "High" || report.active_threat == "Medium")
+        tmp_tasks << Task.find(self, id: report.task_id)  
+      end
+  end
+  
+  
   
   def all_latest_reports
     all_tasks = Task.all(self)
@@ -48,18 +108,6 @@ class User < ActiveRecord::Base
     tmp
   end
   
-  def severity_count
-	tmp_tasks = []
-	tmp_targets = []
-	total_vulnerable_hosts = 0
-	#all_reports = Report.all(self)
-	unique_reports = Hash[self.all_latest_reports.map{|x| [x]}].keys
-	unique_reports.each do |report|
-		if report && report.hosts_threat_totals.sum > 0 && (report.active_threat == "High" || report.active_threat == "Medium")
-			tmp_tasks << Task.find(self, id: report.task_id)	
-		end
-	end
-	
 	unique_tmp_tasks = Hash[tmp_tasks.map{|x| [x.target_id] rescue nil} ].keys 
 	unique_tmp_tasks.each do |task|
 		tmp_targets << ScanTarget.find(task, self)
@@ -79,23 +127,23 @@ class User < ActiveRecord::Base
   
   def date_severity_count
   	hosts = 0
-	tmp_targets = []
-	all_tasks = Task.all(self)
-	unique_tasks_ids = Hash[all_tasks.map{|x| [x]}].keys
-	unique_tasks_ids.each do |task|
-		if  Date.parse(task.last_report_date) + 90.days < Date.today
-			tmp_targets << ScanTarget.find(task.target_id, self)
-		end
-	end
-	@test = []
-	unique_target_ids = Hash[tmp_targets.map{|x| [x.id] rescue nil}].keys
-	unique_target_ids.each do |target|
-		tmp_target = ScanTarget.find(target, self)
-		if tmp_target.name != "Localhost"
-			hosts = hosts + tmp_target.max_hosts.to_i
-		end
-	end
-	return hosts
+  	tmp_targets = []
+  	all_tasks = Task.all(self)
+  	unique_tasks_ids = Hash[all_tasks.map{|x| [x]}].keys
+  	unique_tasks_ids.each do |task|
+  		if  Date.parse(task.last_report_date) + 90.days < Date.today
+  			tmp_targets << ScanTarget.find(task.target_id, self)
+  		end
+  	end
+  	@test = []
+  	unique_target_ids = Hash[tmp_targets.map{|x| [x.id] rescue nil}].keys
+  	unique_target_ids.each do |target|
+  		tmp_target = ScanTarget.find(target, self)
+  		if tmp_target.name != "Localhost"
+  			hosts = hosts + tmp_target.max_hosts.to_i
+  		end
+  	end
+  	return hosts
   end
   
   
