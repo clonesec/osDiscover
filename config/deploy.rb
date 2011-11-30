@@ -2,7 +2,7 @@ require "bundler/capistrano"
 #load "deploy/assets"
 
 set :application, "osDiscover"
-set :location, "38.123.140.43"
+set :location, "38.123.140.55"
 set :repository, "file:///Code/repositories/osdiscover.git" #git clone ssh://osdiscover@38.123.140.55/Code/repositories/osdiscover.git
 set :local_repository, "file://."
 
