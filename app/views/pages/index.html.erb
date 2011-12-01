@@ -17,7 +17,7 @@
 	</a>
 	
 	<a class="box other-box center-box"  href="#">
-		<div class="count red-font"><%= current_user.vulnerable_unique_hosts.uniq.count %></div>
+		<div class="count red-font"><%= current_user.vulnerable_unique_hosts.count rescue "0" %></div>
 		<div class="title"><span class="failed-green red-font">failed</span><br /><span class="box-bottom-fonts">with vulnerabilities</span></div>
 	</a>
 	

@@ -3,12 +3,22 @@ Unique Hosts: <%= current_user.unique_scanned_hosts.count %><br />
 <%= index + 1 %>) <span><%= host %></span><br />
 <% end %>
 
+
 <br />
 <br />
 Unique Hosts with vulnerabilities: <%= current_user.vulnerable_unique_hosts.count %><br />
 <% current_user.vulnerable_unique_hosts.each_with_index do |host, index| %>
 <%= index + 1 %>) <span><%= host %></span><br />
 <% end %>
+<%# current_user.report_tasks.each do |taf| %>
+<%# taf.hosts.each do |heiz| %>
+<%#= heiz.host %><br />
+<%# end %>
+<%# end %>
+
+
+
+
 
 <br />
 <br />
@@ -18,4 +28,7 @@ Outdated scanned hosts: <%= current_user.outdated_hosts.count %><br />
 <% end %>
 
 <br />
-<%#= current_user.date_severity_count %>
+
+
+
+

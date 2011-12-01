@@ -334,5 +334,4 @@ class Report
 		return 'Low' if threat == 'Log'
 		threat
   end
-
 end
