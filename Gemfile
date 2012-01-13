@@ -35,8 +35,6 @@ group :development, :test do
   gem 'spork', "> 0.9.0.rc"
   gem "guard-spork"
   gem "launchy"
-  gem "pry-remote"
-  gem "pry-rails"
 end
 
 group :development do

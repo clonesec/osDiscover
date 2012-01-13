@@ -1,11 +1,11 @@
 <div style="margin:0 auto; text-align:center; padding-top:30px">
 	<h1><a href="http://www.clone-systems.com/" id="clone_systems"></a><div id="os_discover"></div></h1>
-	<%= form_for(resource, :as => resource_name, :url => session_path(resource_name), :style => "margin:0 auto") do |f| %>
+	<%= form_for(resource, :as => resource_name, :url => session_path(resource_name), :style => "margin:0 auto", :html => {:autocomplete => "off"}) do |f| %>
 	<div id="login_label">Login</div>
 	  <p><%= f.label :username %>
-	  <%= f.text_field :username %></p>
+	  <%= f.text_field :username, :autocomplete => "off" %></p>
 	  <p><%= f.label :password %>
-	  <%= f.password_field :password %></p>
+	  <%= f.password_field :password, :autocomplete => "off" %></p>
 	  <p><%= f.submit "Sign in", id: "user_submit" %></p>
 	<div id="login_footer">
 		<small class="left">

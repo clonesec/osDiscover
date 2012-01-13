@@ -194,8 +194,8 @@ Devise.setup do |config|
   #   manager.default_strategies(:scope => :user).unshift :some_external_strategy
   # end
   config.warden do |manager|
-    manager.default_strategies(:scope => :user).unshift :openvas_authentication_strategy
-    manager.failure_app = CustomFailure
+    #manager.default_strategies(:scope => :user).unshift :openvas_authentication_strategy
+    #manager.failure_app = CustomFailure
   end
 
 end

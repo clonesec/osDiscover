@@ -165,14 +165,14 @@ module Openvas
       resp = sendrecv(areq.doc)
       # Rails.logger.info "\n\n resp=#{resp.to_xml.to_yaml}\n\n"
       if resp.nil?
-        disconnect()
+        disconnect
         return false
       end
       begin
         if extract_value_from("//@status", resp) =~ /20\d/
           @areq = areq
         elsif extract_value_from("//@status", resp) =~ /40\d/
-          disconnect()
+          disconnect
           return false
         else
           puts "\n\n***OMPAuthError*** OpenVAS response=#{resp.inspect}\n\n"
@@ -193,7 +193,7 @@ module Openvas
   	end
 
   	def logout
-  		disconnect()
+  		disconnect
   		@areq = ''
   	end
 

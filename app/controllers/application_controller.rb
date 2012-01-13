@@ -1,4 +1,4 @@
-require 'openvas_connection'
+load "#{Rails.root}/extras/openvas_connection.rb"
 
 class ApplicationController < ActionController::Base
 
