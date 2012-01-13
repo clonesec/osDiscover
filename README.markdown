@@ -1,10 +1,10 @@
 # osDiscover
 
-osDiscover is a Ruby on Rails application that interfaces with OpenVAS servers using 
-the [OpenVAS Protocol Documentation](http://www.openvas.org/protocol-doc.html)
-(OMP 2.0 and OAP 1.0).
+osDiscover is a ruby on rails modular application for detecting and analyzing security threats. 
+The modular nature of the app means that you can utilize popular security scanners like OpenVAS, 
+Arachni, Nikto, Metasploit and more. 
 
-The application offers the same functionality as the [Greenbone Security Assistant (GSA)](http://www.greenbone.net/technology/tool_architecture.html).
+[OpenVAS Protocol Documentation](http://www.openvas.org/protocol-doc.html)(OMP 2.0 and OAP 1.0).
 
 
 ## Getting Started
