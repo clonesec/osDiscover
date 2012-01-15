@@ -10,8 +10,6 @@ class Agent
   validates :name, presence: true, length: { maximum: 80 }
   validates :comment, length: { maximum: 400 }
 
-  belongs_to :object, :class_name => "object", :foreign_key => "object_id"
-
   class Datum
     attr_accessor :data, :name
   end
