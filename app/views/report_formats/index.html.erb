@@ -38,7 +38,8 @@
       <td><%= pill_button_link_to 'Download', export_report_format_path(report_format.id), :title => 'download report format' %></td>
       <td><%= pill_button_link_to "Verify Report Format", verify_report_format_path(report_format.id), :title => 'verify report format' %></td>
       <td>
-				<% if report_format.active == '1' %>
+				<%# if report_format.active == '1' # <<-- this is incorrect based on the Greenbone code %>
+        <% if report_format.global == '0' %>
 				    <%= disable_danger_remove_pill_button_link_to "delete", report_formats_path, :title=>'report format is in use' %>
  						<%#= link_to "Delete", report_formats_path, :title=>'report format is in use', :class => "delete-button" %>
 			  <% else %>
